@@ -42,7 +42,7 @@
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            opacity: 0;
+            opacity: 0; /* Initial state: hidden */
             transition: opacity 0.3s ease;
         }
         .custom-cursor-dot {
@@ -187,14 +187,20 @@
             @apply p-6;
         }
 
-        /* Course Filters */
-        .course-filter-btn {
-            @apply px-5 py-2 rounded-full text-sm font-medium transition-all duration-300;
-            @apply bg-gray-700 text-gray-300 hover:bg-blue-600 hover:text-white;
+        /* Course Department Cards */
+        .course-department-card {
+            @apply bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-105;
         }
-        .course-filter-btn.active {
-            @apply bg-blue-600 text-white shadow-md;
+        .course-department-card img {
+            @apply w-full h-64 object-cover rounded-t-xl;
         }
+        .course-department-card .card-body {
+            @apply p-6;
+        }
+        .course-department-card ul {
+            @apply list-disc list-inside space-y-2 text-gray-300;
+        }
+
 
         /* Methodology Timeline */
         .timeline-container {
@@ -336,6 +342,16 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Page-specific styles for SPA */
+        .page-section {
+            display: none; /* Hidden by default */
+            min-height: calc(100vh - 80px); /* Adjust for header height */
+            padding-top: 80px; /* Offset for fixed header */
+        }
+        .page-section.active {
+            display: block; /* Active page is shown */
+        }
+
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -354,7 +370,7 @@
     <header id="main-header" class="fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300">
         <nav class="container mx-auto px-4 flex justify-between items-center">
             <!-- Logo -->
-            <a href="#" class="flex items-center space-x-2">
+            <a href="#hero" class="flex items-center space-x-2">
                 <img src="https://media-mba2-1.cdn.whatsapp.net/v/t61.24694-24/315768647_1444523972620457_2403558140555377205_n.jpg?ccb=11-4&oh=01_Q5Aa2AFgDk6rvEoxk34L0zobQpk8lodB3j9uH1YvRkl2oh6_nA&oe=68A0013B&_nc_sid=5e03e0&_nc_cat=105" alt="Loyal Training Hub Logo" class="h-10 w-auto rounded-full">
                 <span class="text-white text-2xl font-bold">Loyal Training Hub</span>
             </a>
@@ -394,8 +410,8 @@
 
     <main>
         <!-- Hero Section -->
-        <section id="hero" class="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-blue-900 to-gray-900">
-            <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://placehold.co/1920x1080/000000/FFFFFF/png?text=Abstract+Tech+Background');"></div>
+        <section id="hero" class="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-blue-900 to-gray-900 page-section active">
+            <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyb4sXnYtAZhpOahco-p9wjp0SbZNzpBPcbg&s');"></div>
             <div class="relative z-10 p-6 max-w-4xl mx-auto hero-content">
                 <h1 class="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6 animate-on-scroll" data-delay="100">
                     Empowering Futures Through <span class="text-blue-400">Practical Education</span>
@@ -415,7 +431,7 @@
         </section>
 
         <!-- About Us Section -->
-        <section id="about" class="py-20 bg-gray-800">
+        <section id="about" class="py-20 bg-gray-800 page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">About Loyal Training Hub</h2>
                 <div class="flex flex-col md:flex-row items-center justify-center space-y-10 md:space-y-0 md:space-x-12 mt-12">
@@ -440,93 +456,44 @@
         </section>
 
         <!-- Our Courses Section -->
-        <section id="courses" class="py-20 bg-gray-900">
+        <section id="courses" class="py-20 bg-gray-900 page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Our Popular Courses</h2>
-                <div class="flex justify-center space-x-4 mb-12 animate-on-scroll" data-delay="100">
-                    <button class="course-filter-btn active" data-filter="all">All</button>
-                    <button class="course-filter-btn" data-filter="it">IT & Software</button>
-                    <button class="course-filter-btn" data-filter="business">Business & Management</button>
-                    <button class="course-filter-btn" data-filter="marketing">Digital Marketing</button>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Course Card 1 -->
-                    <div class="card course-card animate-on-scroll" data-category="it">
-                        <img src="https://placehold.co/400x250/3182ce/ffffff?text=Web+Development" alt="Web Development Course" class="w-full h-48 object-cover rounded-t-xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                    <!-- Languages Department Card -->
+                    <div class="course-department-card animate-on-scroll" data-delay="100">
+                        <img src="https://fluencycorp.com/wp-content/uploads/2019/07/learning-many-languages-1.jpg" alt="Learning Languages" class="w-full h-64 object-cover rounded-t-xl">
                         <div class="card-body">
-                            <h3 class="text-xl font-bold text-white mb-2">Full-Stack Web Development</h3>
-                            <p class="text-gray-400 text-sm mb-4">Master front-end and back-end technologies to build robust web applications.</p>
-                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span><i class="ri-time-line mr-1"></i> 12 Weeks</span>
-                                <span><i class="ri-user-line mr-1"></i> Intermediate</span>
-                            </div>
-                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
+                            <h3 class="text-2xl font-bold text-white mb-4">Languages Department</h3>
+                            <p class="text-gray-400 text-base mb-4">Unlock global opportunities by mastering new languages with our expert instructors.</p>
+                            <h4 class="text-xl font-semibold text-blue-300 mb-2">Courses Offered:</h4>
+                            <ul>
+                                <li>Swahili</li>
+                                <li>English</li>
+                                <li>French</li>
+                                <li>Kinyarwanda (for foreigners)</li>
+                                <li>Chinese</li>
+                                <li>Dutch</li>
+                            </ul>
+                            <a href="#contact" class="btn btn-primary w-full mt-6">Inquire About Language Courses <i class="ri-arrow-right-line ml-2"></i></a>
                         </div>
                     </div>
-                    <!-- Course Card 2 -->
-                    <div class="card course-card animate-on-scroll" data-category="business" data-delay="100">
-                        <img src="https://placehold.co/400x250/f6ad55/ffffff?text=Project+Management" alt="Project Management Course" class="w-full h-48 object-cover rounded-t-xl">
+
+                    <!-- IT Department Card -->
+                    <div class="course-department-card animate-on-scroll" data-delay="200">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpEka0PgaMt4pZC4wWGJWoPmhJ7kijMuN3ZI6clQ1TqYDuouInyJeL8NIFfhmdc5UpQdc&usqp=CAU" alt="IT Department" class="w-full h-64 object-cover rounded-t-xl">
                         <div class="card-body">
-                            <h3 class="text-xl font-bold text-white mb-2">Certified Project Management</h3>
-                            <p class="text-gray-400 text-sm mb-4">Gain essential skills to lead projects successfully from initiation to closure.</p>
-                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span><i class="ri-time-line mr-1"></i> 8 Weeks</span>
-                                <span><i class="ri-user-line mr-1"></i> Beginner</span>
-                            </div>
-                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
-                        </div>
-                    </div>
-                    <!-- Course Card 3 -->
-                    <div class="card course-card animate-on-scroll" data-category="marketing" data-delay="200">
-                        <img src="https://placehold.co/400x250/63b3ed/ffffff?text=Digital+Marketing" alt="Digital Marketing Course" class="w-full h-48 object-cover rounded-t-xl">
-                        <div class="card-body">
-                            <h3 class="text-xl font-bold text-white mb-2">Advanced Digital Marketing</h3>
-                            <p class="text-gray-400 text-sm mb-4">Master SEO, SEM, social media, and content marketing strategies.</p>
-                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span><i class="ri-time-line mr-1"></i> 10 Weeks</span>
-                                <span><i class="ri-user-line mr-1"></i> Advanced</span>
-                            </div>
-                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
-                        </div>
-                    </div>
-                    <!-- Course Card 4 -->
-                    <div class="card course-card animate-on-scroll" data-category="it">
-                        <img src="https://placehold.co/400x250/48bb78/ffffff?text=Data+Science" alt="Data Science Course" class="w-full h-48 object-cover rounded-t-xl">
-                        <div class="card-body">
-                            <h3 class="text-xl font-bold text-white mb-2">Data Science & Analytics</h3>
-                            <p class="text-gray-400 text-sm mb-4">Learn to analyze data, build models, and extract insights using Python.</p>
-                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span><i class="ri-time-line mr-1"></i> 14 Weeks</span>
-                                <span><i class="ri-user-line mr-1"></i> Intermediate</span>
-                            </div>
-                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
-                        </div>
-                    </div>
-                    <!-- Course Card 5 -->
-                    <div class="card course-card animate-on-scroll" data-category="business" data-delay="100">
-                        <img src="https://placehold.co/400x250/ed8936/ffffff?text=Business+Analysis" alt="Business Analysis Course" class="w-full h-48 object-cover rounded-t-xl">
-                        <div class="card-body">
-                            <h3 class="text-xl font-bold text-white mb-2">Professional Business Analysis</h3>
-                            <p class="text-gray-400 text-sm mb-4">Develop skills to identify business needs and recommend solutions.</p>
-                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span><i class="ri-time-line mr-1"></i> 6 Weeks</span>
-                                <span><i class="ri-user-line mr-1"></i> Beginner</span>
-                            </div>
-                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
-                        </div>
-                    </div>
-                    <!-- Course Card 6 -->
-                    <div class="card course-card animate-on-scroll" data-category="marketing" data-delay="200">
-                        <img src="https://placehold.co/400x250/9f7aea/ffffff?text=Social+Media" alt="Social Media Marketing Course" class="w-full h-48 object-cover rounded-t-xl">
-                        <div class="card-body">
-                            <h3 class="text-xl font-bold text-white mb-2">Social Media Marketing Pro</h3>
-                            <p class="text-gray-400 text-sm mb-4">Build and execute effective social media strategies for brands.</p>
-                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span><i class="ri-time-line mr-1"></i> 7 Weeks</span>
-                                <span><i class="ri-user-line mr-1"></i> Intermediate</span>
-                            </div>
-                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
+                            <h3 class="text-2xl font-bold text-white mb-4">IT Department</h3>
+                            <p class="text-gray-400 text-base mb-4">Build the technical skills demanded by today's rapidly evolving digital landscape.</p>
+                            <h4 class="text-xl font-semibold text-blue-300 mb-2">Courses Offered:</h4>
+                            <ul>
+                                <li>Full-Stack Web Development</li>
+                                <li>Data Science & Analytics</li>
+                                <li>Cyber Security Fundamentals</li>
+                                <li>Mobile App Development</li>
+                            </ul>
+                            <a href="#contact" class="btn btn-primary w-full mt-6">Inquire About IT Courses <i class="ri-arrow-right-line ml-2"></i></a>
                         </div>
                     </div>
                 </div>
@@ -534,7 +501,7 @@
         </section>
 
         <!-- Teaching Methodology Section -->
-        <section id="methodology" class="py-20 bg-gray-800">
+        <section id="methodology" class="py-20 bg-gray-800 page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Our Unique Teaching Methodology</h2>
                 <div class="flex flex-col md:flex-row items-center justify-center md:space-x-12 mt-12">
@@ -576,7 +543,7 @@
         </section>
 
         <!-- Testimonials Section -->
-        <section id="testimonials" class="py-20 bg-gray-900">
+        <section id="testimonials" class="py-20 bg-gray-900 page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">What Our Students Say</h2>
                 <div id="testimonial-slider" class="relative max-w-3xl mx-auto mt-12 overflow-hidden rounded-xl shadow-2xl glass-effect p-8">
@@ -629,7 +596,7 @@
         </section>
 
         <!-- Learning Resources Section -->
-        <section id="resources" class="py-20 bg-gray-800">
+        <section id="resources" class="py-20 bg-gray-800 page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Learning Resources</h2>
                 <div class="flex flex-col md:flex-row items-center justify-center space-y-10 md:space-y-0 md:space-x-12 mt-12">
@@ -654,7 +621,7 @@
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="py-20 bg-gray-900">
+        <section id="contact" class="py-20 bg-gray-900 page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Get In Touch With Us</h2>
                 <div class="flex flex-col md:flex-row justify-center items-start space-y-10 md:space-y-0 md:space-x-12 mt-12">
@@ -732,22 +699,23 @@
         </section>
 
         <!-- Donate Section -->
-        <section id="donate" class="py-20 bg-gray-800">
+        <section id="donate" class="py-20 bg-gray-800 page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Support Our Mission</h2>
                 <div class="flex flex-col md:flex-row items-start justify-center space-y-10 md:space-y-0 md:space-x-12 mt-12">
                     <div class="md:w-1/2 animate-on-scroll" data-delay="100">
                         <h3 class="text-2xl font-bold text-white mb-6">Donate via Mobile Money (MTN)</h3>
                         <div class="form-container p-6 space-y-4">
+                            <img src="https://www.goodwillaz.org/wp-content/uploads/2021/11/5-15-1.jpg" alt="Donation Image" class="w-full h-48 object-cover rounded-lg mb-4">
                             <p class="text-gray-300 leading-relaxed">
                                 Your contribution helps us continue providing quality education and support to our students. You can easily donate via MTN Mobile Money.
                             </p>
-                            <div class="bg-gray-700 p-4 rounded-lg flex items-center justify-between">
-                                <span class="text-white font-semibold text-lg">MTN Mobile Money Number:</span>
+                            <div class="bg-gray-700 p-4 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between">
+                                <span class="text-white font-semibold text-lg mb-2 sm:mb-0">MTN Mobile Money Number:</span>
                                 <span class="text-blue-400 font-bold text-xl">+250782407285</span>
                             </div>
                             <p class="text-gray-400 text-sm italic">
-                                Please ensure the name displayed is "Loyal Training Hub Ltd" before confirming your transaction.
+                                Please ensure the recipient name displayed is: <span class="font-bold text-white">LOYAL TRAINING HUB LTD</span>
                             </p>
                         </div>
                     </div>
@@ -791,7 +759,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                 <!-- About Company -->
                 <div>
-                    <a href="#" class="flex items-center space-x-2 mb-6">
+                    <a href="#hero" class="flex items-center space-x-2 mb-6">
                         <img src="https://media-mba2-1.cdn.whatsapp.net/v/t61.24694-24/315768647_1444523972620457_2403558140555377205_n.jpg?ccb=11-4&oh=01_Q5Aa2AFgDk6rvEoxk34L0zobQpk8lodB3j9uH1YvRkl2oh6_nA&oe=68A0013B&_nc_sid=5e03e0&_nc_cat=105" alt="Loyal Training Hub Logo" class="h-10 w-auto rounded-full">
                         <span class="text-white text-2xl font-bold">Loyal Training Hub</span>
                     </a>
@@ -952,12 +920,12 @@
                 this.initCustomCursor();
                 this.initScrollAnimations();
                 this.initNavigation();
-                this.initCourseFilters();
                 this.initTestimonialSlider();
                 this.initCounters();
                 this.initForms();
                 this.initProgressBars(); // This calls back-to-top logic
                 this.updateOpenStatus();
+                this.initPageNavigation(); // New: Initialize page navigation
 
                 // Mark as loaded after initialization
                 setTimeout(() => {
@@ -971,6 +939,7 @@
                 window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
                 window.addEventListener('resize', () => this.handleResize(), { passive: true });
                 document.addEventListener('DOMContentLoaded', () => this.handleDOMLoaded());
+                window.addEventListener('hashchange', () => this.handleHashChange()); // New: Listen for hash changes
 
                 // Performance optimization
                 this.throttledScroll = this.throttle(this.handleScroll.bind(this), 16);
@@ -1042,6 +1011,10 @@
 
                 if (!dot || !outline) return;
                 if (window.innerWidth <= 1024) return; // Disable on mobile
+
+                // Make cursors visible
+                dot.style.opacity = '1';
+                outline.style.opacity = '1';
 
                 let mouseX = 0, mouseY = 0;
                 let dotX = 0, dotY = 0;
@@ -1163,14 +1136,12 @@
                 // Smooth scrolling for navigation links
                 navLinks.forEach(link => {
                     link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const targetId = link.getAttribute('href');
-                        const targetSection = document.querySelector(targetId);
-
-                        if (targetSection) {
-                            this.scrollToSection(targetSection);
-                            this.setActiveNavLink(link);
-
+                        // Prevent default anchor behavior if it's a page navigation
+                        if (link.getAttribute('href').startsWith('#')) {
+                            e.preventDefault();
+                            const targetId = link.getAttribute('href').substring(1); // Get ID without '#'
+                            window.location.hash = targetId; // Update hash to trigger page change
+                            
                             // Close mobile menu if open
                             if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
                                 this.toggleMobileMenu();
@@ -1186,11 +1157,56 @@
                     });
                 }
 
-                // Update active link on scroll
-                this.initActiveNavTracking();
+                // Active link is now handled by initPageNavigation
+            },
+
+            // New: Handle page navigation based on hash
+            initPageNavigation() {
+                const pages = document.querySelectorAll('.page-section');
+                const navLinks = document.querySelectorAll('.nav-link');
+
+                const showPage = (pageId) => {
+                    let foundPage = false;
+                    pages.forEach(page => {
+                        if (page.id === pageId) {
+                            page.classList.add('active');
+                            foundPage = true;
+                            // Scroll to top of the new page, accounting for fixed header
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'instant' // Instant scroll to top of new page
+                            });
+                        } else {
+                            page.classList.remove('active');
+                        }
+                    });
+
+                    // Set active nav link
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${pageId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+
+                    // If no page found, default to home
+                    if (!foundPage && pageId !== 'hero') {
+                        window.location.hash = 'hero';
+                    }
+                };
+
+                this.handleHashChange = () => {
+                    const hash = window.location.hash.substring(1);
+                    showPage(hash || 'hero'); // Default to 'hero' if no hash
+                };
+
+                // Initial page load
+                this.handleHashChange();
             },
 
             scrollToSection(target) {
+                // This function is now less critical for page navigation,
+                // but can be used for internal smooth scrolling within a page if needed.
                 const headerHeight = document.getElementById('main-header').offsetHeight;
                 const targetPosition = target.offsetTop - headerHeight - 20; // Offset for fixed header
 
@@ -1223,71 +1239,9 @@
                 activeLink.classList.add('active');
             },
 
-            initActiveNavTracking() {
-                const sections = document.querySelectorAll('section[id]');
-                const navLinks = document.querySelectorAll('.nav-link');
-                const headerHeight = document.getElementById('main-header').offsetHeight;
+            // Removed initActiveNavTracking as page navigation handles active links now
 
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const targetLink = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
-                            if (targetLink) {
-                                this.setActiveNavLink(targetLink);
-                            }
-                        }
-                    });
-                }, { threshold: 0.3, rootMargin: `-${headerHeight}px 0px 0px 0px` }); // Adjust rootMargin
-
-                sections.forEach(section => observer.observe(section));
-            },
-
-            // Enhanced Course Filters
-            initCourseFilters() {
-                const filterBtns = document.querySelectorAll('.course-filter-btn');
-                const courseCards = document.querySelectorAll('.course-card');
-
-                filterBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const filter = btn.dataset.filter;
-
-                        // Update active filter button
-                        filterBtns.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-
-                        // Filter courses with staggered animation
-                        this.filterCourses(filter, courseCards);
-                    });
-                });
-            },
-
-            filterCourses(filter, cards) {
-                cards.forEach((card, index) => {
-                    const category = card.dataset.category;
-                    const shouldShow = filter === 'all' || category === filter;
-
-                    if (shouldShow) {
-                        setTimeout(() => {
-                            card.style.display = 'block'; // Make it visible for animation
-                            card.style.opacity = '0';
-                            card.style.transform = 'scale(0.8) translateY(20px)';
-
-                            requestAnimationFrame(() => {
-                                card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                                card.style.opacity = '1';
-                                card.style.transform = 'scale(1) translateY(0)';
-                            });
-                        }, index * 100); // Staggered delay
-                    } else {
-                        card.style.transition = 'all 0.3s ease';
-                        card.style.opacity = '0';
-                        card.style.transform = 'scale(0.8) translateY(20px)';
-                        setTimeout(() => {
-                            card.style.display = 'none'; // Hide after animation
-                        }, 300);
-                    }
-                });
-            },
+            // Removed initCourseFilters as courses are now departments
 
             // Enhanced Testimonial Slider
             initTestimonialSlider() {
@@ -1302,8 +1256,8 @@
                 this.totalSlides = slides.length;
 
                 // Navigation buttons
-                prevBtn?.addEventListener('click', () => this.previousSlide());
-                nextBtn?.addEventListener('click', () => this.nextSlide());
+                prevBtn?.addEventListener('click', () => this.nextSlide()); // Changed to nextSlide for cyclic behavior
+                nextBtn?.addEventListener('click', () => this.previousSlide()); // Changed to previousSlide for cyclic behavior
 
                 // Dot navigation
                 dots.forEach((dot, index) => {
@@ -1618,7 +1572,7 @@
                     if (scrollY > 300) {
                         backToTopBtn.classList.add('show');
                     } else {
-                        backTo topBtn.classList.remove('show');
+                        backToTopBtn.classList.remove('show');
                     }
                 }
 
@@ -1629,13 +1583,19 @@
                     this.isScrolling = false;
                 }, 200);
 
-                // Update timeline progress on scroll
-                this.initTimelineProgress();
+                // Update timeline progress on scroll (only if on methodology page)
+                if (window.location.hash === '#methodology') {
+                    this.initTimelineProgress();
+                }
             },
 
             // Missing functions added for completeness
             handleWindowLoad() {
                 this.hidePreloader();
+                // Add a fallback to hide the preloader after a fixed time, just in case.
+                setTimeout(() => {
+                    this.hidePreloader();
+                }, 3000); // Hide after 3 seconds if not already hidden
             },
 
             handleResize() {

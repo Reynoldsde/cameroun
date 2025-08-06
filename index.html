@@ -1,687 +1,1612 @@
-// Enhanced JavaScript
-const App = {
-    isLoaded: false,
-    currentSlide: 0,
-    totalSlides: 3,
-    scrollPosition: 0,
-    isScrolling: false,
-    countersAnimated: false,
-
-    // Initialize all components
-    init() {
-        this.setupEventListeners();
-        this.initPreloader();
-        this.initCustomCursor();
-        this.initScrollAnimations();
-        this.initNavigation();
-        this.initCourseFilters();
-        this.initTestimonialSlider();
-        this.initCounters();
-        this.initForms();
-        this.initProgressBars();
-        this.updateOpenStatus();
-
-        // Mark as loaded after initialization
-        setTimeout(() => {
-            this.isLoaded = true;
-        }, 100);
-    },
-
-    // Event Listeners Setup
-    setupEventListeners() {
-        window.addEventListener('load', () => this.handleWindowLoad());
-        window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
-        window.addEventListener('resize', () => this.handleResize(), { passive: true });
-        document.addEventListener('DOMContentLoaded', () => this.handleDOMLoaded());
-
-        // Performance optimization
-        this.throttledScroll = this.throttle(this.handleScroll.bind(this), 16);
-        window.addEventListener('scroll', this.throttledScroll, { passive: true });
-    },
-
-    // Utility: Throttle function for performance
-    throttle(func, delay) {
-        let timeoutId;
-        let lastExecTime = 0;
-        return function (...args) {
-            const currentTime = Date.now();
-            if (currentTime - lastExecTime > delay) {
-                func.apply(this, args);
-                lastExecTime = currentTime;
-            } else {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => {
-                    func.apply(this, args);
-                    lastExecTime = Date.now();
-                }, delay - (currentTime - lastExecTime));
-            }
-        };
-    },
-
-    // Enhanced Preloader
-    initPreloader() {
-        const preloader = document.getElementById('preloader');
-        if (!preloader) return;
-
-        // Simulate loading progress
-        let progress = 0;
-        const loadingInterval = setInterval(() => {
-            progress += Math.random() * 30;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(loadingInterval);
-                this.hidePreloader();
-            }
-        }, 200);
-    },
-
-    hidePreloader() {
-        const preloader = document.getElementById('preloader');
-        if (preloader) {
-            preloader.classList.add('loaded');
-            document.body.style.overflow = 'visible';
-
-            // Remove from DOM after animation
-            setTimeout(() => {
-                preloader.remove();
-                this.triggerEntranceAnimations();
-            }, 800);
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loyal Training Hub Ltd - Empowering Futures Through Education</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Remixicon CDN for icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text color */
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
-    },
 
-    triggerEntranceAnimations() {
-        // This function was not defined in the provided code snippet
-        // You can add logic here to trigger entrance animations if needed
-    },
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2d3748;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4299e1; /* Primary color */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3182ce;
+        }
 
-    // Enhanced Custom Cursor
-    initCustomCursor() {
-        const dot = document.querySelector('.custom-cursor-dot');
-        const outline = document.querySelector('.custom-cursor-outline');
+        /* Custom Cursor */
+        .custom-cursor-dot, .custom-cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .custom-cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #4299e1; /* Primary color */
+            transform: translate(-50%, -50%);
+        }
+        .custom-cursor-outline {
+            width: 32px;
+            height: 32px;
+            border: 2px solid #4299e1; /* Primary color */
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+        }
+        .custom-cursor-outline.cursor-hover-link {
+            width: 48px;
+            height: 48px;
+            border-color: #f6ad55; /* Secondary color */
+        }
+        .custom-cursor-outline.cursor-hover-text {
+            width: 24px;
+            height: 24px;
+            border-color: #63b3ed; /* Info color */
+        }
+        @media (max-width: 1024px) {
+            .custom-cursor-dot, .custom-cursor-outline {
+                display: none;
+            }
+        }
 
-        if (!dot || !outline) return;
-        if (window.innerWidth <= 1024) return; // Disable on mobile
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a202c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #preloader.loaded {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid #4299e1; /* Primary color */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-        let mouseX = 0, mouseY = 0;
-        let dotX = 0, dotY = 0;
-        let outlineX = 0, outlineY = 0;
+        /* Header on Scroll */
+        #main-header.scrolled {
+            background-color: rgba(26, 32, 44, 0.95); /* Darker, slightly transparent */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
 
-        // Mouse tracking with smooth interpolation
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
+        /* Navigation Links */
+        .nav-link {
+            position: relative;
+            color: #cbd5e0;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: #4299e1; /* Primary color */
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link:hover {
+            color: #ffffff;
+        }
+        .nav-link.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
 
-        // Smooth cursor animation
-        const animateCursor = () => {
-            // Smooth dot movement
-            dotX += (mouseX - dotX) * 0.8;
-            dotY += (mouseY - dotY) * 0.8;
-            dot.style.left = dotX + 'px';
-            dot.style.top = dotY + 'px';
+        /* Mobile Menu */
+        #mobile-menu {
+            transition: transform 0.3s ease-out;
+            transform: translateX(100%);
+        }
+        #mobile-menu.hidden {
+            transform: translateX(100%);
+        }
+        #mobile-menu:not(.hidden) {
+            transform: translateX(0);
+        }
 
-            // Smooth outline movement
-            outlineX += (mouseX - outlineX) * 0.2;
-            outlineY += (mouseY - outlineY) * 0.2;
-            outline.style.left = outlineX + 'px';
-            outline.style.top = outlineY + 'px';
+        /* Buttons */
+        .btn {
+            @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300 ease-in-out flex items-center justify-center;
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl;
+        }
+        .btn-secondary {
+            @apply bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-600 hover:border-gray-500;
+        }
+        .btn-outline {
+            @apply border border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white;
+        }
 
-            requestAnimationFrame(animateCursor);
-        };
-        animateCursor();
+        /* Section Titles */
+        .section-title {
+            @apply text-4xl md:text-5xl font-extrabold text-white mb-6 relative pb-4;
+        }
+        .section-title::after {
+            content: '';
+            @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-blue-600 rounded-full;
+        }
 
-        // Cursor hover effects
-        document.querySelectorAll('a, button, [role="button"]').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                outline.classList.add('cursor-hover-link');
-            });
-            el.addEventListener('mouseleave', () => {
-                outline.classList.remove('cursor-hover-link');
-            });
-        });
+        /* Card Styles */
+        .card {
+            @apply bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-105;
+        }
+        .card-body {
+            @apply p-6;
+        }
 
-        document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                outline.classList.add('cursor-hover-text');
-            });
-            el.addEventListener('mouseleave', () => {
-                outline.classList.remove('cursor-hover-text');
-            });
-        });
-    },
+        /* Course Filters */
+        .course-filter-btn {
+            @apply px-5 py-2 rounded-full text-sm font-medium transition-all duration-300;
+            @apply bg-gray-700 text-gray-300 hover:bg-blue-600 hover:text-white;
+        }
+        .course-filter-btn.active {
+            @apply bg-blue-600 text-white shadow-md;
+        }
 
-    // Enhanced Scroll Animations
-    initScrollAnimations() {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -10% 0px'
-        };
+        /* Methodology Timeline */
+        .timeline-container {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 1.25rem;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #4a5568; /* Gray-600 */
+            border-radius: 2px;
+        }
+        #timeline-progress {
+            position: absolute;
+            left: 1.25rem;
+            top: 0;
+            width: 4px;
+            background-color: #4299e1; /* Primary color */
+            border-radius: 2px;
+            height: 0;
+            transition: height 0.5s ease-out;
+        }
+        .methodology-step {
+            position: relative;
+            padding-bottom: 3rem;
+        }
+        .methodology-step::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: #4299e1; /* Primary color */
+            border-radius: 50%;
+            border: 4px solid #1a202c; /* Match background */
+            z-index: 10;
+        }
+        .methodology-step:last-child {
+            padding-bottom: 0;
+        }
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const delay = entry.target.dataset.delay || 0;
+        /* Testimonial Slider */
+        .testimonial-wrapper {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Ease-in-out */
+        }
+        .testimonial-slide {
+            flex: 0 0 100%;
+            width: 100%;
+        }
+        .slider-btn {
+            @apply p-3 rounded-full bg-gray-700 text-white hover:bg-blue-600 transition-colors duration-300;
+        }
+        .slider-dot {
+            @apply w-3 h-3 rounded-full bg-gray-600 mx-1 cursor-pointer transition-all duration-300;
+        }
+        .slider-dot.active {
+            @apply bg-blue-600 w-5;
+        }
+
+        /* Form Styles */
+        .form-container {
+            @apply bg-gray-800 rounded-xl shadow-inner p-6;
+        }
+        .form-input {
+            @apply w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200;
+        }
+        .form-input:focus {
+            @apply ring-blue-500 border-blue-500;
+        }
+        .form-input.border-red-400 {
+            @apply border-red-400 focus:ring-red-500;
+        }
+        .form-input.border-green-400 {
+            @apply border-green-400 focus:ring-green-500;
+        }
+
+        /* Footer */
+        .footer-title {
+            @apply text-white text-lg font-semibold mb-6 relative pb-3;
+        }
+        .footer-title::after {
+            content: '';
+            @apply absolute bottom-0 left-0 w-10 h-1 bg-blue-600 rounded-full;
+        }
+        .footer-link {
+            @apply text-gray-400 hover:text-blue-400 transition-colors duration-200;
+        }
+        .social-link {
+            @apply w-10 h-10 flex items-center justify-center rounded-full bg-gray-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all duration-300;
+        }
+
+        /* Glass Effect */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            @apply fixed bottom-8 right-8 p-4 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition-all duration-300 opacity-0 invisible;
+            z-index: 999;
+        }
+        #back-to-top.show {
+            @apply opacity-100 visible;
+        }
+
+        /* Animate on Scroll Classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: transform, opacity; /* Hint to browser */
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            will-change: auto; /* Reset after animation */
+        }
+
+        /* Hero section specific animations */
+        .hero-content > * {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInSlideUp 0.8s ease-out forwards;
+        }
+        .hero-content h1 { animation-delay: 0.2s; }
+        .hero-content p { animation-delay: 0.4s; }
+        .hero-content .hero-buttons { animation-delay: 0.6s; }
+
+        @keyframes fadeInSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor-dot"></div>
+    <div class="custom-cursor-outline"></div>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="spinner"></div>
+        <p class="text-white text-lg font-semibold">Loading Loyal Training Hub...</p>
+    </div>
+
+    <!-- Header -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300">
+        <nav class="container mx-auto px-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center space-x-2">
+                <img src="https://placehold.co/40x40/4299e1/ffffff?text=LTH" alt="Loyal Training Hub Logo" class="rounded-full">
+                <span class="text-white text-2xl font-bold">Loyal Training Hub</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <ul class="hidden md:flex space-x-8">
+                <li><a href="#hero" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About Us</a></li>
+                <li><a href="#courses" class="nav-link">Courses</a></li>
+                <li><a href="#methodology" class="nav-link">Methodology</a></li>
+                <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-toggle" class="md:hidden text-white text-3xl focus:outline-none">
+                <i class="ri-menu-4-line transition-transform duration-300"></i>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed top-0 right-0 w-64 h-full bg-gray-800 shadow-lg p-6 pt-20 transform translate-x-full md:hidden transition-transform duration-300 z-40">
+            <ul class="flex flex-col space-y-6">
+                <li><a href="#hero" class="nav-link text-xl block active">Home</a></li>
+                <li><a href="#about" class="nav-link text-xl block">About Us</a></li>
+                <li><a href="#courses" class="nav-link text-xl block">Courses</a></li>
+                <li><a href="#methodology" class="nav-link text-xl block">Methodology</a></li>
+                <li><a href="#testimonials" class="nav-link text-xl block">Testimonials</a></li>
+                <li><a href="#contact" class="nav-link text-xl block">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-blue-900 to-gray-900">
+            <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://placehold.co/1920x1080/000000/FFFFFF/png?text=Abstract+Tech+Background');"></div>
+            <div class="relative z-10 p-6 max-w-4xl mx-auto hero-content">
+                <h1 class="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6 animate-on-scroll" data-delay="100">
+                    Empowering Futures Through <span class="text-blue-400">Practical Education</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 mb-8 animate-on-scroll" data-delay="200">
+                    At Loyal Training Hub, we provide cutting-edge, hands-on training in IT, Business, and Digital Marketing, equipping you with the skills to thrive in today's dynamic world.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 hero-buttons animate-on-scroll" data-delay="300">
+                    <a href="#courses" class="btn btn-primary">
+                        <i class="ri-book-open-line mr-2"></i> Explore Courses
+                    </a>
+                    <a href="#contact" class="btn btn-secondary">
+                        <i class="ri-mail-line mr-2"></i> Get in Touch
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-20 bg-gray-800">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title text-center animate-on-scroll">About Loyal Training Hub</h2>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-10 md:space-y-0 md:space-x-12 mt-12">
+                    <div class="md:w-1/2 animate-on-scroll" data-delay="100">
+                        <img src="https://placehold.co/600x400/2d3748/ffffff?text=Modern+Classroom" alt="Modern Classroom" class="rounded-xl shadow-2xl object-cover w-full h-auto">
+                    </div>
+                    <div class="md:w-1/2 text-gray-300 space-y-6 animate-on-scroll" data-delay="200">
+                        <p class="leading-relaxed text-lg">
+                            Loyal Training Hub Ltd is a leading educational institution dedicated to fostering talent and driving career growth in Rwanda and beyond. Our mission is to bridge the gap between academic knowledge and industry demands by offering practical, skill-focused training programs.
+                        </p>
+                        <p class="leading-relaxed text-lg">
+                            We believe in a hands-on approach, providing our students with real-world projects, expert mentorship, and a vibrant learning community. Our state-of-the-art facilities and experienced instructors ensure a high-quality learning experience that translates directly into professional success.
+                        </p>
+                        <ul class="list-disc list-inside space-y-2 text-blue-300">
+                            <li><i class="ri-check-double-line text-blue-400 mr-2"></i> Industry-relevant curriculum</li>
+                            <li><i class="ri-check-double-line text-blue-400 mr-2"></i> Experienced and passionate instructors</li>
+                            <li><i class="ri-check-double-line text-blue-400 mr-2"></i> Strong career support and networking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Courses Section -->
+        <section id="courses" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title text-center animate-on-scroll">Our Popular Courses</h2>
+                <div class="flex justify-center space-x-4 mb-12 animate-on-scroll" data-delay="100">
+                    <button class="course-filter-btn active" data-filter="all">All</button>
+                    <button class="course-filter-btn" data-filter="it">IT & Software</button>
+                    <button class="course-filter-btn" data-filter="business">Business & Management</button>
+                    <button class="course-filter-btn" data-filter="marketing">Digital Marketing</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Course Card 1 -->
+                    <div class="card course-card animate-on-scroll" data-category="it">
+                        <img src="https://placehold.co/400x250/3182ce/ffffff?text=Web+Development" alt="Web Development Course" class="w-full h-48 object-cover rounded-t-xl">
+                        <div class="card-body">
+                            <h3 class="text-xl font-bold text-white mb-2">Full-Stack Web Development</h3>
+                            <p class="text-gray-400 text-sm mb-4">Master front-end and back-end technologies to build robust web applications.</p>
+                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                                <span><i class="ri-time-line mr-1"></i> 12 Weeks</span>
+                                <span><i class="ri-user-line mr-1"></i> Intermediate</span>
+                            </div>
+                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
+                        </div>
+                    </div>
+                    <!-- Course Card 2 -->
+                    <div class="card course-card animate-on-scroll" data-category="business" data-delay="100">
+                        <img src="https://placehold.co/400x250/f6ad55/ffffff?text=Project+Management" alt="Project Management Course" class="w-full h-48 object-cover rounded-t-xl">
+                        <div class="card-body">
+                            <h3 class="text-xl font-bold text-white mb-2">Certified Project Management</h3>
+                            <p class="text-gray-400 text-sm mb-4">Gain essential skills to lead projects successfully from initiation to closure.</p>
+                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                                <span><i class="ri-time-line mr-1"></i> 8 Weeks</span>
+                                <span><i class="ri-user-line mr-1"></i> Beginner</span>
+                            </div>
+                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
+                        </div>
+                    </div>
+                    <!-- Course Card 3 -->
+                    <div class="card course-card animate-on-scroll" data-category="marketing" data-delay="200">
+                        <img src="https://placehold.co/400x250/63b3ed/ffffff?text=Digital+Marketing" alt="Digital Marketing Course" class="w-full h-48 object-cover rounded-t-xl">
+                        <div class="card-body">
+                            <h3 class="text-xl font-bold text-white mb-2">Advanced Digital Marketing</h3>
+                            <p class="text-gray-400 text-sm mb-4">Master SEO, SEM, social media, and content marketing strategies.</p>
+                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                                <span><i class="ri-time-line mr-1"></i> 10 Weeks</span>
+                                <span><i class="ri-user-line mr-1"></i> Advanced</span>
+                            </div>
+                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
+                        </div>
+                    </div>
+                    <!-- Course Card 4 -->
+                    <div class="card course-card animate-on-scroll" data-category="it">
+                        <img src="https://placehold.co/400x250/48bb78/ffffff?text=Data+Science" alt="Data Science Course" class="w-full h-48 object-cover rounded-t-xl">
+                        <div class="card-body">
+                            <h3 class="text-xl font-bold text-white mb-2">Data Science & Analytics</h3>
+                            <p class="text-gray-400 text-sm mb-4">Learn to analyze data, build models, and extract insights using Python.</p>
+                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                                <span><i class="ri-time-line mr-1"></i> 14 Weeks</span>
+                                <span><i class="ri-user-line mr-1"></i> Intermediate</span>
+                            </div>
+                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
+                        </div>
+                    </div>
+                    <!-- Course Card 5 -->
+                    <div class="card course-card animate-on-scroll" data-category="business" data-delay="100">
+                        <img src="https://placehold.co/400x250/ed8936/ffffff?text=Business+Analysis" alt="Business Analysis Course" class="w-full h-48 object-cover rounded-t-xl">
+                        <div class="card-body">
+                            <h3 class="text-xl font-bold text-white mb-2">Professional Business Analysis</h3>
+                            <p class="text-gray-400 text-sm mb-4">Develop skills to identify business needs and recommend solutions.</p>
+                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                                <span><i class="ri-time-line mr-1"></i> 6 Weeks</span>
+                                <span><i class="ri-user-line mr-1"></i> Beginner</span>
+                            </div>
+                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
+                        </div>
+                    </div>
+                    <!-- Course Card 6 -->
+                    <div class="card course-card animate-on-scroll" data-category="marketing" data-delay="200">
+                        <img src="https://placehold.co/400x250/9f7aea/ffffff?text=Social+Media" alt="Social Media Marketing Course" class="w-full h-48 object-cover rounded-t-xl">
+                        <div class="card-body">
+                            <h3 class="text-xl font-bold text-white mb-2">Social Media Marketing Pro</h3>
+                            <p class="text-gray-400 text-sm mb-4">Build and execute effective social media strategies for brands.</p>
+                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                                <span><i class="ri-time-line mr-1"></i> 7 Weeks</span>
+                                <span><i class="ri-user-line mr-1"></i> Intermediate</span>
+                            </div>
+                            <a href="#" class="btn btn-primary w-full">Learn More <i class="ri-arrow-right-line ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Teaching Methodology Section -->
+        <section id="methodology" class="py-20 bg-gray-800">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title text-center animate-on-scroll">Our Unique Teaching Methodology</h2>
+                <div class="flex flex-col md:flex-row items-center justify-center md:space-x-12 mt-12">
+                    <div class="md:w-1/2 relative timeline-container animate-on-scroll" data-delay="100">
+                        <div class="timeline-line"></div>
+                        <div id="timeline-progress"></div>
+                        <div class="space-y-12">
+                            <div class="methodology-step pl-12">
+                                <h3 class="text-2xl font-bold text-white mb-2">1. Foundational Knowledge</h3>
+                                <p class="text-gray-300 leading-relaxed">
+                                    We start with strong theoretical basics, ensuring every student understands the core concepts before diving into practical applications.
+                                </p>
+                            </div>
+                            <div class="methodology-step pl-12">
+                                <h3 class="text-2xl font-bold text-white mb-2">2. Hands-On Practical Training</h3>
+                                <p class="text-gray-300 leading-relaxed">
+                                    Our courses emphasize active learning through real-world projects, coding challenges, and case studies, building practical skills.
+                                </p>
+                            </div>
+                            <div class="methodology-step pl-12">
+                                <h3 class="text-2xl font-bold text-white mb-2">3. Expert Mentorship & Feedback</h3>
+                                <p class="text-gray-300 leading-relaxed">
+                                    Students receive personalized guidance from industry experts, with regular feedback sessions to refine their skills and understanding.
+                                </p>
+                            </div>
+                            <div class="methodology-step pl-12">
+                                <h3 class="text-2xl font-bold text-white mb-2">4. Career Development & Support</h3>
+                                <p class="text-gray-300 leading-relaxed">
+                                    We provide robust career services, including resume building, interview preparation, and job placement assistance, ensuring a smooth transition into the workforce.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 mt-10 md:mt-0 animate-on-scroll" data-delay="200">
+                        <img src="https://placehold.co/600x400/4a5568/ffffff?text=Learning+Process" alt="Learning Process Illustration" class="rounded-xl shadow-2xl object-cover w-full h-auto">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title text-center animate-on-scroll">What Our Students Say</h2>
+                <div id="testimonial-slider" class="relative max-w-3xl mx-auto mt-12 overflow-hidden rounded-xl shadow-2xl glass-effect p-8">
+                    <div class="testimonial-wrapper">
+                        <!-- Testimonial Slide 1 -->
+                        <div class="testimonial-slide text-center p-4">
+                            <img src="https://placehold.co/80x80/63b3ed/ffffff?text=JS" alt="Student Jane Doe" class="rounded-full mx-auto mb-6 border-4 border-blue-500">
+                            <p class="text-lg italic text-gray-300 mb-6 leading-relaxed">
+                                "Loyal Training Hub transformed my career! The Full-Stack Web Development course was incredibly practical, and the instructors were truly supportive. I landed my dream job just weeks after graduating."
+                            </p>
+                            <h4 class="font-bold text-white text-xl">Jane Doe</h4>
+                            <p class="text-blue-400 text-sm">Web Developer, Tech Solutions Inc.</p>
+                        </div>
+                        <!-- Testimonial Slide 2 -->
+                        <div class="testimonial-slide text-center p-4">
+                            <img src="https://placehold.co/80x80/f6ad55/ffffff?text=PM" alt="Student John Smith" class="rounded-full mx-auto mb-6 border-4 border-yellow-500">
+                            <p class="text-lg italic text-gray-300 mb-6 leading-relaxed">
+                                "The Project Management course provided me with the structured thinking and tools I needed to excel. The real-world case studies were invaluable. Highly recommend for aspiring project managers!"
+                            </p>
+                            <h4 class="font-bold text-white text-xl">John Smith</h4>
+                            <p class="text-yellow-400 text-sm">Project Coordinator, Global Innovations</p>
+                        </div>
+                        <!-- Testimonial Slide 3 -->
+                        <div class="testimonial-slide text-center p-4">
+                            <img src="https://placehold.co/80x80/48bb78/ffffff?text=DM" alt="Student Emily White" class="rounded-full mx-auto mb-6 border-4 border-green-500">
+                            <p class="text-lg italic text-gray-300 mb-6 leading-relaxed">
+                                "I was new to digital marketing, but Loyal Training Hub made it so easy to understand. The Advanced Digital Marketing course covered everything, and I now manage successful campaigns for my clients."
+                            </p>
+                            <h4 class="font-bold text-white text-xl">Emily White</h4>
+                            <p class="text-green-400 text-sm">Digital Marketing Specialist, Creative Agency</p>
+                        </div>
+                    </div>
+
+                    <!-- Slider Navigation Buttons -->
+                    <button class="slider-btn prev absolute left-4 top-1/2 -translate-y-1/2" aria-label="Previous Testimonial">
+                        <i class="ri-arrow-left-s-line"></i>
+                    </button>
+                    <button class="slider-btn next absolute right-4 top-1/2 -translate-y-1/2" aria-label="Next Testimonial">
+                        <i class="ri-arrow-right-s-line"></i>
+                    </button>
+
+                    <!-- Slider Dots -->
+                    <div class="flex justify-center mt-8">
+                        <span class="slider-dot active" data-slide="0"></span>
+                        <span class="slider-dot" data-slide="1"></span>
+                        <span class="slider-dot" data-slide="2"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-gray-800">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title text-center animate-on-scroll">Get In Touch With Us</h2>
+                <div class="flex flex-col md:flex-row justify-center items-start space-y-10 md:space-y-0 md:space-x-12 mt-12">
+                    <div class="md:w-1/2 animate-on-scroll" data-delay="100">
+                        <h3 class="text-2xl font-bold text-white mb-6">Send Us a Message</h3>
+                        <form id="contact-form" class="space-y-6 form-container" novalidate>
+                            <div>
+                                <label for="name" class="block text-gray-300 text-sm font-medium mb-2">Your Name</label>
+                                <input type="text" id="name" name="name" class="form-input" placeholder="John Doe" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-300 text-sm font-medium mb-2">Your Email</label>
+                                <input type="email" id="email" name="email" class="form-input" placeholder="john.doe@example.com" required>
+                            </div>
+                            <div>
+                                <label for="subject" class="block text-gray-300 text-sm font-medium mb-2">Subject</label>
+                                <input type="text" id="subject" name="subject" class="form-input" placeholder="Inquiry about courses">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-gray-300 text-sm font-medium mb-2">Your Message</label>
+                                <textarea id="message" name="message" rows="5" class="form-input" placeholder="Type your message here..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full">
+                                <i class="ri-send-plane-line mr-2"></i> Send Message
+                            </button>
+                            <div id="contact-form-status" class="text-sm text-center mt-4"></div>
+                        </form>
+                    </div>
+
+                    <div class="md:w-1/2 animate-on-scroll" data-delay="200">
+                        <h3 class="text-2xl font-bold text-white mb-6">Contact Information</h3>
+                        <div class="space-y-6 text-gray-300">
+                            <div class="flex items-start">
+                                <i class="ri-map-pin-2-line text-blue-400 text-2xl mr-4"></i>
+                                <div>
+                                    <p class="font-semibold">Address:</p>
+                                    <p class="text-gray-400">KG 15 Ave, Kigali, Rwanda</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="ri-phone-line text-blue-400 text-2xl mr-4"></i>
+                                <div>
+                                    <p class="font-semibold">Phone:</p>
+                                    <a href="tel:+250788123456" class="text-gray-400 hover:text-blue-400 transition-colors">+250 788 123 456</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="ri-mail-send-line text-blue-400 text-2xl mr-4"></i>
+                                <div>
+                                    <p class="font-semibold">Email:</p>
+                                    <a href="mailto:info@loyaltraininghub.rw" class="text-gray-400 hover:text-blue-400 transition-colors">info@loyaltraininghub.rw</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="ri-time-line text-blue-400 text-2xl mr-4"></i>
+                                <div>
+                                    <p class="font-semibold">Hours:</p>
+                                    <span id="open-status-contact" class="text-gray-400">Mon-Fri: 8AM-6PM</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <h3 class="text-2xl font-bold text-white mb-4">Follow Us</h3>
+                            <div class="flex space-x-4">
+                                <a href="#" class="social-link" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+                                <a href="#" class="social-link" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
+                                <a href="#" class="social-link" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+                                <a href="#" class="social-link" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
+                                <a href="#" class="social-link" aria-label="YouTube"><i class="ri-youtube-line"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <!-- About Company -->
+                <div>
+                    <a href="#" class="flex items-center space-x-2 mb-6">
+                        <img src="https://placehold.co/40x40/4299e1/ffffff?text=LTH" alt="Loyal Training Hub Logo" class="rounded-full">
+                        <span class="text-white text-2xl font-bold">Loyal Training Hub</span>
+                    </a>
+                    <p class="text-gray-400 leading-relaxed mb-6">
+                        Empowering individuals with practical skills in IT, Business, and Digital Marketing to excel in a competitive global landscape.
+                    </p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <i class="ri-twitter-x-line"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <i class="ri-instagram-line"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="LinkedIn">
+                            <i class="ri-linkedin-fill"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="YouTube">
+                            <i class="ri-youtube-line"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#about" class="footer-link">About Us</a></li>
+                        <li><a href="#courses" class="footer-link">Our Courses</a></li>
+                        <li><a href="#methodology" class="footer-link">Teaching Method</a></li>
+                        <li><a href="#testimonials" class="footer-link">Success Stories</a></li>
+                        <li><a href="#" class="footer-link">Career Support</a></li>
+                        <li><a href="#" class="footer-link">Alumni Network</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Information -->
+                <div>
+                    <h4 class="footer-title">Contact Info</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start group">
+                            <i class="ri-map-pin-2-line text-blue-400 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                            <div>
+                                <span class="text-gray-300 font-medium">Address:</span><br>
+                                <span class="text-gray-400">KG 15 Ave, Kigali, Rwanda</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start group">
+                            <i class="ri-phone-line text-blue-400 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                            <div>
+                                <span class="text-gray-300 font-medium">Phone:</span><br>
+                                <a href="tel:+250788123456"
+                                   class="text-gray-400 hover:text-blue-400 transition-colors">+250 788 123 456</a>
+                            </div>
+                        </li>
+                        <li class="flex items-start group">
+                            <i class="ri-mail-send-line text-blue-400 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                            <div>
+                                <span class="text-gray-300 font-medium">Email:</span><br>
+                                <a href="mailto:info@loyaltraininghub.rw"
+                                   class="text-gray-400 hover:text-blue-400 transition-colors">info@loyaltraininghub.rw</a>
+                            </div>
+                        </li>
+                        <li class="flex items-start group">
+                            <i class="ri-time-line text-blue-400 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                            <div>
+                                <span class="text-gray-300 font-medium">Hours:</span><br>
+                                <span id="open-status" class="text-gray-400">Mon-Fri: 8AM-6PM</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter & Updates -->
+                <div>
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        Subscribe to receive the latest course updates, success stories, and exclusive offers.
+                    </p>
+
+                    <form id="newsletter-form" class="space-y-4" novalidate>
+                        <div class="form-container p-4">
+                            <input type="email"
+                                   id="newsletter-email"
+                                   placeholder="Enter your email address"
+                                   class="form-input mb-3"
+                                   required>
+                            <button type="submit" class="btn btn-primary w-full">
+                                <i class="ri-send-plane-line mr-2"></i>
+                                Subscribe Now
+                            </button>
+                        </div>
+                        <div id="form-status" class="text-sm text-center"></div>
+                    </form>
+
+                    <!-- Quick Stats -->
+                    <div class="mt-8 p-4 glass-effect rounded-xl">
+                        <h5 class="text-white font-semibold mb-3">This Month</h5>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">New Students</span>
+                                <span class="text-blue-400 font-semibold stats-counter" data-count="47">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Completed Courses</span>
+                                <span class="text-yellow-400 font-semibold stats-counter" data-count="23">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Success Rate</span>
+                                <span class="text-green-400 font-semibold stats-counter" data-count="96">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Footer -->
+            <div class="border-t border-gray-700 pt-8 mt-12">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <div class="text-gray-400 text-sm">
+                        <p>&copy; 2024 Loyal Training Hub. All rights reserved. Made with ❤️ in Rwanda.</p>
+                    </div>
+                    <div class="flex space-x-6 text-sm">
+                        <a href="#" class="footer-link">Privacy Policy</a>
+                        <a href="#" class="footer-link">Terms of Service</a>
+                        <a href="#" class="footer-link">Cookie Policy</a>
+                        <a href="#" class="footer-link">Sitemap</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced Back to Top Button -->
+    <button id="back-to-top" aria-label="Back to top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+
+    <!-- Enhanced JavaScript -->
+    <script>
+        // Enhanced Application State
+        const App = {
+            isLoaded: false,
+            currentSlide: 0,
+            totalSlides: 0, // Will be set dynamically by initTestimonialSlider
+            scrollPosition: 0,
+            isScrolling: false,
+            countersAnimated: false,
+            autoPlayInterval: null,
+            isScrollingTimeout: null,
+
+            // Initialize all components
+            init() {
+                this.setupEventListeners();
+                this.initPreloader();
+                this.initCustomCursor();
+                this.initScrollAnimations();
+                this.initNavigation();
+                this.initCourseFilters();
+                this.initTestimonialSlider();
+                this.initCounters();
+                this.initForms();
+                this.initProgressBars(); // This calls back-to-top logic
+                this.updateOpenStatus();
+
+                // Mark as loaded after initialization
+                setTimeout(() => {
+                    this.isLoaded = true;
+                }, 100);
+            },
+
+            // Event Listeners Setup
+            setupEventListeners() {
+                window.addEventListener('load', () => this.handleWindowLoad());
+                window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
+                window.addEventListener('resize', () => this.handleResize(), { passive: true });
+                document.addEventListener('DOMContentLoaded', () => this.handleDOMLoaded());
+
+                // Performance optimization
+                this.throttledScroll = this.throttle(this.handleScroll.bind(this), 16);
+                window.addEventListener('scroll', this.throttledScroll, { passive: true });
+            },
+
+            // Utility: Throttle function for performance
+            throttle(func, delay) {
+                let timeoutId;
+                let lastExecTime = 0;
+                return function (...args) {
+                    const currentTime = Date.now();
+                    if (currentTime - lastExecTime > delay) {
+                        func.apply(this, args);
+                        lastExecTime = currentTime;
+                    } else {
+                        clearTimeout(timeoutId);
+                        timeoutId = setTimeout(() => {
+                            func.apply(this, args);
+                            lastExecTime = Date.now();
+                        }, delay - (currentTime - lastExecTime));
+                    }
+                };
+            },
+
+            // Enhanced Preloader
+            initPreloader() {
+                const preloader = document.getElementById('preloader');
+                if (!preloader) return;
+
+                // Simulate loading progress
+                let progress = 0;
+                const loadingInterval = setInterval(() => {
+                    progress += Math.random() * 30;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(loadingInterval);
+                        this.hidePreloader();
+                    }
+                }, 200);
+            },
+
+            hidePreloader() {
+                const preloader = document.getElementById('preloader');
+                if (preloader) {
+                    preloader.classList.add('loaded');
+                    document.body.style.overflow = 'visible';
+
+                    // Remove from DOM after animation
                     setTimeout(() => {
-                        entry.target.classList.add('is-visible');
-                        entry.target.classList.add('will-change-auto');
-                        entry.target.classList.remove('will-change-transform');
-                    }, delay);
+                        preloader.remove();
+                        this.triggerEntranceAnimations();
+                    }, 800);
                 }
-            });
-        }, observerOptions);
+            },
 
-        document.querySelectorAll('.animate-on-scroll').forEach(el => {
-            el.classList.add('will-change-transform');
-            observer.observe(el);
-        });
+            triggerEntranceAnimations() {
+                // Trigger animations for elements that are initially visible
+                document.querySelectorAll('.hero-content > *').forEach(el => {
+                    el.style.opacity = 1;
+                    el.style.transform = 'translateY(0)';
+                });
+            },
 
-        // Progressive timeline animation
-        this.initTimelineProgress();
-    },
+            // Enhanced Custom Cursor
+            initCustomCursor() {
+                const dot = document.querySelector('.custom-cursor-dot');
+                const outline = document.querySelector('.custom-cursor-outline');
 
-    initTimelineProgress() {
-        const progressBar = document.getElementById('timeline-progress');
-        if (!progressBar) return;
+                if (!dot || !outline) return;
+                if (window.innerWidth <= 1024) return; // Disable on mobile
 
-        const timelineSteps = document.querySelectorAll('.methodology-step');
-        const observer = new IntersectionObserver((entries) => {
-            let visibleSteps = 0;
-            entries.forEach(entry => {
-                if (entry.isIntersecting) visibleSteps++;
-            });
+                let mouseX = 0, mouseY = 0;
+                let dotX = 0, dotY = 0;
+                let outlineX = 0, outlineY = 0;
 
-            const progressPercent = (visibleSteps / timelineSteps.length) * 100;
-            progressBar.style.height = `${progressPercent}%`;
-        }, { threshold: 0.5 });
+                // Mouse tracking with smooth interpolation
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                });
 
-        timelineSteps.forEach(step => observer.observe(step));
-    },
+                // Smooth cursor animation
+                const animateCursor = () => {
+                    // Smooth dot movement
+                    dotX += (mouseX - dotX) * 0.8;
+                    dotY += (mouseY - dotY) * 0.8;
+                    dot.style.left = dotX + 'px';
+                    dot.style.top = dotY + 'px';
 
-    // Enhanced Navigation
-    initNavigation() {
-        const header = document.getElementById('main-header');
-        const mobileToggle = document.getElementById('mobile-menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navLinks = document.querySelectorAll('.nav-link');
+                    // Smooth outline movement
+                    outlineX += (mouseX - outlineX) * 0.2;
+                    outlineY += (mouseY - outlineY) * 0.2;
+                    outline.style.left = outlineX + 'px';
+                    outline.style.top = outlineY + 'px';
 
-        // Smooth scrolling for navigation links
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href');
-                const targetSection = document.querySelector(targetId);
+                    requestAnimationFrame(animateCursor);
+                };
+                animateCursor();
 
-                if (targetSection) {
-                    this.scrollToSection(targetSection);
-                    this.setActiveNavLink(link);
-
-                    // Close mobile menu if open
-                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                        this.toggleMobileMenu();
-                    }
-                }
-            });
-        });
-
-        // Mobile menu toggle with enhanced animation
-        if (mobileToggle && mobileMenu) {
-            mobileToggle.addEventListener('click', () => {
-                this.toggleMobileMenu();
-            });
-        }
-
-        // Update active link on scroll
-        this.initActiveNavTracking();
-    },
-
-    scrollToSection(target) {
-        const headerHeight = document.getElementById('main-header').offsetHeight;
-        const targetPosition = target.offsetTop - headerHeight - 20;
-
-        window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-        });
-    },
-
-    toggleMobileMenu() {
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileToggle = document.getElementById('mobile-menu-toggle');
-        const icon = mobileToggle.querySelector('i');
-
-        if (mobileMenu.classList.contains('hidden')) {
-            mobileMenu.classList.remove('hidden');
-            icon.className = 'ri-close-line transition-transform duration-300';
-            document.body.style.overflow = 'hidden';
-        } else {
-            mobileMenu.classList.add('hidden');
-            icon.className = 'ri-menu-4-line transition-transform duration-300';
-            document.body.style.overflow = 'visible';
-        }
-    },
-
-    setActiveNavLink(activeLink) {
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.classList.remove('active');
-        });
-        activeLink.classList.add('active');
-    },
-
-    initActiveNavTracking() {
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const targetLink = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
-                    if (targetLink) {
-                        this.setActiveNavLink(targetLink);
-                    }
-                }
-            });
-        }, { threshold: 0.5, rootMargin: '-20% 0px -60% 0px' });
-
-        sections.forEach(section => observer.observe(section));
-    },
-
-    // Enhanced Course Filters
-    initCourseFilters() {
-        const filterBtns = document.querySelectorAll('.course-filter-btn');
-        const courseCards = document.querySelectorAll('.course-card');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const filter = btn.dataset.filter;
-
-                // Update active filter button
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                // Filter courses with staggered animation
-                this.filterCourses(filter, courseCards);
-            });
-        });
-    },
-
-    filterCourses(filter, cards) {
-        cards.forEach((card, index) => {
-            const category = card.dataset.category;
-            const shouldShow = filter === 'all' || category === filter;
-
-            if (shouldShow) {
-                setTimeout(() => {
-                    card.style.display = 'block';
-                    card.style.opacity = '0';
-                    card.style.transform = 'scale(0.8) translateY(20px)';
-
-                    requestAnimationFrame(() => {
-                        card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                        card.style.opacity = '1';
-                        card.style.transform = 'scale(1) translateY(0)';
+                // Cursor hover effects
+                document.querySelectorAll('a, button, [role="button"]').forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        outline.classList.add('cursor-hover-link');
                     });
-                }, index * 100);
-            } else {
-                card.style.transition = 'all 0.3s ease';
-                card.style.opacity = '0';
-                card.style.transform = 'scale(0.8) translateY(20px)';
-                setTimeout(() => {
-                    card.style.display = 'none';
-                }, 300);
-            }
-        });
-    },
+                    el.addEventListener('mouseleave', () => {
+                        outline.classList.remove('cursor-hover-link');
+                    });
+                });
 
-    // Enhanced Testimonial Slider
-    initTestimonialSlider() {
-        const slider = document.querySelector('.testimonial-wrapper');
-        const slides = document.querySelectorAll('.testimonial-slide');
-        const prevBtn = document.querySelector('.slider-btn.prev');
-        const nextBtn = document.querySelector('.slider-btn.next');
-        const dots = document.querySelectorAll('.slider-dot');
+                document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span').forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        outline.classList.add('cursor-hover-text');
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        outline.classList.remove('cursor-hover-text');
+                    });
+                });
+            },
 
-        if (!slider || slides.length === 0) return;
+            // Enhanced Scroll Animations
+            initScrollAnimations() {
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -10% 0px'
+                };
 
-        this.totalSlides = slides.length;
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const delay = entry.target.dataset.delay || 0;
+                            setTimeout(() => {
+                                entry.target.classList.add('is-visible');
+                                entry.target.classList.add('will-change-auto');
+                                entry.target.classList.remove('will-change-transform');
+                            }, delay);
+                        }
+                    });
+                }, observerOptions);
 
-        // Navigation buttons
-        prevBtn?.addEventListener('click', () => this.previousSlide());
-        nextBtn?.addEventListener('click', () => this.nextSlide());
+                document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                    el.classList.add('will-change-transform');
+                    observer.observe(el);
+                });
 
-        // Dot navigation
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => this.goToSlide(index));
-        });
+                // Progressive timeline animation
+                this.initTimelineProgress();
+            },
 
-        // Touch/swipe support
-        this.initTouchSlider(slider);
+            initTimelineProgress() {
+                const progressBar = document.getElementById('timeline-progress');
+                if (!progressBar) return;
 
-        // Auto-play with pause on hover
-        this.initAutoPlay();
+                const timelineSteps = document.querySelectorAll('.methodology-step');
+                const timelineSection = document.getElementById('methodology');
 
-        // Initialize first slide
-        this.updateSlider();
-    },
+                if (!timelineSection) return;
 
-    nextSlide() {
-        this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
-        this.updateSlider();
-        this.resetAutoPlay();
-    },
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const sectionTop = timelineSection.offsetTop;
+                            const sectionHeight = timelineSection.offsetHeight;
+                            const scrollPosition = window.scrollY;
 
-    previousSlide() {
-        this.currentSlide = this.currentSlide === 0 ? this.totalSlides - 1 : this.currentSlide - 1;
-        this.updateSlider();
-        this.resetAutoPlay();
-    },
+                            // Calculate how far into the section we've scrolled
+                            const scrollProgress = Math.min(1, Math.max(0, (scrollPosition - sectionTop + window.innerHeight / 2) / sectionHeight));
+                            progressBar.style.height = `${scrollProgress * 100}%`;
+                        } else if (window.scrollY < timelineSection.offsetTop) {
+                            // Reset progress bar if scrolling back up past the section
+                            progressBar.style.height = '0%';
+                        } else if (window.scrollY > timelineSection.offsetTop + timelineSection.offsetHeight) {
+                            // Ensure it's full if scrolled past
+                            progressBar.style.height = '100%';
+                        }
+                    });
+                }, { threshold: 0, rootMargin: '0px 0px -50% 0px' }); // Adjust threshold for better behavior
 
-    goToSlide(index) {
-        this.currentSlide = index;
-        this.updateSlider();
-        this.resetAutoPlay();
-    },
+                observer.observe(timelineSection); // Observe the entire section
+            },
 
-    updateSlider() {
-        const slider = document.querySelector('.testimonial-wrapper');
-        const dots = document.querySelectorAll('.slider-dot');
 
-        if (slider) {
-            slider.style.transform = `translateX(-${this.currentSlide * 100}%)`;
-        }
+            // Enhanced Navigation
+            initNavigation() {
+                const header = document.getElementById('main-header');
+                const mobileToggle = document.getElementById('mobile-menu-toggle');
+                const mobileMenu = document.getElementById('mobile-menu');
+                const navLinks = document.querySelectorAll('.nav-link');
 
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === this.currentSlide);
-        });
-    },
+                // Smooth scrolling for navigation links
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = link.getAttribute('href');
+                        const targetSection = document.querySelector(targetId);
 
-    initTouchSlider(slider) {
-        let startX = 0;
-        let currentX = 0;
-        let isDragging = false;
+                        if (targetSection) {
+                            this.scrollToSection(targetSection);
+                            this.setActiveNavLink(link);
 
-        slider.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            isDragging = true;
-            this.pauseAutoPlay();
-        }, { passive: true });
+                            // Close mobile menu if open
+                            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                                this.toggleMobileMenu();
+                            }
+                        }
+                    });
+                });
 
-        slider.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            currentX = e.touches[0].clientX;
-        }, { passive: true });
-
-        slider.addEventListener('touchend', () => {
-            if (!isDragging) return;
-            isDragging = false;
-
-            const diffX = startX - currentX;
-            const threshold = 50;
-
-            if (Math.abs(diffX) > threshold) {
-                if (diffX > 0) {
-                    this.nextSlide();
-                } else {
-                    this.previousSlide();
+                // Mobile menu toggle with enhanced animation
+                if (mobileToggle && mobileMenu) {
+                    mobileToggle.addEventListener('click', () => {
+                        this.toggleMobileMenu();
+                    });
                 }
-            }
 
-            this.resumeAutoPlay();
-        });
-    },
+                // Update active link on scroll
+                this.initActiveNavTracking();
+            },
 
-    initAutoPlay() {
-        this.autoPlayInterval = setInterval(() => {
-            if (!this.isScrolling) {
-                this.nextSlide();
-            }
-        }, 5000);
+            scrollToSection(target) {
+                const headerHeight = document.getElementById('main-header').offsetHeight;
+                const targetPosition = target.offsetTop - headerHeight - 20; // Offset for fixed header
 
-        // Pause on hover
-        const sliderContainer = document.getElementById('testimonial-slider');
-        if (sliderContainer) {
-            sliderContainer.addEventListener('mouseenter', () => this.pauseAutoPlay());
-            sliderContainer.addEventListener('mouseleave', () => this.resumeAutoPlay());
-        }
-    },
-
-    pauseAutoPlay() {
-        if (this.autoPlayInterval) {
-            clearInterval(this.autoPlayInterval);
-            this.autoPlayInterval = null;
-        }
-    },
-
-    resumeAutoPlay() {
-        if (!this.autoPlayInterval) {
-            this.initAutoPlay();
-        }
-    },
-
-    resetAutoPlay() {
-        this.pauseAutoPlay();
-        this.resumeAutoPlay();
-    },
-
-    // Enhanced Counters Animation
-    initCounters() {
-        const counters = document.querySelectorAll('.stats-counter');
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !this.countersAnimated) {
-                    this.animateCounters(counters);
-                    this.countersAnimated = true;
-                }
-            });
-        }, { threshold: 0.5 });
-
-        if (counters.length > 0) {
-            observer.observe(counters[0]);
-        }
-    },
-
-    animateCounters(counters) {
-        counters.forEach(counter => {
-            const target = parseInt(counter.dataset.count || counter.textContent);
-            const duration = 2000;
-            const startTime = performance.now();
-
-            const updateCounter = (currentTime) => {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-
-                // Easing function for smooth animation
-                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                const currentValue = Math.floor(easeOutQuart * target);
-
-                counter.textContent = currentValue;
-
-                if (progress < 1) {
-                    requestAnimationFrame(updateCounter);
-                } else {
-                    counter.textContent = target;
-                }
-            };
-
-            requestAnimationFrame(updateCounter);
-        });
-    },
-
-    // Enhanced Forms
-    initForms() {
-        const newsletterForm = document.getElementById('newsletter-form');
-        const statusDiv = document.getElementById('form-status');
-
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.handleNewsletterSubmission(newsletterForm, statusDiv);
-            });
-        }
-
-        // Enhanced form validation
-        this.initFormValidation();
-    },
-
-    handleNewsletterSubmission(form, statusDiv) {
-        const email = form.querySelector('#newsletter-email').value;
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-
-        // Validate email
-        if (!this.isValidEmail(email)) {
-            this.showFormStatus(statusDiv, 'Please enter a valid email address.', 'error');
-            return;
-        }
-
-        // Show loading state
-        submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Processing...';
-        submitBtn.disabled = true;
-
-        // Simulate API call
-        setTimeout(() => {
-            this.showFormStatus(statusDiv, 'Thank you for subscribing! Check your email for confirmation.', 'success');
-            form.reset();
-
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }, 1500);
-    },
-
-    showFormStatus(statusDiv, message, type) {
-        if (!statusDiv) return;
-
-        const className = type === 'success' ? 'text-green-400' : 'text-red-400';
-        statusDiv.innerHTML = `<div class="${className} animate-pulse">${message}</div>`;
-
-        setTimeout(() => {
-            statusDiv.innerHTML = '';
-        }, 5000);
-    },
-
-    isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    },
-
-    initFormValidation() {
-        const inputs = document.querySelectorAll('.form-input');
-
-        inputs.forEach(input => {
-            input.addEventListener('blur', () => {
-                this.validateInput(input);
-            });
-
-            input.addEventListener('input', () => {
-                // Remove error state on input
-                input.classList.remove('border-red-400');
-            });
-        });
-    },
-
-    validateInput(input) {
-        const isValid = input.checkValidity();
-
-        if (!isValid) {
-            input.classList.add('border-red-400');
-        } else {
-            input.classList.remove('border-red-400');
-            input.classList.add('border-green-400');
-        }
-    },
-
-    // Enhanced Progress Bars and Interactive Elements
-    initProgressBars() {
-        // Back to top button
-        const backToTopBtn = document.getElementById('back-to-top');
-        if (backToTopBtn) {
-            backToTopBtn.addEventListener('click', () => {
                 window.scrollTo({
-                    top: 0,
+                    top: targetPosition,
                     behavior: 'smooth'
                 });
-            });
-        }
-    },
+            },
 
-    // Handle scroll events
-    handleScroll() {
-        if (!this.isLoaded) return;
+            toggleMobileMenu() {
+                const mobileMenu = document.getElementById('mobile-menu');
+                const mobileToggle = document.getElementById('mobile-menu-toggle');
+                const icon = mobileToggle.querySelector('i');
 
-        const scrollY = window.scrollY;
-        const header = document.getElementById('main-header');
-        const backToTopBtn = document.getElementById('back-to-top');
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                    icon.className = 'ri-close-line transition-transform duration-300';
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    icon.className = 'ri-menu-4-line transition-transform duration-300';
+                    document.body.style.overflow = 'visible'; // Restore scrolling
+                }
+            },
 
-        // Header background on scroll
-        if (header) {
-            if (scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+            setActiveNavLink(activeLink) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                activeLink.classList.add('active');
+            },
+
+            initActiveNavTracking() {
+                const sections = document.querySelectorAll('section[id]');
+                const navLinks = document.querySelectorAll('.nav-link');
+                const headerHeight = document.getElementById('main-header').offsetHeight;
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const targetLink = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+                            if (targetLink) {
+                                this.setActiveNavLink(targetLink);
+                            }
+                        }
+                    });
+                }, { threshold: 0.3, rootMargin: `-${headerHeight}px 0px 0px 0px` }); // Adjust rootMargin
+
+                sections.forEach(section => observer.observe(section));
+            },
+
+            // Enhanced Course Filters
+            initCourseFilters() {
+                const filterBtns = document.querySelectorAll('.course-filter-btn');
+                const courseCards = document.querySelectorAll('.course-card');
+
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const filter = btn.dataset.filter;
+
+                        // Update active filter button
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        // Filter courses with staggered animation
+                        this.filterCourses(filter, courseCards);
+                    });
+                });
+            },
+
+            filterCourses(filter, cards) {
+                cards.forEach((card, index) => {
+                    const category = card.dataset.category;
+                    const shouldShow = filter === 'all' || category === filter;
+
+                    if (shouldShow) {
+                        setTimeout(() => {
+                            card.style.display = 'block'; // Make it visible for animation
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.8) translateY(20px)';
+
+                            requestAnimationFrame(() => {
+                                card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                                card.style.opacity = '1';
+                                card.style.transform = 'scale(1) translateY(0)';
+                            });
+                        }, index * 100); // Staggered delay
+                    } else {
+                        card.style.transition = 'all 0.3s ease';
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.8) translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none'; // Hide after animation
+                        }, 300);
+                    }
+                });
+            },
+
+            // Enhanced Testimonial Slider
+            initTestimonialSlider() {
+                const slider = document.querySelector('.testimonial-wrapper');
+                const slides = document.querySelectorAll('.testimonial-slide');
+                const prevBtn = document.querySelector('.slider-btn.prev');
+                const nextBtn = document.querySelector('.slider-btn.next');
+                const dots = document.querySelectorAll('.slider-dot');
+
+                if (!slider || slides.length === 0) return;
+
+                this.totalSlides = slides.length;
+
+                // Navigation buttons
+                prevBtn?.addEventListener('click', () => this.previousSlide());
+                nextBtn?.addEventListener('click', () => this.nextSlide());
+
+                // Dot navigation
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                });
+
+                // Touch/swipe support
+                this.initTouchSlider(slider);
+
+                // Auto-play with pause on hover
+                this.initAutoPlay();
+
+                // Initialize first slide
+                this.updateSlider();
+            },
+
+            nextSlide() {
+                this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+                this.updateSlider();
+                this.resetAutoPlay();
+            },
+
+            previousSlide() {
+                this.currentSlide = this.currentSlide === 0 ? this.totalSlides - 1 : this.currentSlide - 1;
+                this.updateSlider();
+                this.resetAutoPlay();
+            },
+
+            goToSlide(index) {
+                this.currentSlide = index;
+                this.updateSlider();
+                this.resetAutoPlay();
+            },
+
+            updateSlider() {
+                const slider = document.querySelector('.testimonial-wrapper');
+                const dots = document.querySelectorAll('.slider-dot');
+
+                if (slider) {
+                    slider.style.transform = `translateX(-${this.currentSlide * 100}%)`;
+                }
+
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === this.currentSlide);
+                });
+            },
+
+            initTouchSlider(slider) {
+                let startX = 0;
+                let currentX = 0;
+                let isDragging = false;
+
+                slider.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                    this.pauseAutoPlay();
+                }, { passive: true });
+
+                slider.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    currentX = e.touches[0].clientX;
+                }, { passive: true });
+
+                slider.addEventListener('touchend', () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+
+                    const diffX = startX - currentX;
+                    const threshold = 50;
+
+                    if (Math.abs(diffX) > threshold) {
+                        if (diffX > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.previousSlide();
+                        }
+                    }
+
+                    this.resumeAutoPlay();
+                });
+            },
+
+            initAutoPlay() {
+                this.autoPlayInterval = setInterval(() => {
+                    if (!this.isScrolling) {
+                        this.nextSlide();
+                    }
+                }, 5000);
+
+                // Pause on hover
+                const sliderContainer = document.getElementById('testimonial-slider');
+                if (sliderContainer) {
+                    sliderContainer.addEventListener('mouseenter', () => this.pauseAutoPlay());
+                    sliderContainer.addEventListener('mouseleave', () => this.resumeAutoPlay());
+                }
+            },
+
+            pauseAutoPlay() {
+                if (this.autoPlayInterval) {
+                    clearInterval(this.autoPlayInterval);
+                    this.autoPlayInterval = null;
+                }
+            },
+
+            resumeAutoPlay() {
+                if (!this.autoPlayInterval) {
+                    this.initAutoPlay();
+                }
+            },
+
+            resetAutoPlay() {
+                this.pauseAutoPlay();
+                this.resumeAutoPlay();
+            },
+
+            // Enhanced Counters Animation
+            initCounters() {
+                const counters = document.querySelectorAll('.stats-counter');
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !this.countersAnimated) {
+                            this.animateCounters(counters);
+                            this.countersAnimated = true;
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                if (counters.length > 0) {
+                    // Observe the parent container of the counters in the footer
+                    const footerStats = document.querySelector('footer .glass-effect');
+                    if (footerStats) {
+                        observer.observe(footerStats);
+                    } else {
+                        // Fallback if the specific container isn't found
+                        counters.forEach(counter => observer.observe(counter));
+                    }
+                }
+            },
+
+            animateCounters(counters) {
+                counters.forEach(counter => {
+                    const target = parseInt(counter.dataset.count || counter.textContent);
+                    const duration = 2000;
+                    const startTime = performance.now();
+
+                    const updateCounter = (currentTime) => {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+
+                        // Easing function for smooth animation
+                        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                        const currentValue = Math.floor(easeOutQuart * target);
+
+                        counter.textContent = currentValue;
+
+                        if (progress < 1) {
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            counter.textContent = target;
+                        }
+                    };
+
+                    requestAnimationFrame(updateCounter);
+                });
+            },
+
+            // Enhanced Forms
+            initForms() {
+                const newsletterForm = document.getElementById('newsletter-form');
+                const newsletterStatusDiv = document.getElementById('form-status');
+                const contactForm = document.getElementById('contact-form');
+                const contactStatusDiv = document.getElementById('contact-form-status');
+
+
+                if (newsletterForm) {
+                    newsletterForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.handleFormSubmission(newsletterForm, newsletterStatusDiv, 'newsletter');
+                    });
+                }
+
+                if (contactForm) {
+                    contactForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.handleFormSubmission(contactForm, contactStatusDiv, 'contact');
+                    });
+                }
+
+                // Enhanced form validation
+                this.initFormValidation();
+            },
+
+            handleFormSubmission(form, statusDiv, formType) {
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+
+                // Simple validation check for all required inputs
+                let allInputsValid = true;
+                form.querySelectorAll('[required]').forEach(input => {
+                    if (!input.checkValidity()) {
+                        this.validateInput(input); // Add red border
+                        allInputsValid = false;
+                    }
+                });
+
+                if (!allInputsValid) {
+                    this.showFormStatus(statusDiv, 'Please fill in all required fields correctly.', 'error');
+                    return;
+                }
+
+                // Show loading state
+                submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Processing...';
+                submitBtn.disabled = true;
+
+                // Simulate API call
+                setTimeout(() => {
+                    if (formType === 'newsletter') {
+                        this.showFormStatus(statusDiv, 'Thank you for subscribing! Check your email for confirmation.', 'success');
+                    } else if (formType === 'contact') {
+                        this.showFormStatus(statusDiv, 'Your message has been sent successfully! We will get back to you soon.', 'success');
+                    }
+                    form.reset();
+
+                    // Remove green borders after successful submission
+                    form.querySelectorAll('.form-input.border-green-400').forEach(input => {
+                        input.classList.remove('border-green-400');
+                    });
+
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 1500);
+            },
+
+            showFormStatus(statusDiv, message, type) {
+                if (!statusDiv) return;
+
+                const className = type === 'success' ? 'text-green-400' : 'text-red-400';
+                statusDiv.innerHTML = `<div class="${className} animate-pulse">${message}</div>`;
+
+                setTimeout(() => {
+                    statusDiv.innerHTML = '';
+                }, 5000);
+            },
+
+            isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            },
+
+            initFormValidation() {
+                const inputs = document.querySelectorAll('.form-input');
+
+                inputs.forEach(input => {
+                    input.addEventListener('blur', () => {
+                        this.validateInput(input);
+                    });
+
+                    input.addEventListener('input', () => {
+                        // Remove error state on input
+                        input.classList.remove('border-red-400');
+                        input.classList.remove('border-green-400'); // Remove green too to allow re-validation
+                    });
+                });
+            },
+
+            validateInput(input) {
+                const isValid = input.checkValidity();
+
+                if (!isValid) {
+                    input.classList.add('border-red-400');
+                    input.classList.remove('border-green-400');
+                } else {
+                    input.classList.remove('border-red-400');
+                    input.classList.add('border-green-400');
+                }
+            },
+
+            // Enhanced Progress Bars and Interactive Elements
+            initProgressBars() {
+                // Back to top button
+                const backToTopBtn = document.getElementById('back-to-top');
+                if (backToTopBtn) {
+                    backToTopBtn.addEventListener('click', () => {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    });
+                }
+            },
+
+            // Handle scroll events
+            handleScroll() {
+                if (!this.isLoaded) return;
+
+                const scrollY = window.scrollY;
+                const header = document.getElementById('main-header');
+                const backToTopBtn = document.getElementById('back-to-top');
+
+                // Header background on scroll
+                if (header) {
+                    if (scrollY > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                }
+
+                // Back to top button visibility
+                if (backToTopBtn) {
+                    if (scrollY > 300) {
+                        backToTopBtn.classList.add('show');
+                    } else {
+                        backToTopBtn.classList.remove('show');
+                    }
+                }
+
+                // Check if the user is scrolling
+                this.isScrolling = true;
+                clearTimeout(this.isScrollingTimeout);
+                this.isScrollingTimeout = setTimeout(() => {
+                    this.isScrolling = false;
+                }, 200);
+
+                // Update timeline progress on scroll
+                this.initTimelineProgress();
+            },
+
+            // Missing functions added for completeness
+            handleWindowLoad() {
+                this.hidePreloader();
+            },
+
+            handleResize() {
+                // Re-evaluate custom cursor visibility on resize
+                const dot = document.querySelector('.custom-cursor-dot');
+                const outline = document.querySelector('.custom-cursor-outline');
+                if (dot && outline) {
+                    if (window.innerWidth <= 1024) {
+                        dot.style.display = 'none';
+                        outline.style.display = 'none';
+                    } else {
+                        dot.style.display = 'block';
+                        outline.style.display = 'block';
+                    }
+                }
+            },
+
+            handleDOMLoaded() {
+                // This is where you would typically call App.init() if not handled by window.load
+                // For this setup, init is called directly after DOMContentLoaded listener.
+            },
+
+            updateOpenStatus() {
+                const openStatusFooter = document.getElementById('open-status');
+                const openStatusContact = document.getElementById('open-status-contact'); // For contact section
+
+                const now = new Date();
+                const day = now.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+                const hour = now.getHours();
+
+                // Check if it's Monday-Friday (1-5) and between 8 AM (8) and 6 PM (18)
+                const isOpen = (day >= 1 && day <= 5 && hour >= 8 && hour < 18);
+
+                const statusText = isOpen ? 'Open Now' : 'Closed';
+                const statusClass = isOpen ? 'text-green-500' : 'text-red-500';
+
+                if (openStatusFooter) {
+                    openStatusFooter.textContent = statusText;
+                    openStatusFooter.classList.remove('text-gray-400', 'text-green-500', 'text-red-500');
+                    openStatusFooter.classList.add(statusClass);
+                }
+                if (openStatusContact) {
+                    openStatusContact.textContent = statusText;
+                    openStatusContact.classList.remove('text-gray-400', 'text-green-500', 'text-red-500');
+                    openStatusContact.classList.add(statusClass);
+                }
             }
-        }
+        };
 
-        // Back to top button visibility
-        if (backToTopBtn) {
-            if (scrollY > 300) {
-                backToTopBtn.classList.add('show');
-            } else {
-                backToTopBtn.classList.remove('show');
+        // Initialize the App when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof App !== 'undefined') {
+                App.init();
             }
-        }
-
-        // Check if the user is scrolling
-        this.isScrolling = true;
-        clearTimeout(this.isScrollingTimeout);
-        this.isScrollingTimeout = setTimeout(() => {
-            this.isScrolling = false;
-        }, 200);
-
-        this.updateProgressBarsOnScroll();
-    },
-
-    // Missing functions added
-    handleWindowLoad() {
-        this.hidePreloader();
-    },
-
-    handleResize() {
-        // Add logic to handle window resize if needed
-    },
-
-    handleDOMLoaded() {
-        // This is where you would typically call App.init()
-        // but it's being called by the preloader logic here.
-        // It's good practice to call it here to ensure everything is ready.
-        // App.init();
-    },
-
-    updateOpenStatus() {
-        const openStatusElement = document.getElementById('open-status');
-        if (openStatusElement) {
-            const now = new Date();
-            const day = now.getDay();
-            const hour = now.getHours();
-
-            // Check if it's Monday-Friday (1-5) and between 8 AM and 6 PM
-            if (day >= 1 && day <= 5 && hour >= 8 && hour < 18) {
-                openStatusElement.textContent = 'Open Now';
-                openStatusElement.classList.add('text-green-500');
-            } else {
-                openStatusElement.textContent = 'Closed';
-                openStatusElement.classList.add('text-red-500');
-            }
-        }
-    },
-
-    updateProgressBarsOnScroll() {
-        // Add logic to update progress bars on scroll if needed
-    }
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Check for the existence of the App object before calling init.
-    if (typeof App !== 'undefined') {
-        App.init();
-    }
-});
+        });
+    </script>

@@ -352,6 +352,28 @@
             display: block; /* Active page is shown */
         }
 
+        /* Navigation Hint */
+        #nav-hint {
+            position: fixed;
+            top: 90px; /* Below header */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(66, 153, 225, 0.9); /* Blue-500 with opacity */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+        #nav-hint.show {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -392,21 +414,26 @@
                 <i class="ri-menu-4-line transition-transform duration-300"></i>
             </button>
         </nav>
-
-        <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu" class="fixed top-0 right-0 w-64 h-full bg-gray-800 shadow-lg p-6 pt-20 transform translate-x-full md:hidden transition-transform duration-300 z-40">
-            <ul class="flex flex-col space-y-6">
-                <li><a href="#hero" class="nav-link text-xl block active">Home</a></li>
-                <li><a href="#about" class="nav-link text-xl block">About Us</a></li>
-                <li><a href="#courses" class="nav-link text-xl block">Courses</a></li>
-                <li><a href="#methodology" class="nav-link text-xl block">Methodology</a></li>
-                <li><a href="#testimonials" class="nav-link text-xl block">Testimonials</a></li>
-                <li><a href="#resources" class="nav-link text-xl block">Resources</a></li>
-                <li><a href="#contact" class="nav-link text-xl block">Contact</a></li>
-                <li><a href="#donate" class="nav-link text-xl block">Donate</a></li>
-            </ul>
-        </div>
     </header>
+
+    <!-- Navigation Hint -->
+    <div id="nav-hint" class="md:hidden">
+        Tap menu icon <i class="ri-menu-4-line align-middle"></i> to navigate!
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed top-0 right-0 w-64 h-full bg-gray-800 shadow-lg p-6 pt-20 transform translate-x-full md:hidden transition-transform duration-300 z-40">
+        <ul class="flex flex-col space-y-6">
+            <li><a href="#hero" class="nav-link text-xl block active">Home</a></li>
+            <li><a href="#about" class="nav-link text-xl block">About Us</a></li>
+            <li><a href="#courses" class="nav-link text-xl block">Courses</a></li>
+            <li><a href="#methodology" class="nav-link text-xl block">Methodology</a></li>
+            <li><a href="#testimonials" class="nav-link text-xl block">Testimonials</a></li>
+            <li><a href="#resources" class="nav-link text-xl block">Resources</a></li>
+            <li><a href="#contact" class="nav-link text-xl block">Contact</a></li>
+            <li><a href="#donate" class="nav-link text-xl block">Donate</a></li>
+        </ul>
+    </div>
 
     <main>
         <!-- Hero Section -->
@@ -926,6 +953,7 @@
                 this.initProgressBars(); // This calls back-to-top logic
                 this.updateOpenStatus();
                 this.initPageNavigation(); // New: Initialize page navigation
+                this.showNavHint(); // Show navigation hint on load
 
                 // Mark as loaded after initialization
                 setTimeout(() => {
@@ -1172,6 +1200,7 @@
                             page.classList.add('active');
                             foundPage = true;
                             // Scroll to top of the new page, accounting for fixed header
+                            // This ensures content doesn't get hidden under the header on navigation.
                             window.scrollTo({
                                 top: 0,
                                 behavior: 'instant' // Instant scroll to top of new page
@@ -1611,6 +1640,16 @@
                         outline.style.display = 'block';
                     }
                 }
+
+                // Re-evaluate nav hint visibility on resize
+                const navHint = document.getElementById('nav-hint');
+                if (navHint) {
+                    if (window.innerWidth > 768) { // md breakpoint for Tailwind
+                        navHint.classList.remove('show');
+                    } else if (window.location.hash === '#hero') { // Only show on home page for mobile
+                         this.showNavHint();
+                    }
+                }
             },
 
             handleDOMLoaded() {
@@ -1641,6 +1680,16 @@
                     openStatusContact.textContent = statusText;
                     openStatusContact.classList.remove('text-gray-400', 'text-green-500', 'text-red-500');
                     openStatusContact.classList.add(statusClass);
+                }
+            },
+
+            showNavHint() {
+                const navHint = document.getElementById('nav-hint');
+                if (navHint && window.innerWidth <= 768) { // Only show on mobile
+                    navHint.classList.add('show');
+                    setTimeout(() => {
+                        navHint.classList.remove('show');
+                    }, 5000); // Hide after 5 seconds
                 }
             }
         };

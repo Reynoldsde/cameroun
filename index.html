@@ -316,10 +316,49 @@
 
         /* Floating WhatsApp Button */
         #whatsapp-float {
-            @apply fixed bottom-8 left-8 p-4 rounded-full bg-green-500 text-white shadow-lg hover:bg-green-600 transition-all duration-300;
-            z-index: 999;
-            font-size: 1.8rem; /* Larger icon */
+            position: fixed;
+            right: 1.5rem; /* Tailwind 'right-6' */
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0.75rem; /* Tailwind 'p-3' */
+            border-radius: 9999px; /* Tailwind 'rounded-full' */
+            background-color: #22c55e; /* Tailwind 'bg-green-500' */
+            color: white;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease-in-out;
+            z-index: 1000;
+            width: 70px; /* Increased size */
+            height: 70px; /* Increased size */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulse 2s infinite;
         }
+        #whatsapp-float:hover {
+            background-color: #16a34a; /* Tailwind 'hover:bg-green-600' */
+        }
+        #whatsapp-float img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translateY(-50%) scale(1);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            }
+            70% {
+                transform: translateY(-50%) scale(1.05);
+                box-shadow: 0 0 0 10px rgba(66, 153, 225, 0.4); /* Blue pulse */
+            }
+            100% {
+                transform: translateY(-50%) scale(1);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            }
+        }
+
 
         /* Animate on Scroll Classes */
         .animate-on-scroll {
@@ -454,8 +493,8 @@
                     At Loyal Training Hub, we provide cutting-edge, hands-on training in IT, Business, and Digital Marketing, equipping you with the skills to thrive in today's dynamic world.
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 hero-buttons animate-on-scroll" data-delay="300">
-                    <a href="#courses" class="btn btn-primary">
-                        <i class="ri-book-open-line mr-2"></i> Explore Courses
+                    <a href="https://wa.me/250788244964?text=Hello%2C%20I%27m%20interested%20in%20exploring%20your%20courses.%20Could%20you%20please%20provide%20more%20information%3F" target="_blank" class="btn btn-primary">
+                        <i class="ri-whatsapp-line mr-2"></i> Explore Courses on WhatsApp
                     </a>
                     <a href="#contact" class="btn btn-secondary">
                         <i class="ri-mail-line mr-2"></i> Get in Touch
@@ -510,7 +549,7 @@
                                 <li>Chinese</li>
                                 <li>Dutch</li>
                             </ul>
-                            <a href="#contact" class="btn btn-primary w-full mt-6">Inquire About Language Courses <i class="ri-arrow-right-line ml-2"></i></a>
+                            <a href="https://wa.me/250788244964?text=Hello%2C%20I%27m%20interested%20in%20your%20Language%20Courses.%20Could%20you%20please%20provide%20more%20information%3F" target="_blank" class="btn btn-primary w-full mt-6">Inquire About Language Courses <i class="ri-whatsapp-line ml-2"></i></a>
                         </div>
                     </div>
 
@@ -527,7 +566,7 @@
                                 <li>Cyber Security Fundamentals</li>
                                 <li>Mobile App Development</li>
                             </ul>
-                            <a href="#contact" class="btn btn-primary w-full mt-6">Inquire About IT Courses <i class="ri-arrow-right-line ml-2"></i></a>
+                            <a href="https://wa.me/250788244964?text=Hello%2C%20I%27m%20interested%20in%20your%20IT%20Courses.%20Could%20you%20please%20provide%20more%20information%3F" target="_blank" class="btn btn-primary w-full mt-6">Inquire About IT Courses <i class="ri-whatsapp-line ml-2"></i></a>
                         </div>
                     </div>
                 </div>
@@ -580,51 +619,11 @@
         <section id="testimonials" class="py-20 bg-gray-900 page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">What Our Students Say</h2>
-                <div id="testimonial-slider" class="relative max-w-3xl mx-auto mt-12 overflow-hidden rounded-xl shadow-2xl glass-effect p-8">
-                    <div class="testimonial-wrapper">
-                        <!-- Testimonial Slide 1 -->
-                        <div class="testimonial-slide text-center p-4">
-                            <img src="https://placehold.co/80x80/63b3ed/ffffff?text=JS" alt="Student Jane Doe" class="rounded-full mx-auto mb-6 border-4 border-blue-500">
-                            <p class="text-lg italic text-gray-300 mb-6 leading-relaxed">
-                                "Loyal Training Hub transformed my career! The Full-Stack Web Development course was incredibly practical, and the instructors were truly supportive. I landed my dream job just weeks after graduating."
-                            </p>
-                            <h4 class="font-bold text-white text-xl">Jane Doe</h4>
-                            <p class="text-blue-400 text-sm">Web Developer, Tech Solutions Inc.</p>
-                        </div>
-                        <!-- Testimonial Slide 2 -->
-                        <div class="testimonial-slide text-center p-4">
-                            <img src="https://placehold.co/80x80/f6ad55/ffffff?text=PM" alt="Student John Smith" class="rounded-full mx-auto mb-6 border-4 border-yellow-500">
-                            <p class="text-lg italic text-gray-300 mb-6 leading-relaxed">
-                                "The Project Management course provided me with the structured thinking and tools I needed to excel. The real-world case studies were invaluable. Highly recommend for aspiring project managers!"
-                            </p>
-                            <h4 class="font-bold text-white text-xl">John Smith</h4>
-                            <p class="text-yellow-400 text-sm">Project Coordinator, Global Innovations</p>
-                        </div>
-                        <!-- Testimonial Slide 3 -->
-                        <div class="testimonial-slide text-center p-4">
-                            <img src="https://placehold.co/80x80/48bb78/ffffff?text=DM" alt="Student Emily White" class="rounded-full mx-auto mb-6 border-4 border-green-500">
-                            <p class="text-lg italic text-gray-300 mb-6 leading-relaxed">
-                                "I was new to digital marketing, but Loyal Training Hub made it so easy to understand. The Advanced Digital Marketing course covered everything, and I now manage successful campaigns for my clients."
-                            </p>
-                            <h4 class="font-bold text-white text-xl">Emily White</h4>
-                            <p class="text-green-400 text-sm">Digital Marketing Specialist, Creative Agency</p>
-                        </div>
-                    </div>
-
-                    <!-- Slider Navigation Buttons -->
-                    <button class="slider-btn prev absolute left-4 top-1/2 -translate-y-1/2" aria-label="Previous Testimonial">
-                        <i class="ri-arrow-left-s-line"></i>
-                    </button>
-                    <button class="slider-btn next absolute right-4 top-1/2 -translate-y-1/2" aria-label="Next Testimonial">
-                        <i class="ri-arrow-right-s-line"></i>
-                    </button>
-
-                    <!-- Slider Dots -->
-                    <div class="flex justify-center mt-8">
-                        <span class="slider-dot" data-slide="0"></span>
-                        <span class="slider-dot" data-slide="1"></span>
-                        <span class="slider-dot" data-slide="2"></span>
-                    </div>
+                <div id="testimonial-video-container" class="animate-on-scroll" data-delay="100">
+                    <video id="testimonial-video" controls loop autoplay muted playsinline class="w-full h-auto rounded-lg">
+                        <source src="https://drive.google.com/file/d/17QHcBjto2z-HAk3wf5OXBmA8n4Vqk2v1/view?usp=sharing" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
             </div>
         </section>
@@ -645,7 +644,7 @@
                     </div>
                     <div class="md:w-1/2 animate-on-scroll" data-delay="200">
                         <h3 class="text-2xl font-bold text-white mb-6">Enhance Your Skills</h3>
-                        <img src="https://www.shutterstock.com/image-photo/puzzle-speaking-listening-writing-reading-260nw-2546896715.jpg" alt="Learning Skills Puzzle" class="rounded-xl shadow-2xl object-cover w-full h-auto">
+                        <img src="https://png.pngtree.com/png-clipart/20190516/original/pngtree-whatsapp-icon-png-image_3584844.jpg" alt="The 4 Language Skills" class="rounded-xl shadow-2xl object-cover w-full h-auto">
                         <p class="text-gray-300 mt-6 leading-relaxed">
                             We believe in a holistic approach to education, combining theoretical knowledge with practical application. Our resources are designed to help you master essential skills like speaking, listening, writing, and reading, crucial for any professional field.
                         </p>
@@ -730,8 +729,12 @@
                                 <a href="https://web.facebook.com/profile.php?id=100086507744005" target="_blank" class="social-link" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
                                 <a href="https://x.com/loyal_training" target="_blank" class="social-link" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
                                 <a href="https://www.instagram.com/loyal.training.hub" target="_blank" class="social-link" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
-                                <a href="https://www.linkedin.com/company/loyal-training-hub" target="_blank" class="social-link" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
-                                <a href="https://youtube.com/@loyaltraininghub?si=33mh4Oqg70XDfp0J" target="_blank" class="social-link" aria-label="YouTube"><i class="ri-youtube-line"></i></a>
+                                <a href="https://www.linkedin.com/company/loyal-training-hub" target="_blank" class="social-link" aria-label="LinkedIn">
+                                    <i class="ri-linkedin-fill"></i>
+                                </a>
+                                <a href="https://youtube.com/@loyaltraininghub?si=33mh4Oqg70XDfp0J" target="_blank" class="social-link" aria-label="YouTube">
+                                    <i class="ri-youtube-line"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -797,7 +800,7 @@
     <!-- Footer -->
     <footer class="bg-gray-900 py-16">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 <!-- About Company -->
                 <div>
                     <a href="#hero" class="flex items-center space-x-2 mb-6">
@@ -805,7 +808,7 @@
                         <span class="text-white text-2xl font-bold">Loyal Training Hub</span>
                     </a>
                     <p class="text-gray-400 leading-relaxed mb-6">
-                        Empowering individuals with practical skills in IT, Business, and Digital Marketing to excel in a competitive global landscape.
+                        Empowering individuals with practical skills in IT, Languages to excel in a competitive global landscape.
                     </p>
                     <div class="flex space-x-3">
                         <a href="https://web.facebook.com/profile.php?id=100086507744005" target="_blank" class="social-link" aria-label="Facebook">
@@ -883,55 +886,13 @@
                         </li>
                     </ul>
                 </div>
-
-                <!-- Newsletter & Updates -->
-                <div>
-                    <h4 class="footer-title">Stay Updated</h4>
-                    <p class="text-gray-400 mb-6 leading-relaxed">
-                        Subscribe to receive the latest course updates, success stories, and exclusive offers.
-                    </p>
-
-                    <form id="newsletter-form" class="space-y-4" novalidate>
-                        <div class="form-container p-4">
-                            <input type="email"
-                                   id="newsletter-email"
-                                   placeholder="Enter your email address"
-                                   class="form-input mb-3"
-                                   required>
-                            <button type="submit" class="btn btn-primary w-full">
-                                <i class="ri-send-plane-line mr-2"></i>
-                                Subscribe Now
-                            </button>
-                        </div>
-                        <div id="form-status" class="text-sm text-center"></div>
-                    </form>
-
-                    <!-- Quick Stats -->
-                    <div class="mt-8 p-4 glass-effect rounded-xl">
-                        <h5 class="text-white font-semibold mb-3">This Month</h5>
-                        <div class="space-y-2 text-sm">
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">New Students</span>
-                                <span class="text-blue-400 font-semibold stats-counter" data-count="47">0</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">Completed Courses</span>
-                                <span class="text-yellow-400 font-semibold stats-counter" data-count="23">0</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">Success Rate</span>
-                                <span class="text-green-400 font-semibold stats-counter" data-count="96">0</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- Bottom Footer -->
             <div class="border-t border-gray-700 pt-8 mt-12">
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <div class="text-gray-400 text-sm">
-                        <p>&copy; 2024 Loyal Training Hub. All rights reserved. Made with ❤️ in Rwanda.</p>
+                        <p>&copy; 2024 Loyal Training Hub. All rights reserved. Made with ❤️ by Ibrix Digital.</p>
                     </div>
                     <div class="flex space-x-6 text-sm">
                         <a href="#" class="footer-link">Privacy Policy</a>
@@ -946,7 +907,7 @@
 
     <!-- Floating WhatsApp Button -->
     <a href="https://wa.me/250788244964" target="_blank" id="whatsapp-float" aria-label="Chat on WhatsApp">
-        <i class="ri-whatsapp-line"></i>
+        <img src="https://png.pngtree.com/png-clipart/20190516/original/pngtree-whatsapp-icon-png-image_3584844.jpg" alt="WhatsApp Icon">
     </a>
 
     <!-- Enhanced Back to Top Button -->
@@ -974,7 +935,7 @@
                 this.initCustomCursor();
                 this.initScrollAnimations();
                 this.initNavigation();
-                this.initTestimonialSlider();
+                // Removed initTestimonialSlider as it's now a video
                 this.initCounters();
                 this.initForms();
                 this.initProgressBars(); // This calls back-to-top logic
@@ -1299,135 +1260,17 @@
 
             // Removed initCourseFilters as courses are now departments
 
-            // Enhanced Testimonial Slider
-            initTestimonialSlider() {
-                const slider = document.querySelector('.testimonial-wrapper');
-                const slides = document.querySelectorAll('.testimonial-slide');
-                const prevBtn = document.querySelector('.slider-btn.prev');
-                const nextBtn = document.querySelector('.slider-btn.next');
-                const dots = document.querySelectorAll('.slider-dot');
-
-                if (!slider || slides.length === 0) return;
-
-                this.totalSlides = slides.length;
-
-                // Navigation buttons
-                prevBtn?.addEventListener('click', () => this.nextSlide()); // Changed to nextSlide for cyclic behavior
-                nextBtn?.addEventListener('click', () => this.previousSlide()); // Changed to previousSlide for cyclic behavior
-
-                // Dot navigation
-                dots.forEach((dot, index) => {
-                    dot.addEventListener('click', () => this.goToSlide(index));
-                });
-
-                // Touch/swipe support
-                this.initTouchSlider(slider);
-
-                // Auto-play with pause on hover
-                this.initAutoPlay();
-
-                // Initialize first slide
-                this.updateSlider();
-            },
-
-            nextSlide() {
-                this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
-                this.updateSlider();
-                this.resetAutoPlay();
-            },
-
-            previousSlide() {
-                this.currentSlide = this.currentSlide === 0 ? this.totalSlides - 1 : this.currentSlide - 1;
-                this.updateSlider();
-                this.resetAutoPlay();
-            },
-
-            goToSlide(index) {
-                this.currentSlide = index;
-                this.updateSlider();
-                this.resetAutoPlay();
-            },
-
-            updateSlider() {
-                const slider = document.querySelector('.testimonial-wrapper');
-                const dots = document.querySelectorAll('.slider-dot');
-
-                if (slider) {
-                    slider.style.transform = `translateX(-${this.currentSlide * 100}%)`;
-                }
-
-                dots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === this.currentSlide);
-                });
-            },
-
-            initTouchSlider(slider) {
-                let startX = 0;
-                let currentX = 0;
-                let isDragging = false;
-
-                slider.addEventListener('touchstart', (e) => {
-                    startX = e.touches[0].clientX;
-                    isDragging = true;
-                    this.pauseAutoPlay();
-                }, { passive: true });
-
-                slider.addEventListener('touchmove', (e) => {
-                    if (!isDragging) return;
-                    currentX = e.touches[0].clientX;
-                }, { passive: true });
-
-                slider.addEventListener('touchend', () => {
-                    if (!isDragging) return;
-                    isDragging = false;
-
-                    const diffX = startX - currentX;
-                    const threshold = 50;
-
-                    if (Math.abs(diffX) > threshold) {
-                        if (diffX > 0) {
-                            this.nextSlide();
-                        } else {
-                            this.previousSlide();
-                        }
-                    }
-
-                    this.resumeAutoPlay();
-                });
-            },
-
-            initAutoPlay() {
-                this.autoPlayInterval = setInterval(() => {
-                    if (!this.isScrolling) {
-                        this.nextSlide();
-                    }
-                }, 5000);
-
-                // Pause on hover
-                const sliderContainer = document.getElementById('testimonial-slider');
-                if (sliderContainer) {
-                    sliderContainer.addEventListener('mouseenter', () => this.pauseAutoPlay());
-                    sliderContainer.addEventListener('mouseleave', () => this.resumeAutoPlay());
-                }
-            },
-
-            pauseAutoPlay() {
-                if (this.autoPlayInterval) {
-                    clearInterval(this.autoPlayInterval);
-                    this.autoPlayInterval = null;
-                }
-            },
-
-            resumeAutoPlay() {
-                if (!this.autoPlayInterval) {
-                    this.initAutoPlay();
-                }
-            },
-
-            resetAutoPlay() {
-                this.pauseAutoPlay();
-                this.resumeAutoPlay();
-            },
+            // Testimonial Slider functions removed as it's now a video
+            // initTestimonialSlider() { /* ... */ },
+            // nextSlide() { /* ... */ },
+            // previousSlide() { /* ... */ },
+            // goToSlide(index) { /* ... */ },
+            // updateSlider() { /* ... */ },
+            // initTouchSlider(slider) { /* ... */ },
+            // initAutoPlay() { /* ... */ },
+            // pauseAutoPlay() { /* ... */ },
+            // resumeAutoPlay() { /* ... */ },
+            // resetAutoPlay() { /* ... */ },
 
             // Enhanced Counters Animation
             initCounters() {
@@ -1483,18 +1326,8 @@
 
             // Enhanced Forms
             initForms() {
-                const newsletterForm = document.getElementById('newsletter-form');
-                const newsletterStatusDiv = document.getElementById('form-status');
                 const contactForm = document.getElementById('contact-form');
                 const contactStatusDiv = document.getElementById('contact-form-status');
-
-
-                if (newsletterForm) {
-                    newsletterForm.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        this.handleFormSubmission(newsletterForm, newsletterStatusDiv, 'newsletter');
-                    });
-                }
 
                 if (contactForm) {
                     contactForm.addEventListener('submit', (e) => {
@@ -1518,7 +1351,8 @@
                         this.validateInput(input); // Add red border
                         allInputsValid = false;
                     }
-                });
+                }
+                );
 
                 if (!allInputsValid) {
                     this.showFormStatus(statusDiv, 'Please fill in all required fields correctly.', 'error');
@@ -1531,9 +1365,7 @@
 
                 // Simulate API call
                 setTimeout(() => {
-                    if (formType === 'newsletter') {
-                        this.showFormStatus(statusDiv, 'Thank you for subscribing! Check your email for confirmation.', 'success');
-                    } else if (formType === 'contact') {
+                    if (formType === 'contact') {
                         this.showFormStatus(statusDiv, 'Your message has been sent successfully! We will get back to you soon.', 'success');
                     }
                     form.reset();
@@ -1578,18 +1410,6 @@
                         input.classList.remove('border-green-400'); // Remove green too to allow re-validation
                     });
                 });
-            },
-
-            validateInput(input) {
-                const isValid = input.checkValidity();
-
-                if (!isValid) {
-                    input.classList.add('border-red-400');
-                    input.classList.remove('border-green-400');
-                } else {
-                    input.classList.remove('border-red-400');
-                    input.classList.add('border-green-400');
-                }
             },
 
             // Enhanced Progress Bars and Interactive Elements

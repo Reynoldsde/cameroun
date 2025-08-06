@@ -12,13 +12,42 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    <link href="https://cdn.tailwindcss.com/3.4.1/tailwind.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
     
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Loyal Training Hub",
+      "image": "https://static.readdy.ai/image/51cadbc62eee47cd2ac077ab0817995c/b275531ea188b97c6cf8a3a13f23a636.png",
+      "@id": "",
+      "url": "#",
+      "telephone": "+250 788 123 456",
+      "description": "Premier training hub in Kigali, Rwanda, specializing in language (English, French, Kinyarwanda) and vocational skills (ICT, Tailoring, Business Development).",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "KG 15 Ave",
+        "addressLocality": "Kigali",
+        "addressCountry": "RW"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "08:00",
+        "closes": "18:00"
+      } 
+    }
+    </script>
+    
     <style>
-        /* Import Tailwind CSS base, components, and utilities */
-        @import "https://cdn.tailwindcss.com/3.4.1/tailwind.css";
-
         :root {
             --color-primary: #00A3FF;
             --color-primary-dark: #0082cc;
@@ -29,234 +58,136 @@
             --font-logo: 'Pacifico', cursive;
         }
 
-        /* Base Styles & Typography */
-        html {
-            @apply scroll-smooth;
-        }
-
-        body {
-            @apply bg-dark text-gray-200 font-sans antialiased;
-            cursor: none; /* Hide default cursor */
-        }
-
-        /* Custom Cursor */
-        .custom-cursor-dot, .custom-cursor-outline {
-            pointer-events: none;
+        /* Preloader Styles */
+        #preloader {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--color-dark);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-out;
+        }
+        #preloader.loaded {
             opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
         }
-        @media (hover: hover) and (pointer: fine) {
-            body:hover .custom-cursor-dot, body:hover .custom-cursor-outline {
-                opacity: 1;
-            }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--color-dark-light);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
-        .custom-cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--color-primary);
-            transition: transform 0.05s;
-        }
-        .custom-cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--color-primary);
-            transition: transform 0.15s, width 0.3s, height 0.3s, border-color 0.3s;
-        }
-        .cursor-hover-link {
-            transform: scale(1.5) translate(-33%, -33%);
-            border-color: var(--color-secondary);
-        }
-        .cursor-hover-text {
-            width: 60px;
-            height: 60px;
-            transform: translate(-50%, -50%);
-            border-color: var(--color-primary);
-            background-color: rgba(0, 163, 255, 0.1);
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        /* Fonts */
+        /* Base Styles & Typography */
+        html { @apply scroll-smooth; }
+        body { @apply bg-dark text-gray-200 font-sans antialiased; cursor: none; }
         .font-logo { font-family: var(--font-logo); }
 
-        /* Section Titles */
-        .section-title {
-            @apply text-4xl md:text-5xl font-extrabold mb-4;
+        /* Hide custom cursor on touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            .custom-cursor-dot, .custom-cursor-outline { display: none !important; }
+            body { cursor: auto; }
         }
-        .section-subtitle {
-            @apply text-xl max-w-3xl mx-auto leading-relaxed;
-        }
-
-        /* Buttons & Links */
-        .btn {
-            @apply px-8 py-3 rounded-full font-semibold text-lg flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl whitespace-nowrap;
-        }
+        
+        /* Custom Cursor */
+        .custom-cursor-dot, .custom-cursor-outline { pointer-events: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; z-index: 9999; opacity: 0; transition: opacity 0.3s, transform 0.3s; }
+        body:hover .custom-cursor-dot, body:hover .custom-cursor-outline { opacity: 1; }
+        .custom-cursor-dot { width: 8px; height: 8px; background-color: var(--color-primary); transition: transform 0.05s; }
+        .custom-cursor-outline { width: 40px; height: 40px; border: 2px solid var(--color-primary); transition: transform 0.15s, width 0.3s, height 0.3s, border-color 0.3s; }
+        .cursor-hover-link { transform: scale(1.5) translate(-33%, -33%); border-color: var(--color-secondary); }
+        .cursor-hover-text { width: 60px; height: 60px; transform: translate(-50%, -50%); border-color: var(--color-primary); background-color: rgba(0, 163, 255, 0.1); }
+        
+        /* Section Titles & Buttons */
+        .section-title { @apply text-4xl md:text-5xl font-extrabold mb-4; }
+        .section-subtitle { @apply text-xl max-w-3xl mx-auto leading-relaxed; }
+        .btn { @apply px-8 py-3 rounded-full font-semibold text-lg flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl whitespace-nowrap; }
         .btn-primary { @apply bg-primary text-white hover:bg-primary-dark; }
         .btn-secondary { @apply bg-secondary text-white hover:bg-yellow-500; }
 
-        .nav-link {
-            @apply text-gray-300 hover:text-primary transition-colors duration-300 relative py-1 text-lg;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--color-primary);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s ease-out;
-        }
-        .nav-link:hover::after, .nav-link.active::after {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
+        /* Navigation */
+        .nav-link { @apply text-gray-300 hover:text-primary transition-colors duration-300 relative py-1 text-lg; }
+        .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background-color: var(--color-primary); transform: scaleX(0); transform-origin: right; transition: transform 0.3s ease-out; }
+        .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); transform-origin: left; }
         .nav-link.mobile { @apply text-2xl; }
-
-        /* Header Scroll Effect */
-        #main-header.scrolled {
-            @apply bg-dark/90 backdrop-blur-md shadow-lg;
-        }
-
-        /* Text Gradient */
-        .text-gradient {
-            @apply bg-clip-text text-transparent;
-            background-image: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-        }
-
-        /* Feature Cards (Why Choose Us) */
-        .feature-card {
-            @apply bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2;
-        }
-        .feature-icon {
-            @apply w-16 h-16 flex items-center justify-center rounded-xl mb-6 text-3xl;
-        }
-        .feature-title {
-            @apply text-xl font-bold text-dark mb-3;
-        }
-        .feature-text {
-            @apply text-gray-600;
-        }
-
-        /* Course Cards */
-        .course-filter-btn {
-            @apply px-6 py-2 rounded-full font-semibold text-gray-600 bg-white shadow-md transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg;
-        }
-        .course-filter-btn.active {
-            @apply bg-primary text-white scale-105 shadow-lg;
-        }
-        .course-card {
-            @apply bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform-gpu;
-        }
-        .course-card.hidden {
-            @apply scale-50 opacity-0 pointer-events-none;
-        }
-        .course-card:hover {
-            @apply shadow-2xl -translate-y-2;
-        }
-        .course-card img {
-            @apply w-full h-48 object-cover transition-transform duration-500;
-        }
-        .course-card:hover img {
-            @apply scale-110;
-        }
-        .course-title {
-            @apply text-xl font-bold text-dark mb-2;
-        }
-        .course-description {
-            @apply text-gray-600 mb-2 h-20; /* Fixed height for consistency */
-        }
-        .badge {
-            @apply px-3 py-1 rounded-full text-sm font-medium;
-        }
-
-        /* Methodology Timeline */
-        .methodology-step {
-            @apply flex lg:items-center gap-8;
-        }
-        .methodology-step.right {
-            @apply lg:flex-row-reverse;
-        }
-        .methodology-content {
-            @apply bg-dark-light p-8 rounded-xl shadow-lg border border-gray-700 lg:w-1/2;
-        }
+        #main-header.scrolled { @apply bg-dark/80 backdrop-blur-lg shadow-lg; }
+        .text-gradient { @apply bg-clip-text text-transparent; background-image: linear-gradient(90deg, var(--color-primary), var(--color-secondary)); }
+        
+        /* Cards */
+        .feature-card { @apply bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2; }
+        .feature-icon { @apply w-16 h-16 flex items-center justify-center rounded-xl mb-6 text-3xl; }
+        .feature-title { @apply text-xl font-bold text-dark mb-3; }
+        .feature-text { @apply text-gray-700; }
+        .course-filter-btn { @apply px-6 py-2 rounded-full font-semibold text-gray-700 bg-white shadow-md transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg; }
+        .course-filter-btn.active { @apply bg-primary text-white scale-105 shadow-lg; }
+        .course-card { @apply bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform-gpu; }
+        .course-card.hidden { @apply scale-50 opacity-0 pointer-events-none; }
+        .course-card:hover { @apply shadow-2xl -translate-y-2; }
+        .course-card img { @apply w-full h-48 object-cover transition-transform duration-500; }
+        .course-card:hover img { @apply scale-110; }
+        .course-title { @apply text-xl font-bold text-dark mb-2; }
+        .course-description { @apply text-gray-600 mb-2 h-20; }
+        .badge { @apply px-3 py-1 rounded-full text-sm font-medium; }
+        
+        /* Methodology */
+        .methodology-step { @apply flex lg:items-center gap-8; }
+        .methodology-step.right { @apply lg:flex-row-reverse; }
+        .methodology-content { @apply bg-dark-light p-8 rounded-xl shadow-lg border border-gray-700 lg:w-1/2 backdrop-blur-sm; }
         .methodology-step.right .methodology-content { @apply lg:text-right; }
         .methodology-title { @apply text-2xl font-bold text-white mb-4; }
         .methodology-text { @apply text-lg text-gray-400 leading-relaxed; }
-        .methodology-icon-wrapper {
-            @apply hidden lg:flex lg:w-1/2 items-center justify-center;
-        }
-        .methodology-icon {
-            @apply w-20 h-20 rounded-full flex items-center justify-center text-4xl text-white shadow-lg;
-        }
-
-        /* Testimonial Slider */
-        .testimonial-slide {
-            @apply w-full flex-shrink-0 flex flex-col items-center justify-center bg-white rounded-2xl shadow-xl p-8 md:p-12;
-        }
-        .testimonial-avatar {
-            @apply w-24 h-24 rounded-full object-cover mb-6 border-4 border-primary shadow-lg;
-        }
+        .methodology-icon-wrapper { @apply hidden lg:flex lg:w-1/2 items-center justify-center; }
+        .methodology-icon { @apply w-20 h-20 rounded-full flex items-center justify-center text-4xl text-white shadow-lg; }
+        
+        /* Testimonials & Footer */
+        .testimonial-slide { @apply w-full flex-shrink-0 flex flex-col items-center justify-center bg-white rounded-2xl shadow-xl p-8 md:p-12; }
+        .testimonial-avatar { @apply w-24 h-24 rounded-full object-cover mb-6 border-4 border-primary shadow-lg; }
         .testimonial-name { @apply text-xl font-bold text-dark; }
         .testimonial-course { @apply text-gray-500 mb-2; }
         .testimonial-stars { @apply flex text-yellow-400 text-xl mb-4; }
         .testimonial-quote { @apply text-lg text-gray-700 italic text-center leading-relaxed; }
-
-        .slider-btn {
-            @apply absolute top-1/2 -translate-y-1/2 w-12 h-12 bg-white/50 hover:bg-white rounded-full text-2xl text-dark shadow-md transition-all duration-300;
-        }
+        .slider-btn { @apply absolute top-1/2 -translate-y-1/2 w-12 h-12 bg-white/50 hover:bg-white rounded-full text-2xl text-dark shadow-md transition-all duration-300; }
         .slider-btn.prev { @apply -left-2 md:-left-6; }
         .slider-btn.next { @apply -right-2 md:-right-6; }
         .slider-dots { @apply absolute -bottom-10 left-1/2 -translate-x-1/2 flex space-x-2; }
         .slider-dot { @apply w-3 h-3 bg-gray-300 rounded-full cursor-pointer transition-all duration-300 hover:bg-gray-400; }
         .slider-dot.active { @apply bg-primary scale-125; }
-
-        /* Footer */
         .footer-title { @apply text-xl font-semibold text-white mb-6 relative; }
-        .footer-title::after {
-            content: '';
-            @apply absolute -bottom-2 left-0 w-12 h-1 bg-primary rounded-full;
-        }
+        .footer-title::after { content: ''; @apply absolute -bottom-2 left-0 w-12 h-1 bg-primary rounded-full; }
         .footer-link { @apply text-gray-400 hover:text-white hover:pl-2 transition-all duration-300; }
-        .social-link {
-            @apply w-10 h-10 flex items-center justify-center bg-dark-light rounded-lg text-gray-400 hover:bg-primary hover:text-white transition-colors duration-300;
-        }
+        .social-link { @apply w-10 h-10 flex items-center justify-center bg-dark-light rounded-lg text-gray-400 hover:bg-primary hover:text-white transition-colors duration-300; }
+        #form-status { @apply mt-2 text-sm text-center; }
+
+        /* "Back to Top" Button */
+        #back-to-top { @apply fixed bottom-5 right-5 w-12 h-12 bg-primary/80 text-white rounded-full flex items-center justify-center text-2xl shadow-lg backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 hover:bg-primary hover:scale-110; }
+        #back-to-top.visible { @apply opacity-100 pointer-events-auto; }
 
         /* Animations */
-        @keyframes pulse-deep {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 163, 255, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(0, 163, 255, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 163, 255, 0); }
-        }
-        .animate-pulse-deep {
-            animation: pulse-deep 2s infinite;
-        }
-
-        .animate-on-scroll {
-            opacity: 0;
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
+        @keyframes pulse-deep { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 163, 255, 0.7); } 70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(0, 163, 255, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 163, 255, 0); } }
+        .animate-pulse-deep { animation: pulse-deep 2s infinite; }
+        .animate-on-scroll { opacity: 0; transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .animate-on-scroll[data-animation="fade-up"] { transform: translateY(50px); }
         .animate-on-scroll[data-animation="fade-right"] { transform: translateX(-50px); }
         .animate-on-scroll[data-animation="fade-left"] { transform: translateX(50px); }
         .animate-on-scroll[data-animation="timeline-right"] { transform: translateX(-100px); }
         .animate-on-scroll[data-animation="timeline-left"] { transform: translateX(100px); }
-
-        .animate-on-scroll.is-visible {
-            opacity: 1;
-            transform: translate(0, 0);
-        }
+        .animate-on-scroll.is-visible { opacity: 1; transform: translate(0, 0); }
     </style>
 </head>
 
 <body class="bg-dark text-gray-200 font-sans antialiased">
     
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
     <div class="custom-cursor-dot"></div>
     <div class="custom-cursor-outline"></div>
 
@@ -303,7 +234,7 @@
     <main>
 
         <section id="home" class="relative min-h-screen flex items-center overflow-hidden">
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://readdy.ai/api/search-image?query=Modern%20diverse%20classroom%20with%20African%20students%20learning%20languages%2C%20bright%20natural%20lighting%2C%20professional%20educational%20environment%2C%20contemporary%20interior%20design%2C%20students%20engaged%20in%20conversation%20practice%2C%20multicultural%20learning%20atmosphere%2C%20clean%20minimalist%20background%2C%20soft%20focus%20on%20background%20elements%2C%20warm%20welcoming%20ambiance&width=1920&height=1080&seq=hero-bg-001&orientation=landscape');"></div>
+            <div id="hero-bg" class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://readdy.ai/api/search-image?query=Modern%20diverse%20classroom%20with%20African%20students%20learning%20languages%2C%20bright%20natural%20lighting%2C%20professional%20educational%20environment%2C%20contemporary%20interior%20design%2C%20students%20engaged%20in%20conversation%20practice%2C%20multicultural%20learning%20atmosphere%2C%20clean%20minimalist%20background%2C%20soft%20focus%20on%20background%20elements%2C%20warm%20welcoming%20ambiance&width=1920&height=1080&seq=hero-bg-001&orientation=landscape');"></div>
             <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
             <div class="absolute inset-0 bg-dark/10"></div>
             
@@ -325,11 +256,11 @@
             </div>
         </section>
 
-        <section class="py-24 bg-gray-50">
+        <section id="features" class="py-24 bg-gray-50">
             <div class="max-w-screen-xl mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="section-title text-dark animate-on-scroll" data-animation="fade-up">Why Choose Loyal Training Hub?</h2>
-                    <p class="section-subtitle text-gray-600 animate-on-scroll" data-animation="fade-up" data-delay="100">Experience the difference with our proven approach to language and skill development.</p>
+                    <p class="section-subtitle text-gray-700 animate-on-scroll" data-animation="fade-up" data-delay="100">Experience the difference with our proven approach to language and skill development.</p>
                 </div>
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div class="feature-card animate-on-scroll" data-animation="fade-up" data-delay="200">
@@ -393,7 +324,7 @@
             <div class="max-w-screen-xl mx-auto px-6">
                 <div class="text-center mb-12">
                     <h2 class="section-title text-dark animate-on-scroll" data-animation="fade-up">Our Flagship Courses</h2>
-                    <p class="section-subtitle text-gray-600 animate-on-scroll" data-animation="fade-up" data-delay="100">Find the perfect program to launch your career.</p>
+                    <p class="section-subtitle text-gray-700 animate-on-scroll" data-animation="fade-up" data-delay="100">Find the perfect program to launch your career.</p>
                 </div>
                 <div class="flex justify-center flex-wrap gap-3 mb-12 animate-on-scroll" data-animation="fade-up" data-delay="200">
                     <button class="course-filter-btn active" data-filter="all">All</button>
@@ -401,138 +332,26 @@
                     <button class="course-filter-btn" data-filter="vocational">Vocational</button>
                 </div>
                 <div id="course-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="course-card" data-category="language">
-                        <img src="https://readdy.ai/api/search-image?query=English%20language%20learning%20classroom%20with%20students%20practicing%20conversation%2C%20modern%20educational%20setting%2C%20interactive%20learning%20environment%2C%20professional%20language%20instruction%2C%20diverse%20students%20engaged%20in%20English%20practice%2C%20contemporary%20classroom%20design%2C%20bright%20natural%20lighting%2C%20educational%20excellence&width=400&height=250&seq=english-course-001&orientation=landscape" alt="English Language Course">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="badge bg-primary/10 text-primary">6 Months</span>
-                                <span class="badge bg-gray-100 text-gray-600">All Levels</span>
-                            </div>
-                            <h4 class="course-title">English Language Mastery</h4>
-                            <p class="course-description">Comprehensive program focusing on speaking, listening, reading, and writing for professional growth.</p>
-                            <button class="btn btn-primary w-full mt-4">Learn More</button>
-                        </div>
-                    </div>
-                    <div class="course-card" data-category="language">
-                        <img src="https://readdy.ai/api/search-image?query=French%20language%20classroom%20with%20African%20students%20learning%20French%20conversation%2C%20immersive%20French%20language%20instruction%2C%20modern%20educational%20facility%2C%20students%20practicing%20French%20speaking%20skills%2C%20contemporary%20learning%20environment%2C%20professional%20language%20education%2C%20bright%20classroom%20setting&width=400&height=250&seq=french-course-001&orientation=landscape" alt="French Language Course">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="badge bg-secondary/10 text-secondary">4 Months</span>
-                                <span class="badge bg-gray-100 text-gray-600">Beginner</span>
-                            </div>
-                            <h4 class="course-title">French Communication</h4>
-                            <p class="course-description">Master French conversation skills with emphasis on practical communication for business and daily interactions.</p>
-                            <button class="btn btn-secondary w-full mt-4">Learn More</button>
-                        </div>
-                    </div>
-                    <div class="course-card" data-category="language">
-                         <img src="https://readdy.ai/api/search-image?query=Kinyarwanda%20language%20class%20with%20international%20students%20learning%20Rwandan%20culture%20and%20language%2C%20cultural%20immersion%20program%2C%20traditional%20and%20modern%20teaching%20methods%2C%20diverse%20classroom%20setting%2C%20professional%20language%20instruction%2C%20contemporary%20educational%20environment&width=400&height=250&seq=kinyarwanda-course-001&orientation=landscape" alt="Kinyarwanda Language Course">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="badge bg-primary/10 text-primary">3 Months</span>
-                                <span class="badge bg-gray-100 text-gray-600">All Levels</span>
-                            </div>
-                            <h4 class="course-title">Kinyarwanda for Foreigners</h4>
-                            <p class="course-description">Learn Rwanda's national language with cultural context, perfect for expatriates and professionals.</p>
-                            <button class="btn btn-primary w-full mt-4">Learn More</button>
-                        </div>
-                    </div>
-                    <div class="course-card" data-category="vocational">
-                        <img src="https://readdy.ai/api/search-image?query=Modern%20computer%20training%20lab%20with%20African%20students%20learning%20ICT%20skills%2C%20contemporary%20technology%20education%2C%20professional%20computer%20classroom%2C%20students%20working%20on%20computers%2C%20digital%20literacy%20training%2C%20modern%20educational%20technology%20facility%2C%20bright%20clean%20learning%20environment&width=400&height=250&seq=ict-course-001&orientation=landscape" alt="ICT Skills Course">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="badge bg-secondary/10 text-secondary">8 Weeks</span>
-                                <span class="badge bg-gray-100 text-gray-600">Beginner</span>
-                            </div>
-                            <h4 class="course-title">ICT Fundamentals</h4>
-                            <p class="course-description">Essential computer skills including Microsoft Office, internet navigation, and digital communication tools.</p>
-                            <button class="btn btn-secondary w-full mt-4">Learn More</button>
-                        </div>
-                    </div>
-                    <div class="course-card" data-category="vocational">
-                        <img src="https://readdy.ai/api/search-image?query=Professional%20tailoring%20workshop%20with%20African%20students%20learning%20sewing%20and%20fashion%20design%2C%20modern%20tailoring%20classroom%2C%20students%20working%20on%20sewing%20machines%2C%20fashion%20design%20education%2C%20contemporary%20vocational%20training%20facility%2C%20bright%20workshop%20environment&width=400&height=250&seq=tailoring-course-001&orientation=landscape" alt="Tailoring Course">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="badge bg-primary/10 text-primary">12 Weeks</span>
-                                <span class="badge bg-gray-100 text-gray-600">All Levels</span>
-                            </div>
-                            <h4 class="course-title">Professional Tailoring</h4>
-                            <p class="course-description">Learn professional techniques from basic alterations to custom garment creation and fashion design.</p>
-                            <button class="btn btn-primary w-full mt-4">Learn More</button>
-                        </div>
-                    </div>
-                    <div class="course-card" data-category="vocational">
-                        <img src="https://readdy.ai/api/search-image?query=Business%20skills%20training%20classroom%20with%20African%20professionals%20learning%20entrepreneurship%20and%20business%20management%2C%20modern%20professional%20development%20workshop%2C%20contemporary%20business%20education%20setting%2C%20students%20engaged%20in%20business%20planning%20activities&width=400&height=250&seq=business-course-001&orientation=landscape" alt="Business Skills Course">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="badge bg-secondary/10 text-secondary">6 Weeks</span>
-                                <span class="badge bg-gray-100 text-gray-600">Intermediate</span>
-                            </div>
-                            <h4 class="course-title">Business Development</h4>
-                            <p class="course-description">Entrepreneurship, business planning, financial management, and marketing for small businesses.</p>
-                            <button class="btn btn-secondary w-full mt-4">Learn More</button>
-                        </div>
-                    </div>
+                    <div class="course-card" data-category="language"><img src="https://readdy.ai/api/search-image?query=English%20language%20learning%20classroom%20with%20students%20practicing%20conversation%2C%20modern%20educational%20setting%2C%20interactive%20learning%20environment%2C%20professional%20language%20instruction%2C%20diverse%20students%20engaged%20in%20English%20practice%2C%20contemporary%20classroom%20design%2C%20bright%20natural%20lighting%2C%20educational%20excellence&width=400&height=250&seq=english-course-001&orientation=landscape" alt="English Language Course"><div class="p-6"><div class="flex items-center justify-between mb-3"><span class="badge bg-primary/10 text-primary">6 Months</span><span class="badge bg-gray-200 text-gray-600">All Levels</span></div><h4 class="course-title">English Language Mastery</h4><p class="course-description">Comprehensive program focusing on speaking, listening, reading, and writing for professional growth.</p><button class="btn btn-primary w-full mt-4">Learn More</button></div></div>
+                    <div class="course-card" data-category="language"><img src="https://readdy.ai/api/search-image?query=French%20language%20classroom%20with%20African%20students%20learning%20French%20conversation%2C%20immersive%20French%20language%20instruction%2C%20modern%20educational%20facility%2C%20students%20practicing%20French%20speaking%20skills%2C%20contemporary%20learning%20environment%2C%20professional%20language%20education%2C%20bright%20classroom%20setting&width=400&height=250&seq=french-course-001&orientation=landscape" alt="French Language Course"><div class="p-6"><div class="flex items-center justify-between mb-3"><span class="badge bg-secondary/10 text-secondary">4 Months</span><span class="badge bg-gray-200 text-gray-600">Beginner</span></div><h4 class="course-title">French Communication</h4><p class="course-description">Master French conversation skills with emphasis on practical communication for business and daily interactions.</p><button class="btn btn-secondary w-full mt-4">Learn More</button></div></div>
+                    <div class="course-card" data-category="language"><img src="https://readdy.ai/api/search-image?query=Kinyarwanda%20language%20class%20with%20international%20students%20learning%20Rwandan%20culture%20and%20language%2C%20cultural%20immersion%20program%2C%20traditional%20and%20modern%20teaching%20methods%2C%20diverse%20classroom%20setting%2C%20professional%20language%20instruction%2C%20contemporary%20educational%20environment&width=400&height=250&seq=kinyarwanda-course-001&orientation=landscape" alt="Kinyarwanda Language Course"><div class="p-6"><div class="flex items-center justify-between mb-3"><span class="badge bg-primary/10 text-primary">3 Months</span><span class="badge bg-gray-200 text-gray-600">All Levels</span></div><h4 class="course-title">Kinyarwanda for Foreigners</h4><p class="course-description">Learn Rwanda's national language with cultural context, perfect for expatriates and professionals.</p><button class="btn btn-primary w-full mt-4">Learn More</button></div></div>
+                    <div class="course-card" data-category="vocational"><img src="https://readdy.ai/api/search-image?query=Modern%20computer%20training%20lab%20with%20African%20students%20learning%20ICT%20skills%2C%20contemporary%20technology%20education%2C%20professional%20computer%20classroom%2C%20students%20working%20on%20computers%2C%20digital%20literacy%20training%2C%20modern%20educational%20technology%20facility%2C%20bright%20clean%20learning%20environment&width=400&height=250&seq=ict-course-001&orientation=landscape" alt="ICT Skills Course"><div class="p-6"><div class="flex items-center justify-between mb-3"><span class="badge bg-secondary/10 text-secondary">8 Weeks</span><span class="badge bg-gray-200 text-gray-600">Beginner</span></div><h4 class="course-title">ICT Fundamentals</h4><p class="course-description">Essential computer skills including Microsoft Office, internet navigation, and digital communication tools.</p><button class="btn btn-secondary w-full mt-4">Learn More</button></div></div>
+                    <div class="course-card" data-category="vocational"><img src="https://readdy.ai/api/search-image?query=Professional%20tailoring%20workshop%20with%20African%20students%20learning%20sewing%20and%20fashion%20design%2C%20modern%20tailoring%20classroom%2C%20students%20working%20on%20sewing%20machines%2C%20fashion%20design%20education%2C%20contemporary%20vocational%20training%20facility%2C%20bright%20workshop%20environment&width=400&height=250&seq=tailoring-course-001&orientation=landscape" alt="Tailoring Course"><div class="p-6"><div class="flex items-center justify-between mb-3"><span class="badge bg-primary/10 text-primary">12 Weeks</span><span class="badge bg-gray-200 text-gray-600">All Levels</span></div><h4 class="course-title">Professional Tailoring</h4><p class="course-description">Learn professional techniques from basic alterations to custom garment creation and fashion design.</p><button class="btn btn-primary w-full mt-4">Learn More</button></div></div>
+                    <div class="course-card" data-category="vocational"><img src="https://readdy.ai/api/search-image?query=Business%20skills%20training%20classroom%20with%20African%20professionals%20learning%20entrepreneurship%20and%20business%20management%2C%20modern%20professional%20development%20workshop%2C%20contemporary%20business%20education%20setting%2C%20students%20engaged%20in%20business%20planning%20activities&width=400&height=250&seq=business-course-001&orientation=landscape" alt="Business Skills Course"><div class="p-6"><div class="flex items-center justify-between mb-3"><span class="badge bg-secondary/10 text-secondary">6 Weeks</span><span class="badge bg-gray-200 text-gray-600">Intermediate</span></div><h4 class="course-title">Business Development</h4><p class="course-description">Entrepreneurship, business planning, financial management, and marketing for small businesses.</p><button class="btn btn-secondary w-full mt-4">Learn More</button></div></div>
                 </div>
             </div>
         </section>
 
         <section id="methodology" class="py-24 bg-dark">
             <div class="max-w-screen-xl mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="section-title text-white animate-on-scroll" data-animation="fade-up">Our 5-Step Learning Journey</h2>
-                    <p class="section-subtitle text-gray-400 animate-on-scroll" data-animation="fade-up" data-delay="100">A proven path to mastery, designed for your success.</p>
-                </div>
-                <div class="relative">
-                    <div class="hidden lg:block absolute left-1/2 -translate-x-1/2 top-0 w-1 h-full bg-gray-700">
-                        <div id="timeline-progress" class="bg-gradient-to-b from-primary to-secondary w-full h-0 transition-all duration-500"></div>
-                    </div>
+                <div class="text-center mb-16"><h2 class="section-title text-white animate-on-scroll" data-animation="fade-up">Our 5-Step Learning Journey</h2><p class="section-subtitle text-gray-400 animate-on-scroll" data-animation="fade-up" data-delay="100">A proven path to mastery, designed for your success.</p></div>
+                <div class="relative"><div class="hidden lg:block absolute left-1/2 -translate-x-1/2 top-0 w-1 h-full bg-gray-700"><div id="timeline-progress" class="bg-gradient-to-b from-primary to-secondary w-full h-0 transition-all duration-500"></div></div>
                     <div class="space-y-16">
-                        <div class="methodology-step animate-on-scroll" data-animation="timeline-right">
-                            <div class="methodology-content">
-                                <h3 class="methodology-title">Assessment & Goal Setting</h3>
-                                <p class="methodology-text">We begin with a comprehensive assessment to understand your level and tailor a learning plan to your specific goals.</p>
-                            </div>
-                            <div class="methodology-icon-wrapper">
-                                <div class="methodology-icon bg-primary"><i class="ri-clipboard-line"></i></div>
-                            </div>
-                        </div>
-                        <div class="methodology-step right animate-on-scroll" data-animation="timeline-left">
-                            <div class="methodology-content">
-                                <h3 class="methodology-title">Immersive Practice</h3>
-                                <p class="methodology-text">Engage in real conversations and practical exercises from day one. You'll build confidence while mastering fundamentals.</p>
-                            </div>
-                            <div class="methodology-icon-wrapper">
-                                <div class="methodology-icon bg-secondary"><i class="ri-speak-line"></i></div>
-                            </div>
-                        </div>
-                        <div class="methodology-step animate-on-scroll" data-animation="timeline-right">
-                            <div class="methodology-content">
-                                <h3 class="methodology-title">Interactive Learning</h3>
-                                <p class="methodology-text">Our classes feature group discussions, role-playing, and real-world scenarios to make learning engaging and effective.</p>
-                            </div>
-                            <div class="methodology-icon-wrapper">
-                                <div class="methodology-icon bg-primary"><i class="ri-team-line"></i></div>
-                            </div>
-                        </div>
-                        <div class="methodology-step right animate-on-scroll" data-animation="timeline-left">
-                            <div class="methodology-content">
-                                <h3 class="methodology-title">Continuous Feedback</h3>
-                                <p class="methodology-text">Receive personalized feedback from instructors to track your progress, overcome challenges, and celebrate achievements.</p>
-                            </div>
-                            <div class="methodology-icon-wrapper">
-                                <div class="methodology-icon bg-secondary"><i class="ri-feedback-line"></i></div>
-                            </div>
-                        </div>
-                        <div class="methodology-step animate-on-scroll" data-animation="timeline-right">
-                            <div class="methodology-content">
-                                <h3 class="methodology-title">Certification & Beyond</h3>
-                                <p class="methodology-text">Earn a recognized certificate and get access to career guidance and advanced learning opportunities.</p>
-                            </div>
-                            <div class="methodology-icon-wrapper">
-                                <div class="methodology-icon bg-primary"><i class="ri-award-line"></i></div>
-                            </div>
-                        </div>
+                        <div class="methodology-step animate-on-scroll" data-animation="timeline-right"><div class="methodology-content"><h3 class="methodology-title">Assessment & Goal Setting</h3><p class="methodology-text">We begin with a comprehensive assessment to understand your level and tailor a learning plan to your specific goals.</p></div><div class="methodology-icon-wrapper"><div class="methodology-icon bg-primary"><i class="ri-clipboard-line"></i></div></div></div>
+                        <div class="methodology-step right animate-on-scroll" data-animation="timeline-left"><div class="methodology-content"><h3 class="methodology-title">Immersive Practice</h3><p class="methodology-text">Engage in real conversations and practical exercises from day one. You'll build confidence while mastering fundamentals.</p></div><div class="methodology-icon-wrapper"><div class="methodology-icon bg-secondary"><i class="ri-speak-line"></i></div></div></div>
+                        <div class="methodology-step animate-on-scroll" data-animation="timeline-right"><div class="methodology-content"><h3 class="methodology-title">Interactive Learning</h3><p class="methodology-text">Our classes feature group discussions, role-playing, and real-world scenarios to make learning engaging and effective.</p></div><div class="methodology-icon-wrapper"><div class="methodology-icon bg-primary"><i class="ri-team-line"></i></div></div></div>
+                        <div class="methodology-step right animate-on-scroll" data-animation="timeline-left"><div class="methodology-content"><h3 class="methodology-title">Continuous Feedback</h3><p class="methodology-text">Receive personalized feedback from instructors to track your progress, overcome challenges, and celebrate achievements.</p></div><div class="methodology-icon-wrapper"><div class="methodology-icon bg-secondary"><i class="ri-feedback-line"></i></div></div></div>
+                        <div class="methodology-step animate-on-scroll" data-animation="timeline-right"><div class="methodology-content"><h3 class="methodology-title">Certification & Beyond</h3><p class="methodology-text">Earn a recognized certificate and get access to career guidance and advanced learning opportunities.</p></div><div class="methodology-icon-wrapper"><div class="methodology-icon bg-primary"><i class="ri-award-line"></i></div></div></div>
                     </div>
                 </div>
             </div>
@@ -540,43 +359,14 @@
 
         <section id="testimonials" class="py-24 bg-gray-50 overflow-hidden">
             <div class="max-w-screen-xl mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="section-title text-dark animate-on-scroll" data-animation="fade-up">Student Success Stories</h2>
-                    <p class="section-subtitle text-gray-600 animate-on-scroll" data-animation="fade-up" data-delay="100">Hear from graduates who transformed their careers with us.</p>
-                </div>
+                <div class="text-center mb-16"><h2 class="section-title text-dark animate-on-scroll" data-animation="fade-up">Student Success Stories</h2><p class="section-subtitle text-gray-700 animate-on-scroll" data-animation="fade-up" data-delay="100">Hear from graduates who transformed their careers with us.</p></div>
                 <div id="testimonial-slider" class="relative max-w-4xl mx-auto">
                     <div class="testimonial-wrapper flex transition-transform duration-500 ease-in-out">
-                        <div class="testimonial-slide">
-                            <img src="https://readdy.ai/api/search-image?query=Professional%20African%20woman%20smiling%20confidently%2C%20business%20attire%2C%20professional%20headshot%2C%20contemporary%20portrait%20photography%2C%20confident%20expression%2C%20clean%20background%2C%20professional%20lighting%2C%20success%20and%20achievement&width=80&height=80&seq=testimonial-001&orientation=squarish" alt="Sarah Uwimana" class="testimonial-avatar">
-                            <div class="text-center">
-                                <h4 class="testimonial-name">Sarah Uwimana</h4>
-                                <p class="testimonial-course">English Language Mastery Graduate</p>
-                                <div class="testimonial-stars"><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i></div>
-                            </div>
-                            <blockquote class="testimonial-quote">"Loyal Training Hub completely transformed my confidence. The immersive approach helped me land a promotion within three months. The instructors are incredibly supportive and the practical focus made all the difference."</blockquote>
-                        </div>
-                        <div class="testimonial-slide">
-                             <img src="https://readdy.ai/api/search-image?query=Young%20African%20man%20in%20business%20casual%20attire%2C%20confident%20professional%20portrait%2C%20modern%20headshot%20photography%2C%20successful%20entrepreneur%2C%20clean%20contemporary%20background%2C%20professional%20lighting%2C%20achievement%20and%20success&width=80&height=80&seq=testimonial-002&orientation=squarish" alt="Jean Baptiste Niyonzima" class="testimonial-avatar">
-                            <div class="text-center">
-                                <h4 class="testimonial-name">Jean Baptiste Niyonzima</h4>
-                                <p class="testimonial-course">Business Development Graduate</p>
-                                <div class="testimonial-stars"><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i></div>
-                            </div>
-                            <blockquote class="testimonial-quote">"The Business Development course gave me the tools and confidence to start my own company. The real-world examples prepared me for entrepreneurship. I now employ five people and my business is thriving!"</blockquote>
-                        </div>
-                        <div class="testimonial-slide">
-                            <img src="https://readdy.ai/api/search-image?query=Professional%20African%20woman%20in%20modern%20office%20setting%2C%20confident%20business%20portrait%2C%20contemporary%20professional%20photography%2C%20successful%20career%20woman%2C%20clean%20background%2C%20natural%20lighting%2C%20achievement%20and%20professional%20growth&width=80&height=80&seq=testimonial-003&orientation=squarish" alt="Marie Claire Mukamana" class="testimonial-avatar">
-                            <div class="text-center">
-                                <h4 class="testimonial-name">Marie Claire Mukamana</h4>
-                                <p class="testimonial-course">ICT Fundamentals Graduate</p>
-                                <div class="testimonial-stars"><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i></div>
-                            </div>
-                            <blockquote class="testimonial-quote">"As someone new to computers, I was nervous. The patient instructors and hands-on approach made learning enjoyable. Now I'm an administrative assistant and feel confident with all office software."</blockquote>
-                        </div>
+                        <div class="testimonial-slide"><img src="https://readdy.ai/api/search-image?query=Professional%20African%20woman%20smiling%20confidently%2C%20business%20attire%2C%20professional%20headshot%2C%20contemporary%20portrait%20photography%2C%20confident%20expression%2C%20clean%20background%2C%20professional%20lighting%2C%20success%20and%20achievement&width=80&height=80&seq=testimonial-001&orientation=squarish" alt="Sarah Uwimana" class="testimonial-avatar"><div class="text-center"><h4 class="testimonial-name">Sarah Uwimana</h4><p class="testimonial-course">English Language Mastery Graduate</p><div class="testimonial-stars"><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i></div></div><blockquote class="testimonial-quote">"Loyal Training Hub completely transformed my confidence. The immersive approach helped me land a promotion within three months. The instructors are incredibly supportive and the practical focus made all the difference."</blockquote></div>
+                        <div class="testimonial-slide"><img src="https://readdy.ai/api/search-image?query=Young%20African%20man%20in%20business%20casual%20attire%2C%20confident%20professional%20portrait%2C%20modern%20headshot%20photography%2C%20successful%20entrepreneur%2C%20clean%20contemporary%20background%2C%20professional%20lighting%2C%20achievement%20and%20success&width=80&height=80&seq=testimonial-002&orientation=squarish" alt="Jean Baptiste Niyonzima" class="testimonial-avatar"><div class="text-center"><h4 class="testimonial-name">Jean Baptiste Niyonzima</h4><p class="testimonial-course">Business Development Graduate</p><div class="testimonial-stars"><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i></div></div><blockquote class="testimonial-quote">"The Business Development course gave me the tools and confidence to start my own company. The real-world examples prepared me for entrepreneurship. I now employ five people and my business is thriving!"</blockquote></div>
+                        <div class="testimonial-slide"><img src="https://readdy.ai/api/search-image?query=Professional%20African%20woman%20in%20modern%20office%20setting%2C%20confident%20business%20portrait%2C%20contemporary%20professional%20photography%2C%20successful%20career%20woman%2C%20clean%20background%2C%20natural%20lighting%2C%20achievement%20and%20professional%20growth&width=80&height=80&seq=testimonial-003&orientation=squarish" alt="Marie Claire Mukamana" class="testimonial-avatar"><div class="text-center"><h4 class="testimonial-name">Marie Claire Mukamana</h4><p class="testimonial-course">ICT Fundamentals Graduate</p><div class="testimonial-stars"><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i><i class="ri-star-s-fill"></i></div></div><blockquote class="testimonial-quote">"As someone new to computers, I was nervous. The patient instructors and hands-on approach made learning enjoyable. Now I'm an administrative assistant and feel confident with all office software."</blockquote></div>
                     </div>
-                    <button class="slider-btn prev" aria-label="Previous Testimonial"><i class="ri-arrow-left-s-line"></i></button>
-                    <button class="slider-btn next" aria-label="Next Testimonial"><i class="ri-arrow-right-s-line"></i></button>
-                    <div class="slider-dots"></div>
+                    <button class="slider-btn prev" aria-label="Previous Testimonial"><i class="ri-arrow-left-s-line"></i></button><button class="slider-btn next" aria-label="Next Testimonial"><i class="ri-arrow-right-s-line"></i></button><div class="slider-dots"></div>
                 </div>
             </div>
         </section>
@@ -607,41 +397,24 @@
                         <a href="#" class="social-link" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
                     </div>
                 </div>
-                <div>
-                    <h4 class="footer-title">Quick Links</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#about" class="footer-link">About Us</a></li>
-                        <li><a href="#courses" class="footer-link">Courses</a></li>
-                        <li><a href="#methodology" class="footer-link">Methodology</a></li>
-                        <li><a href="#testimonials" class="footer-link">Testimonials</a></li>
-                    </ul>
-                </div>
+                <div><h4 class="footer-title">Quick Links</h4><ul class="space-y-3"><li><a href="#about" class="footer-link">About Us</a></li><li><a href="#courses" class="footer-link">Courses</a></li><li><a href="#methodology" class="footer-link">Methodology</a></li><li><a href="#testimonials" class="footer-link">Testimonials</a></li></ul></div>
                 <div>
                     <h4 class="footer-title">Contact Info</h4>
                     <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <i class="ri-map-pin-2-line text-primary mt-1 mr-3"></i>
-                            <span class="text-gray-400">KG 15 Ave, Kigali, Rwanda</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="ri-phone-line text-primary mt-1 mr-3"></i>
-                            <a href="tel:+250788123456" class="text-gray-400 hover:text-white transition-colors">+250 788 123 456</a>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="ri-mail-send-line text-primary mt-1 mr-3"></i>
-                            <a href="mailto:info@loyaltraininghub.rw" class="text-gray-400 hover:text-white transition-colors">info@loyaltraininghub.rw</a>
-                        </li>
+                        <li class="flex items-start"><i class="ri-map-pin-2-line text-primary mt-1 mr-3"></i><span class="text-gray-400">KG 15 Ave, Kigali, Rwanda</span></li>
+                        <li class="flex items-start"><i class="ri-phone-line text-primary mt-1 mr-3"></i><a href="tel:+250788123456" class="text-gray-400 hover:text-white transition-colors">+250 788 123 456</a></li>
+                        <li class="flex items-start"><i class="ri-mail-send-line text-primary mt-1 mr-3"></i><a href="mailto:info@loyaltraininghub.rw" class="text-gray-400 hover:text-white transition-colors">info@loyaltraininghub.rw</a></li>
+                        <li class="flex items-start"><i class="ri-time-line text-primary mt-1 mr-3"></i><span id="open-status" class="text-gray-400">Mon-Fri: 8AM-6PM</span></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="footer-title">Stay Updated</h4>
-                    <p class="text-gray-400 mb-4">Subscribe to our newsletter for the latest course updates and offers.</p>
-                    <form class="flex">
-                        <input type="email" placeholder="Your Email" class="w-full bg-dark-light px-4 py-3 rounded-l-lg border-2 border-transparent focus:border-primary focus:outline-none text-white" required>
-                        <button type="submit" class="bg-primary px-5 py-3 rounded-r-lg text-white font-semibold hover:bg-primary-dark transition-colors" aria-label="Subscribe">
-                            <i class="ri-send-plane-2-fill"></i>
-                        </button>
+                    <p class="text-gray-400 mb-4">Subscribe for the latest course updates.</p>
+                    <form id="newsletter-form" class="flex" novalidate>
+                        <input type="email" id="newsletter-email" placeholder="Your Email" class="w-full bg-dark-light px-4 py-3 rounded-l-lg border-2 border-transparent focus:border-primary focus:outline-none text-white" required>
+                        <button type="submit" class="bg-primary px-5 py-3 rounded-r-lg text-white font-semibold hover:bg-primary-dark transition-colors" aria-label="Subscribe"><i class="ri-send-plane-2-fill"></i></button>
                     </form>
+                    <div id="form-status"></div>
                 </div>
             </div>
             <div class="border-t border-gray-800 pt-8 mt-8 text-center text-gray-500">
@@ -650,11 +423,15 @@
         </div>
     </footer>
 
+    <a href="#home" id="back-to-top" aria-label="Back to top">
+        <i class="ri-arrow-up-s-line"></i>
+    </a>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // --- 1. INITIALIZATION ---
             const init = () => {
+                initPreloader();
                 initCustomCursor();
                 initHeaderScroll();
                 initMobileMenu();
@@ -664,236 +441,134 @@
                 initFooter();
                 initSmoothScroll();
                 initActiveNavOnScroll();
+                initParallaxHero();
+                initNewsletterForm();
+                initBackToTopButton();
+            };
+            
+            const initPreloader = () => {
+                const preloader = document.getElementById('preloader');
+                window.addEventListener('load', () => {
+                    preloader.classList.add('loaded');
+                });
             };
 
-            // --- 2. CUSTOM CURSOR ---
+            // All other init functions from previous script... (initCustomCursor, initHeaderScroll, etc.)
             const initCustomCursor = () => {
                 const cursorDot = document.querySelector('.custom-cursor-dot');
                 const cursorOutline = document.querySelector('.custom-cursor-outline');
-                const isTouchDevice = 'ontouchstart' in window;
-
-                if (isTouchDevice) {
-                    cursorDot.style.display = 'none';
-                    cursorOutline.style.display = 'none';
-                    document.body.style.cursor = 'auto';
-                    return;
-                }
-
-                window.addEventListener('mousemove', (e) => {
-                    const { clientX: posX, clientY: posY } = e;
-                    cursorDot.style.left = `${posX}px`;
-                    cursorDot.style.top = `${posY}px`;
-                    cursorOutline.style.left = `${posX}px`;
-                    cursorOutline.style.top = `${posY}px`;
-                });
-
-                document.querySelectorAll('a, button, .course-card, .feature-card').forEach(el => {
-                    el.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-hover-link'));
-                    el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-hover-link'));
-                });
-                
-                document.querySelectorAll('h1, h2, h3, h4, p, blockquote').forEach(el => {
-                    el.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-hover-text'));
-                    el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-hover-text'));
-                });
+                window.addEventListener('mousemove', (e) => { const { clientX: posX, clientY: posY } = e; cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`; cursorOutline.style.left = `${posX}px`; cursorOutline.style.top = `${posY}px`; });
+                document.querySelectorAll('a, button, .course-card, .feature-card').forEach(el => { el.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-hover-link')); el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-hover-link')); });
+                document.querySelectorAll('h1, h2, h3, h4, p, blockquote').forEach(el => { el.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-hover-text')); el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-hover-text')); });
             };
 
-            // --- 3. HEADER SCROLL EFFECT ---
-            const initHeaderScroll = () => {
-                const header = document.getElementById('main-header');
-                window.addEventListener('scroll', () => {
-                    header.classList.toggle('scrolled', window.scrollY > 50);
-                });
-            };
+            const initHeaderScroll = () => { const header = document.getElementById('main-header'); window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 50); }); };
 
-            // --- 4. MOBILE MENU TOGGLE ---
             const initMobileMenu = () => {
                 const toggleBtn = document.getElementById('mobile-menu-toggle');
                 const mobileMenu = document.getElementById('mobile-menu');
                 const menuIcon = toggleBtn.querySelector('i');
                 const mobileLinks = mobileMenu.querySelectorAll('a');
-
-                toggleBtn.addEventListener('click', () => {
-                    const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-                    toggleBtn.setAttribute('aria-expanded', !isExpanded);
-                    mobileMenu.classList.toggle('hidden');
-                    menuIcon.classList.toggle('ri-menu-4-line');
-                    menuIcon.classList.toggle('ri-close-line');
-                });
-                
-                mobileLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        toggleBtn.setAttribute('aria-expanded', 'false');
-                        mobileMenu.classList.add('hidden');
-                        menuIcon.classList.add('ri-menu-4-line');
-                        menuIcon.classList.remove('ri-close-line');
-                    });
-                });
+                toggleBtn.addEventListener('click', () => { const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true'; toggleBtn.setAttribute('aria-expanded', !isExpanded); mobileMenu.classList.toggle('hidden'); menuIcon.classList.toggle('ri-menu-4-line'); menuIcon.classList.toggle('ri-close-line'); });
+                mobileLinks.forEach(link => { link.addEventListener('click', () => { toggleBtn.setAttribute('aria-expanded', 'false'); mobileMenu.classList.add('hidden'); menuIcon.classList.add('ri-menu-4-line'); menuIcon.classList.remove('ri-close-line'); }); });
             };
 
-            // --- 5. TESTIMONIAL SLIDER ---
             const initTestimonialSlider = () => {
-                const slider = document.getElementById('testimonial-slider');
-                if (!slider) return;
-
-                const wrapper = slider.querySelector('.testimonial-wrapper');
-                const slides = slider.querySelectorAll('.testimonial-slide');
-                const nextBtn = slider.querySelector('.next');
-                const prevBtn = slider.querySelector('.prev');
-                const dotsContainer = slider.querySelector('.slider-dots');
-                let currentIndex = 0;
-                let slideInterval;
-
-                const goToSlide = (index) => {
-                    currentIndex = (index + slides.length) % slides.length;
-                    wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-                    updateDots();
-                };
-                
-                const updateDots = () => {
-                    dotsContainer.querySelectorAll('.slider-dot').forEach((dot, i) => {
-                        dot.classList.toggle('active', i === currentIndex);
-                    });
-                };
-
-                slides.forEach((_, i) => {
-                    const dot = document.createElement('button');
-                    dot.classList.add('slider-dot');
-                    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-                    dot.addEventListener('click', () => {
-                        goToSlide(i);
-                        resetInterval();
-                    });
-                    dotsContainer.appendChild(dot);
-                });
-                
-                nextBtn.addEventListener('click', () => { goToSlide(currentIndex + 1); resetInterval(); });
-                prevBtn.addEventListener('click', () => { goToSlide(currentIndex - 1); resetInterval(); });
-                
-                const startInterval = () => {
-                    slideInterval = setInterval(() => goToSlide(currentIndex + 1), 5000);
-                };
-                const resetInterval = () => {
-                    clearInterval(slideInterval);
-                    startInterval();
-                };
-
-                goToSlide(0);
-                startInterval();
+                const slider = document.getElementById('testimonial-slider'); if (!slider) return;
+                const wrapper = slider.querySelector('.testimonial-wrapper'); const slides = slider.querySelectorAll('.testimonial-slide'); const nextBtn = slider.querySelector('.next'); const prevBtn = slider.querySelector('.prev'); const dotsContainer = slider.querySelector('.slider-dots'); let currentIndex = 0; let slideInterval;
+                const goToSlide = (index) => { currentIndex = (index + slides.length) % slides.length; wrapper.style.transform = `translateX(-${currentIndex * 100}%)`; updateDots(); };
+                const updateDots = () => { dotsContainer.querySelectorAll('.slider-dot').forEach((dot, i) => { dot.classList.toggle('active', i === currentIndex); }); };
+                slides.forEach((_, i) => { const dot = document.createElement('button'); dot.classList.add('slider-dot'); dot.setAttribute('aria-label', `Go to slide ${i + 1}`); dot.addEventListener('click', () => { goToSlide(i); resetInterval(); }); dotsContainer.appendChild(dot); });
+                nextBtn.addEventListener('click', () => { goToSlide(currentIndex + 1); resetInterval(); }); prevBtn.addEventListener('click', () => { goToSlide(currentIndex - 1); resetInterval(); });
+                const startInterval = () => { slideInterval = setInterval(() => goToSlide(currentIndex + 1), 5000); };
+                const resetInterval = () => { clearInterval(slideInterval); startInterval(); };
+                goToSlide(0); startInterval();
             };
-            
-            // --- 6. INTERACTIVE COURSE FILTER ---
+
             const initCourseFilter = () => {
-                const filterBtns = document.querySelectorAll('.course-filter-btn');
-                const courseCards = document.querySelectorAll('.course-card');
-
-                filterBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const filter = btn.dataset.filter;
-                        
-                        filterBtns.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        
-                        courseCards.forEach(card => {
-                            const category = card.dataset.category;
-                            const shouldShow = filter === 'all' || filter === category;
-                            card.classList.toggle('hidden', !shouldShow);
-                        });
-                    });
-                });
+                const filterBtns = document.querySelectorAll('.course-filter-btn'); const courseCards = document.querySelectorAll('.course-card');
+                filterBtns.forEach(btn => { btn.addEventListener('click', () => { const filter = btn.dataset.filter; filterBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active'); courseCards.forEach(card => { const category = card.dataset.category; const shouldShow = filter === 'all' || filter === category; card.classList.toggle('hidden', !shouldShow); }); }); });
             };
 
-            // --- 7. SCROLL-TRIGGERED ANIMATIONS (INTERSECTION OBSERVER) ---
             const initScrollAnimations = () => {
-                const animatedElements = document.querySelectorAll('.animate-on-scroll');
-                const timelineProgress = document.getElementById('timeline-progress');
-
-                const observer = new IntersectionObserver((entries, obs) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const delay = entry.target.dataset.delay || 0;
-                            setTimeout(() => {
-                                entry.target.classList.add('is-visible');
-                            }, delay);
-                            obs.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.1 });
-
+                const animatedElements = document.querySelectorAll('.animate-on-scroll'); const timelineProgress = document.getElementById('timeline-progress');
+                const observer = new IntersectionObserver((entries, obs) => { entries.forEach(entry => { if (entry.isIntersecting) { const delay = entry.target.dataset.delay || 0; setTimeout(() => { entry.target.classList.add('is-visible'); }, delay); obs.unobserve(entry.target); } }); }, { threshold: 0.1 });
                 animatedElements.forEach(el => observer.observe(el));
-                
-                if (timelineProgress) {
-                    const methodologySection = document.getElementById('methodology');
-                    const timelineObserver = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                window.addEventListener('scroll', updateTimelineProgress);
-                            } else {
-                                window.removeEventListener('scroll', updateTimelineProgress);
-                            }
-                        });
-                    }, { rootMargin: "-100px 0px -100px 0px" });
-                    
-                    timelineObserver.observe(methodologySection);
-
-                    function updateTimelineProgress() {
-                        const rect = methodologySection.getBoundingClientRect();
-                        const sectionHeight = methodologySection.offsetHeight;
-                        const windowHeight = window.innerHeight;
-                        let progress = (windowHeight - rect.top) / (sectionHeight + windowHeight * 0.5);
-                        progress = Math.max(0, Math.min(1, progress));
-                        timelineProgress.style.height = `${progress * 100}%`;
-                    }
-                }
+                if (timelineProgress) { const methodologySection = document.getElementById('methodology'); const timelineObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { window.addEventListener('scroll', updateTimelineProgress); } else { window.removeEventListener('scroll', updateTimelineProgress); } }); }, { rootMargin: "-100px 0px -100px 0px" }); timelineObserver.observe(methodologySection); function updateTimelineProgress() { const rect = methodologySection.getBoundingClientRect(); const sectionHeight = methodologySection.offsetHeight; const windowHeight = window.innerHeight; let progress = (windowHeight - rect.top) / (sectionHeight + windowHeight * 0.5); progress = Math.max(0, Math.min(1, progress)); timelineProgress.style.height = `${progress * 100}%`; } }
             };
 
-            // --- 8. FOOTER HELPERS ---
             const initFooter = () => {
                 document.getElementById('current-year').textContent = new Date().getFullYear();
+                const openStatusEl = document.getElementById('open-status');
+                const now = new Date();
+                const day = now.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+                const hour = now.getHours(); // 0-23
+                if (day >= 1 && day <= 5 && hour >= 8 && hour < 18) {
+                    openStatusEl.innerHTML = `We're Open! <span class="text-green-400">(Closes at 6PM)</span>`;
+                } else {
+                    openStatusEl.innerHTML = `We're Closed. <span class="text-red-400">(Opens at 8AM)</span>`;
+                }
             };
             
-            // --- 9. SMOOTH SCROLL FOR ANCHOR LINKS ---
-            const initSmoothScroll = () => {
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const targetId = this.getAttribute('href');
-                        const targetElement = document.querySelector(targetId);
-                        if (targetElement) {
-                            targetElement.scrollIntoView({
-                                behavior: 'smooth'
-                            });
-                        }
-                    });
-                });
-            };
+            const initSmoothScroll = () => { document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function (e) { e.preventDefault(); const targetId = this.getAttribute('href'); const targetElement = document.querySelector(targetId); if (targetElement) { targetElement.scrollIntoView({ behavior: 'smooth' }); } }); }); };
 
-            // --- 10. ACTIVE NAV LINK ON SCROLL ---
             const initActiveNavOnScroll = () => {
-                const sections = document.querySelectorAll('section[id]');
-                const navLinks = document.querySelectorAll('.nav-link:not(.mobile)');
-
+                const sections = document.querySelectorAll('main section[id]'); const navLinks = document.querySelectorAll('#desktop-menu .nav-link');
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
+                            const id = entry.target.getAttribute('id');
                             navLinks.forEach(link => {
                                 link.classList.remove('active');
-                                if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                if (link.getAttribute('href') === `#${id}`) {
                                     link.classList.add('active');
                                 }
                             });
                         }
                     });
-                }, { rootMargin: "-50% 0px -50% 0px" });
+                }, { rootMargin: "-30% 0px -70% 0px" });
+                sections.forEach(section => observer.observe(section));
+            };
 
-                sections.forEach(section => {
-                    observer.observe(section);
+            const initParallaxHero = () => {
+                const heroBg = document.getElementById('hero-bg');
+                window.addEventListener('scroll', () => {
+                    const offset = window.pageYOffset;
+                    heroBg.style.transform = `translateY(${offset * 0.3}px)`;
+                });
+            };
+            
+            const initNewsletterForm = () => {
+                const form = document.getElementById('newsletter-form');
+                const emailInput = document.getElementById('newsletter-email');
+                const statusEl = document.getElementById('form-status');
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = emailInput.value;
+                    statusEl.textContent = '';
+                    statusEl.classList.remove('text-green-400', 'text-red-400');
+
+                    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+                        statusEl.textContent = 'Please enter a valid email.';
+                        statusEl.classList.add('text-red-400');
+                        return;
+                    }
+                    
+                    statusEl.textContent = 'Thank you for subscribing!';
+                    statusEl.classList.add('text-green-400');
+                    emailInput.value = '';
+                    setTimeout(() => statusEl.textContent = '', 3000);
                 });
             };
 
-            // --- Let's Go! ---
-            init();
+            const initBackToTopButton = () => {
+                const button = document.getElementById('back-to-top');
+                window.addEventListener('scroll', () => {
+                    button.classList.toggle('visible', window.scrollY > 300);
+                });
+            };
 
+            init();
         });
     </script>
 </body>

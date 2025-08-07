@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loyal Training Hub Ltd - Empowering Futures Through Education</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Remixicon CDN for icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <style>
         /* Define custom CSS variables for the new color palette */
@@ -362,22 +359,18 @@
 </head>
 <body class="bg-[var(--primary-bg-color)] text-[var(--text-color)]">
 
-    <!-- Preloader -->
     <div id="preloader">
         <div class="spinner"></div>
         <p class="text-[var(--text-color)] text-lg font-semibold">Loading Loyal Training Hub...</p>
     </div>
 
-    <!-- Header -->
     <header id="main-header" class="fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300">
         <nav class="container mx-auto px-4 flex justify-between items-center">
-            <!-- Logo -->
             <a href="#hero" class="flex items-center space-x-2">
                 <img src="https://media-mba2-1.cdn.whatsapp.net/v/t61.24694-24/315768647_1444523972620457_2403558140555377205_n.jpg?ccb=11-4&oh=01_Q5Aa2AFgDk6rvEoxk34L0zobQpk8lodB3j9uH1YvRkl2oh6_nA&oe=68A0013B&_nc_sid=5e03e0&_nc_cat=105" alt="Loyal Training Hub Logo" class="h-10 w-auto rounded-full">
                 <span class="text-[var(--text-color)] text-2xl font-bold">Loyal Training Hub</span>
             </a>
 
-            <!-- Desktop Navigation -->
             <ul class="hidden md:flex space-x-8 items-center">
                 <li><a href="#about" class="nav-link">About Us</a></li>
                 <li><a href="#unique" class="nav-link">Our Approach</a></li>
@@ -391,14 +384,12 @@
                 </li>
             </ul>
 
-            <!-- Mobile Menu Toggle -->
             <button id="mobile-menu-toggle" class="md:hidden text-[var(--text-color)] text-3xl focus:outline-none">
                 <i class="ri-menu-4-line transition-transform duration-300"></i>
             </button>
         </nav>
     </header>
 
-    <!-- Mobile Menu Overlay -->
     <div id="mobile-menu" class="fixed top-0 right-0 w-64 h-full bg-[#0072BC] shadow-lg p-6 pt-20 transform translate-x-full md:hidden transition-transform duration-300 z-40">
         <ul class="flex flex-col space-y-6">
             <li><a href="#hero" class="nav-link text-xl block active">Home</a></li>
@@ -414,7 +405,6 @@
     </div>
 
     <main>
-        <!-- Hero Section -->
         <section id="hero" class="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-[#FFFFFF] to-[#F9FAFB] page-section active">
             <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://i.imgur.com/k0ISwq7.gif');"></div>
             <div class="relative z-10 p-6 max-w-4xl mx-auto hero-content">
@@ -435,7 +425,6 @@
             </div>
         </section>
 
-        <!-- About Us Section -->
         <section id="about" class="py-20 bg-[var(--secondary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">About Loyal Training Hub</h2>
@@ -460,7 +449,6 @@
             </div>
         </section>
 
-        <!-- What Makes Us Unique Section -->
         <section id="unique" class="py-20 bg-[var(--primary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">What Makes Loyal Training Hub Unique?</h2>
@@ -498,13 +486,11 @@
         </section>
 
 
-        <!-- Our Courses Section -->
         <section id="courses" class="py-20 bg-[var(--secondary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Our Popular Courses</h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-                    <!-- Languages Department Card -->
                     <div class="course-department-card animate-on-scroll" data-delay="100">
                         <img src="https://fluencycorp.com/wp-content/uploads/2019/07/learning-many-languages-1.jpg" alt="Learning Languages" class="w-full h-64 object-cover rounded-t-xl">
                         <div class="card-body">
@@ -523,7 +509,6 @@
                         </div>
                     </div>
 
-                    <!-- IT Department Card -->
                     <div class="course-department-card animate-on-scroll" data-delay="200">
                         <img src="https://www.tuv.com/content-media-files/master-content/services/academy-life-care/a02-training-hr-development/1730-tuv-rheinland-it-certification-training-courses/tuv-rheinland-it-certification-training-courses-fo-159912250_core_2_2_1.jpg" alt="IT Department" class="w-full h-64 object-cover rounded-t-xl">
                         <div class="card-body">
@@ -543,7 +528,6 @@
             </div>
         </section>
 
-        <!-- Teaching Methodology Section -->
         <section id="methodology" class="py-20 bg-[var(--primary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Our Unique Teaching Methodology</h2>
@@ -579,26 +563,23 @@
                         </div>
                     </div>
                     <div class="md:w-1/2 mt-10 md:mt-0 animate-on-scroll" data-delay="200">
-                        <!-- Removed the placeholder image for learning process -->
-                    </div>
+                        </div>
                 </div>
             </div>
         </section>
 
-        <!-- Testimonials Section -->
         <section id="testimonials" class="py-20 bg-[var(--secondary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">What Our Students Say</h2>
                 <div id="testimonial-video-container" class="animate-on-scroll" data-delay="100">
                     <video id="testimonial-video" controls loop autoplay muted playsinline class="w-full h-auto rounded-lg">
-                        <source src="https://youtube.com/shorts/sgplOBDle9c?feature=share" type="video/mp4">
+                        <source src="https://i.imgur.com/ahcphLv.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
             </div>
         </section>
 
-        <!-- Learning Resources Section -->
         <section id="resources" class="py-20 bg-[var(--primary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Learning Resources</h2>
@@ -623,7 +604,6 @@
             </div>
         </section>
 
-        <!-- Contact Section -->
         <section id="contact" class="py-20 bg-[var(--secondary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Get In Touch With Us</h2>
@@ -705,7 +685,6 @@
             </div>
         </section>
 
-        <!-- Donate Section -->
         <section id="donate" class="py-20 bg-[var(--primary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Support Our Mission</h2>
@@ -713,22 +692,23 @@
                     <div class="md:w-1/2 animate-on-scroll" data-delay="100">
                         <h3 class="text-2xl font-bold text-[var(--text-color)] mb-6">Donate via Mobile Money (MTN)</h3>
                         <div class="form-container p-6 space-y-4">
-                            <img src="https://www.goodwillaz.org/wp-content/uploads/2021/11/5-15-1.jpg" alt="Donation Image" class="w-full h-48 object-cover rounded-lg mb-4">
+                            <img src="https://tazonta.com/wp-content/uploads/2024/09/mtn-momo-logo-e1729657805751.jpg" alt="MTN Mobile Money Logo" class="w-full h-48 object-cover rounded-lg mb-4">
                             <p class="text-[var(--dark-text-color)] leading-relaxed">
                                 Your contribution helps us continue providing quality education and support to our students. You can easily donate via MTN Mobile Money.
                             </p>
                             <div class="bg-[#E5E7EB] p-4 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between">
                                 <span class="text-[var(--text-color)] font-semibold text-lg mb-2 sm:mb-0">MTN Mobile Money Number:</span>
-                                <span class="text-[var(--accent-color)] font-bold text-xl">+250782407285</span>
+                                <span class="text-[var(--accent-color)] font-bold text-xl">0782407285</span>
                             </div>
                             <p class="text-[var(--dark-text-color)] text-sm italic">
-                                Please ensure the recipient name displayed is: <span class="font-bold text-[var(--text-color)]">LOYAL TRAINING HUB LTD</span>
+                                Please ensure the recipient name displayed is: <span class="font-bold text-[var(--text-color)]">LOYAL TRAINING HUB</span>
                             </p>
                         </div>
                     </div>
                     <div class="md:w-1/2 animate-on-scroll" data-delay="200">
                         <h3 class="text-2xl font-bold text-[var(--text-color)] mb-6">Donate via Bank Transfer</h3>
                         <div class="form-container p-6 space-y-4">
+                            <img src="https://wp.inspiring-workplaces.com/wp-content/uploads/2025/06/BK-logo-white-841x1024.png" alt="Bank of Kigali Logo" class="w-full h-48 object-cover rounded-lg mb-4">
                             <p class="text-[var(--dark-text-color)] leading-relaxed">
                                 For larger contributions or international transfers, you can use our bank account details provided below.
                             </p>
@@ -760,11 +740,9 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="bg-[#0072BC] py-16 text-white">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                <!-- About Company -->
                 <div>
                     <a href="#hero" class="flex items-center space-x-2 mb-6">
                         <img src="https://media-mba2-1.cdn.whatsapp.net/v/t61.24694-24/315768647_1444523972620457_2403558140555377205_n.jpg?ccb=11-4&oh=01_Q5Aa2AFgDk6rvEoxk34L0zobQpk8lodB3j9uH1YvRkl2oh6_nA&oe=68A0013B&_nc_sid=5e03e0&_nc_cat=105" alt="Loyal Training Hub Logo" class="h-10 w-auto rounded-full">
@@ -786,7 +764,6 @@
                     </div>
                 </div>
 
-                <!-- Quick Links -->
                 <div>
                     <h4 class="footer-title text-white">Quick Links</h4>
                     <ul class="space-y-4">
@@ -800,7 +777,6 @@
                     </ul>
                 </div>
 
-                <!-- Contact Information -->
                 <div>
                     <h4 class="footer-title text-white">Contact Info</h4>
                     <ul class="space-y-4">
@@ -837,7 +813,6 @@
                 </div>
             </div>
 
-            <!-- Bottom Footer -->
             <div class="border-t border-gray-700 pt-8 mt-12">
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <div class="text-gray-300 text-sm">
@@ -854,17 +829,14 @@
         </div>
     </footer>
 
-    <!-- Fixed WhatsApp Button -->
     <a href="https://wa.me/250788244964" target="_blank" id="whatsapp-float" aria-label="Chat on WhatsApp">
         <img src="https://png.pngtree.com/png-clipart/20190516/original/pngtree-whatsapp-icon-png-image_3584844.jpg" alt="WhatsApp Icon">
     </a>
 
-    <!-- Enhanced Back to Top Button -->
     <button id="back-to-top" aria-label="Back to top">
         <i class="ri-arrow-up-line"></i>
     </button>
 
-    <!-- Enhanced JavaScript -->
     <script>
         // Enhanced Application State
         const App = {
@@ -1201,3 +1173,5 @@
             }
         });
     </script>
+</body>
+</html>

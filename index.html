@@ -45,46 +45,6 @@
             background: var(--button-hover-bg);
         }
 
-        /* Custom Cursor */
-        .custom-cursor-dot, .custom-cursor-outline {
-            position: fixed;
-            top: 0;
-            left: 0;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .custom-cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-color);
-            transform: translate(-50%, -50%);
-        }
-        .custom-cursor-outline {
-            width: 32px;
-            height: 32px;
-            border: 2px solid var(--accent-color);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
-        }
-        .custom-cursor-outline.cursor-hover-link {
-            width: 48px;
-            height: 48px;
-            border-color: #D9A855; /* Secondary color (gold) */
-        }
-        .custom-cursor-outline.cursor-hover-text {
-            width: 24px;
-            height: 24px;
-            border-color: var(--accent-color);
-        }
-        @media (max-width: 1024px) {
-            .custom-cursor-dot, .custom-cursor-outline {
-                display: none;
-            }
-        }
-
         /* Preloader */
         #preloader {
             position: fixed;
@@ -322,14 +282,6 @@
             @apply w-10 h-10 flex items-center justify-center rounded-full bg-[#E5E7EB] text-[var(--dark-text-color)] hover:bg-[var(--accent-color)] hover:text-white transition-all duration-300;
         }
 
-        /* Glass Effect */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-        }
-
         /* Back to Top Button */
         #back-to-top {
             @apply fixed bottom-8 right-8 p-4 rounded-full bg-[var(--accent-color)] text-white shadow-lg hover:bg-[var(--button-hover-bg)] transition-all duration-300 opacity-0 invisible;
@@ -343,8 +295,7 @@
         #whatsapp-float {
             position: fixed;
             right: 1.5rem;
-            top: 50%;
-            transform: translateY(-50%);
+            bottom: 1.5rem; /* Moved to bottom for simplicity */
             padding: 0.75rem;
             border-radius: 9999px;
             background-color: #22c55e;
@@ -357,65 +308,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: move;
         }
         #whatsapp-float:hover {
             background-color: #16a34a;
+            transform: scale(1.1);
         }
         #whatsapp-float img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             border-radius: 50%;
-        }
-        .is-dragging {
-            cursor: grabbing !important;
-            animation: none !important;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(197, 148, 60, 0.4); /* Gold pulse using accent color */
-            }
-            100% {
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            }
-        }
-
-        /* New: Demo animation for draggable button */
-        @keyframes shake {
-            0%, 100% { transform: translateY(-50%) translateX(0); }
-            20%, 60% { transform: translateY(-50%) translateX(-5px); }
-            40%, 80% { transform: translateY(-50%) translateX(5px); }
-        }
-        .whatsapp-shake {
-            animation: shake 0.6s infinite ease-in-out;
-        }
-
-        /* New: Draggable Hint Box */
-        #draggable-hint {
-            position: fixed;
-            right: 90px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(197, 148, 60, 0.9);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            white-space: nowrap;
-        }
-        #draggable-hint.show {
-            opacity: 1;
-            visibility: visible;
         }
 
         /* Animate on Scroll Classes */
@@ -456,36 +358,9 @@
             display: block;
         }
 
-        /* Navigation Hint */
-        #nav-hint {
-            position: fixed;
-            top: 90px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(197, 148, 60, 0.9);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            white-space: nowrap;
-        }
-        #nav-hint.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
     </style>
 </head>
 <body class="bg-[var(--primary-bg-color)] text-[var(--text-color)]">
-
-    <!-- Custom Cursor -->
-    <div class="custom-cursor-dot"></div>
-    <div class="custom-cursor-outline"></div>
 
     <!-- Preloader -->
     <div id="preloader">
@@ -522,11 +397,6 @@
             </button>
         </nav>
     </header>
-
-    <!-- Navigation Hint -->
-    <div id="nav-hint" class="md:hidden">
-        Tap menu icon <i class="ri-menu-4-line align-middle"></i> to navigate!
-    </div>
 
     <!-- Mobile Menu Overlay -->
     <div id="mobile-menu" class="fixed top-0 right-0 w-64 h-full bg-[#04BADE] shadow-lg p-6 pt-20 transform translate-x-full md:hidden transition-transform duration-300 z-40">
@@ -601,7 +471,6 @@
                     <p class="text-lg leading-relaxed">
                         Our students don’t just learn; they do. From building websites, designing digital products, and analyzing real datasets, to practicing public speaking, engaging in role plays, and preparing for international exams like IELTS, TOEFL, DELF, and TEF, everything is designed to build confidence, proficiency, and practical job skills.
                     </p>
-                    <!-- Integrated Content from the removed section -->
                     <div class="flex flex-col sm:flex-row justify-center space-y-6 sm:space-y-0 sm:space-x-8 mt-12 text-left">
                         <div class="flex-1">
                             <h3 class="text-2xl font-bold text-[var(--text-color)] mb-2">Affordable Pricing</h3>
@@ -618,7 +487,6 @@
                             </p>
                         </div>
                     </div>
-                    <!-- End of integrated content -->
                     <p class="text-lg leading-relaxed mt-6">
                         This approach makes our courses truly job-ready. By the time our students complete the training period, they are not only certified, they are prepared to step directly into fulfilling careers or higher academic opportunities. Whether you're pursuing English, French, Chinese, Swahili, or tech skills, you’ll find our programs built around experience, relevance, and real results. At LTH, you don’t just earn a certificate, you become capable, confident, and career-ready.
                     </p>
@@ -986,15 +854,10 @@
         </div>
     </footer>
 
-    <!-- Floating WhatsApp Button -->
+    <!-- Fixed WhatsApp Button -->
     <a href="https://wa.me/250788244964" target="_blank" id="whatsapp-float" aria-label="Chat on WhatsApp">
         <img src="https://png.pngtree.com/png-clipart/20190516/original/pngtree-whatsapp-icon-png-image_3584844.jpg" alt="WhatsApp Icon">
     </a>
-
-    <!-- Draggable Hint -->
-    <div id="draggable-hint" class="md:hidden">
-        You can drag this button!
-    </div>
 
     <!-- Enhanced Back to Top Button -->
     <button id="back-to-top" aria-label="Back to top">
@@ -1006,71 +869,26 @@
         // Enhanced Application State
         const App = {
             isLoaded: false,
-            currentSlide: 0,
-            totalSlides: 0,
-            scrollPosition: 0,
-            isScrolling: false,
             countersAnimated: false,
-            autoPlayInterval: null,
-            isScrollingTimeout: null,
-            draggableButtonState: {
-                isDragging: false,
-                offsetX: 0,
-                offsetY: 0,
-                startX: 0,
-                startY: 0
-            },
 
             // Initialize all components
             init() {
                 this.setupEventListeners();
                 this.initPreloader();
-                this.initCustomCursor();
                 this.initScrollAnimations();
                 this.initNavigation();
                 this.initForms();
                 this.initProgressBars();
                 this.updateOpenStatus();
                 this.initPageNavigation();
-                this.showNavHint();
-                this.initDraggableWhatsAppButton();
-                this.initCounters(); // Call the counter animation function
-
-                // Mark as loaded after initialization
-                setTimeout(() => {
-                    this.isLoaded = true;
-                }, 100);
             },
 
             // Event Listeners Setup
             setupEventListeners() {
                 window.addEventListener('load', () => this.handleWindowLoad());
                 window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
-                window.addEventListener('resize', () => this.handleResize(), { passive: true });
                 document.addEventListener('DOMContentLoaded', () => this.handleDOMLoaded());
                 window.addEventListener('hashchange', () => this.handleHashChange());
-
-                this.throttledScroll = this.throttle(this.handleScroll.bind(this), 16);
-                window.addEventListener('scroll', this.throttledScroll, { passive: true });
-            },
-
-            // Utility: Throttle function for performance
-            throttle(func, delay) {
-                let timeoutId;
-                let lastExecTime = 0;
-                return function (...args) {
-                    const currentTime = Date.now();
-                    if (currentTime - lastExecTime > delay) {
-                        func.apply(this, args);
-                        lastExecTime = currentTime;
-                    } else {
-                        clearTimeout(timeoutId);
-                        timeoutId = setTimeout(() => {
-                            func.apply(this, args);
-                            lastExecTime = Date.now();
-                        }, delay - (currentTime - lastExecTime));
-                    }
-                };
             },
 
             // Enhanced Preloader
@@ -1078,88 +896,13 @@
                 const preloader = document.getElementById('preloader');
                 if (!preloader) return;
 
-                let progress = 0;
-                const loadingInterval = setInterval(() => {
-                    progress += Math.random() * 30;
-                    if (progress >= 100) {
-                        progress = 100;
-                        clearInterval(loadingInterval);
-                        this.hidePreloader();
-                    }
-                }, 200);
-            },
-
-            hidePreloader() {
-                const preloader = document.getElementById('preloader');
-                if (preloader) {
+                window.addEventListener('load', () => {
                     preloader.classList.add('loaded');
                     document.body.style.overflow = 'visible';
 
                     setTimeout(() => {
                         preloader.remove();
-                        this.triggerEntranceAnimations();
                     }, 800);
-                }
-            },
-
-            triggerEntranceAnimations() {
-                document.querySelectorAll('.hero-content > *').forEach(el => {
-                    el.style.opacity = 1;
-                    el.style.transform = 'translateY(0)';
-                });
-            },
-
-            // Enhanced Custom Cursor
-            initCustomCursor() {
-                const dot = document.querySelector('.custom-cursor-dot');
-                const outline = document.querySelector('.custom-cursor-outline');
-
-                if (!dot || !outline) return;
-                if (window.innerWidth <= 1024) return;
-
-                dot.style.opacity = '1';
-                outline.style.opacity = '1';
-
-                let mouseX = 0, mouseY = 0;
-                let dotX = 0, dotY = 0;
-                let outlineX = 0, outlineY = 0;
-
-                document.addEventListener('mousemove', (e) => {
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
-                });
-
-                const animateCursor = () => {
-                    dotX += (mouseX - dotX) * 0.8;
-                    dotY += (mouseY - dotY) * 0.8;
-                    dot.style.left = dotX + 'px';
-                    dot.style.top = dotY + 'px';
-
-                    outlineX += (mouseX - outlineX) * 0.2;
-                    outlineY += (mouseY - outlineY) * 0.2;
-                    outline.style.left = outlineX + 'px';
-                    outline.style.top = outlineY + 'px';
-
-                    requestAnimationFrame(animateCursor);
-                };
-                animateCursor();
-
-                document.querySelectorAll('a, button, [role="button"]').forEach(el => {
-                    el.addEventListener('mouseenter', () => {
-                        outline.classList.add('cursor-hover-link');
-                    });
-                    el.addEventListener('mouseleave', () => {
-                        outline.classList.remove('cursor-hover-link');
-                    });
-                });
-
-                document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span').forEach(el => {
-                    el.addEventListener('mouseenter', () => {
-                        outline.classList.add('cursor-hover-text');
-                    });
-                    el.addEventListener('mouseleave', () => {
-                        outline.classList.remove('cursor-hover-text');
-                    });
                 });
             },
 
@@ -1176,26 +919,23 @@
                             const delay = entry.target.dataset.delay || 0;
                             setTimeout(() => {
                                 entry.target.classList.add('is-visible');
-                                entry.target.classList.add('will-change-auto');
-                                entry.target.classList.remove('will-change-transform');
                             }, delay);
                         }
                     });
                 }, observerOptions);
 
                 document.querySelectorAll('.animate-on-scroll').forEach(el => {
-                    el.classList.add('will-change-transform');
                     observer.observe(el);
                 });
 
                 this.initTimelineProgress();
+                this.initCounters();
             },
 
             initTimelineProgress() {
                 const progressBar = document.getElementById('timeline-progress');
                 if (!progressBar) return;
 
-                const timelineSteps = document.querySelectorAll('.methodology-step');
                 const timelineSection = document.getElementById('methodology');
 
                 if (!timelineSection) return;
@@ -1225,7 +965,7 @@
             initNavigation() {
                 const mobileToggle = document.getElementById('mobile-menu-toggle');
                 const mobileMenu = document.getElementById('mobile-menu');
-                const navLinks = document.querySelectorAll('.nav-link, .btn-donate-nav, header a');
+                const navLinks = document.querySelectorAll('.nav-link, .btn-donate-nav');
 
                 navLinks.forEach(link => {
                     link.addEventListener('click', (e) => {
@@ -1248,23 +988,15 @@
                 }
             },
 
-            // New: Handle page navigation based on hash
             initPageNavigation() {
                 const pages = document.querySelectorAll('.page-section');
                 const navLinks = document.querySelectorAll('.nav-link');
 
                 const showPage = (pageId) => {
-                    let foundPage = false;
                     pages.forEach(page => {
+                        page.classList.remove('active');
                         if (page.id === pageId) {
                             page.classList.add('active');
-                            foundPage = true;
-                            window.scrollTo({
-                                top: 0,
-                                behavior: 'instant'
-                            });
-                        } else {
-                            page.classList.remove('active');
                         }
                     });
 
@@ -1275,8 +1007,9 @@
                         }
                     });
 
-                    if (!foundPage && pageId !== 'hero') {
-                        window.location.hash = 'hero';
+                    const currentUrl = window.location.href.split('#')[0];
+                    if (window.location.href !== `${currentUrl}#${pageId}`) {
+                        window.location.hash = pageId;
                     }
                 };
 
@@ -1286,16 +1019,6 @@
                 };
 
                 this.handleHashChange();
-            },
-
-            scrollToSection(target) {
-                const headerHeight = document.getElementById('main-header').offsetHeight;
-                const targetPosition = target.offsetTop - headerHeight - 20;
-
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
             },
 
             toggleMobileMenu() {
@@ -1314,17 +1037,9 @@
                 }
             },
 
-            setActiveNavLink(activeLink) {
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
-                activeLink.classList.add('active');
-            },
-
             // Enhanced Counters Animation
             initCounters() {
                 const counters = document.querySelectorAll('.stats-counter');
-
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting && !this.countersAnimated) {
@@ -1334,14 +1049,7 @@
                     });
                 }, { threshold: 0.5 });
 
-                if (counters.length > 0) {
-                    const statsSection = document.getElementById('unique');
-                    if (statsSection) {
-                        observer.observe(statsSection);
-                    } else {
-                        counters.forEach(counter => observer.observe(counter));
-                    }
-                }
+                counters.forEach(counter => observer.observe(counter));
             },
 
             animateCounters(counters) {
@@ -1349,25 +1057,24 @@
                     const target = parseInt(counter.dataset.count);
                     if (isNaN(target)) return;
                     const duration = 2000;
-                    const startTime = performance.now();
+                    let startTimestamp = null;
+                    const startNumber = 0;
 
-                    const updateCounter = (currentTime) => {
-                        const elapsed = currentTime - startTime;
-                        const progress = Math.min(elapsed / duration, 1);
-
-                        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                        const currentValue = Math.floor(easeOutQuart * target);
-
+                    const step = (timestamp) => {
+                        if (!startTimestamp) startTimestamp = timestamp;
+                        const progress = timestamp - startTimestamp;
+                        const easeOutQuad = (t) => t * (2 - t);
+                        const animationProgress = easeOutQuad(Math.min(progress / duration, 1));
+                        const currentValue = Math.floor(animationProgress * target);
                         counter.textContent = currentValue.toLocaleString();
 
-                        if (progress < 1) {
-                            requestAnimationFrame(updateCounter);
+                        if (progress < duration) {
+                            window.requestAnimationFrame(step);
                         } else {
                             counter.textContent = target.toLocaleString();
                         }
                     };
-
-                    requestAnimationFrame(updateCounter);
+                    window.requestAnimationFrame(step);
                 });
             },
 
@@ -1382,8 +1089,6 @@
                         this.handleFormSubmission(contactForm, contactStatusDiv, 'contact');
                     });
                 }
-
-                this.initFormValidation();
             },
 
             handleFormSubmission(form, statusDiv, formType) {
@@ -1393,13 +1098,12 @@
                 let allInputsValid = true;
                 form.querySelectorAll('[required]').forEach(input => {
                     if (!input.checkValidity()) {
-                        this.validateInput(input);
                         allInputsValid = false;
                     }
                 });
 
                 if (!allInputsValid) {
-                    this.showFormStatus(statusDiv, 'Please fill in all required fields correctly.', 'error');
+                    this.showFormStatus(statusDiv, 'Please fill in all required fields.', 'error');
                     return;
                 }
 
@@ -1411,11 +1115,6 @@
                         this.showFormStatus(statusDiv, 'Your message has been sent successfully! We will get back to you soon.', 'success');
                     }
                     form.reset();
-
-                    form.querySelectorAll('.form-input.border-green-400').forEach(input => {
-                        input.classList.remove('border-green-400');
-                    });
-
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
                 }, 1500);
@@ -1423,36 +1122,14 @@
 
             showFormStatus(statusDiv, message, type) {
                 if (!statusDiv) return;
-
                 const className = type === 'success' ? 'text-green-400' : 'text-red-400';
-                statusDiv.innerHTML = `<div class="${className} animate-pulse">${message}</div>`;
-
+                statusDiv.innerHTML = `<div class="${className}">${message}</div>`;
                 setTimeout(() => {
                     statusDiv.innerHTML = '';
                 }, 5000);
             },
 
-            isValidEmail(email) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return emailRegex.test(email);
-            },
-
-            initFormValidation() {
-                const inputs = document.querySelectorAll('.form-input');
-
-                inputs.forEach(input => {
-                    input.addEventListener('blur', () => {
-                        this.validateInput(input);
-                    });
-
-                    input.addEventListener('input', () => {
-                        input.classList.remove('border-red-400');
-                        input.classList.remove('border-green-400');
-                    });
-                });
-            },
-
-            // Enhanced Progress Bars and Interactive Elements
+            // Back to Top Button Logic
             initProgressBars() {
                 const backToTopBtn = document.getElementById('back-to-top');
                 if (backToTopBtn) {
@@ -1467,8 +1144,6 @@
 
             // Handle scroll events
             handleScroll() {
-                if (!this.isLoaded) return;
-
                 const scrollY = window.scrollY;
                 const header = document.getElementById('main-header');
                 const backToTopBtn = document.getElementById('back-to-top');
@@ -1488,46 +1163,10 @@
                         backToTopBtn.classList.remove('show');
                     }
                 }
-
-                this.isScrolling = true;
-                clearTimeout(this.isScrollingTimeout);
-                this.isScrollingTimeout = setTimeout(() => {
-                    this.isScrolling = false;
-                }, 200);
-
-                if (window.location.hash === '#methodology') {
-                    this.initTimelineProgress();
-                }
             },
 
             handleWindowLoad() {
-                this.hidePreloader();
-                setTimeout(() => {
-                    this.hidePreloader();
-                }, 3000);
-            },
-
-            handleResize() {
-                const dot = document.querySelector('.custom-cursor-dot');
-                const outline = document.querySelector('.custom-cursor-outline');
-                if (dot && outline) {
-                    if (window.innerWidth <= 1024) {
-                        dot.style.display = 'none';
-                        outline.style.display = 'none';
-                    } else {
-                        dot.style.display = 'block';
-                        outline.style.display = 'block';
-                    }
-                }
-
-                const navHint = document.getElementById('nav-hint');
-                if (navHint) {
-                    if (window.innerWidth > 768) {
-                        navHint.classList.remove('show');
-                    } else if (window.location.hash === '#hero') {
-                         this.showNavHint();
-                    }
-                }
+                this.isLoaded = true;
             },
 
             handleDOMLoaded() {
@@ -1536,13 +1175,10 @@
             updateOpenStatus() {
                 const openStatusFooter = document.getElementById('open-status');
                 const openStatusContact = document.getElementById('open-status-contact');
-
                 const now = new Date();
                 const day = now.getDay();
                 const hour = now.getHours();
-
                 const isOpen = (day >= 1 && day <= 5 && hour >= 8 && hour < 18);
-
                 const statusText = isOpen ? 'Open Now' : 'Closed';
                 const statusClass = isOpen ? 'text-green-500' : 'text-red-500';
 
@@ -1557,124 +1193,6 @@
                     openStatusContact.classList.add(statusClass);
                 }
             },
-
-            showNavHint() {
-                const navHint = document.getElementById('nav-hint');
-                if (navHint && window.innerWidth <= 768) {
-                    navHint.classList.add('show');
-                    setTimeout(() => {
-                        navHint.classList.remove('show');
-                    }, 5000);
-                }
-            },
-
-            // New Draggable WhatsApp Button Logic
-            initDraggableWhatsAppButton() {
-                const button = document.getElementById('whatsapp-float');
-                const hint = document.getElementById('draggable-hint');
-
-                if (!button) return;
-
-                // Show the hint and animation on page load
-                setTimeout(() => {
-                    button.classList.add('whatsapp-shake');
-                    if (hint) {
-                        hint.classList.add('show');
-                    }
-                }, 3000);
-
-                setTimeout(() => {
-                    button.classList.remove('whatsapp-shake');
-                    if (hint) {
-                        hint.classList.remove('show');
-                    }
-                }, 8000);
-
-
-                let startX, startY, initialMouseX, initialMouseY;
-                let isDragging = false;
-                const minDragDistance = 5; // Minimum distance to register as a drag
-
-                const onMouseDown = (e) => {
-                    isDragging = true;
-                    e.preventDefault();
-
-                    button.classList.add('is-dragging');
-                    button.style.transition = 'none'; // Disable transition for smooth dragging
-                    button.style.animation = 'none'; // Stop pulse animation
-
-                    initialMouseX = e.clientX || e.touches[0].clientX;
-                    initialMouseY = e.clientY || e.touches[0].clientY;
-
-                    // Get current position
-                    const rect = button.getBoundingClientRect();
-                    startX = rect.left;
-                    startY = rect.top;
-
-                    document.addEventListener('mousemove', onMouseMove);
-                    document.addEventListener('mouseup', onMouseUp);
-                    document.addEventListener('touchmove', onMouseMove);
-                    document.addEventListener('touchend', onMouseUp);
-                };
-
-                const onMouseMove = (e) => {
-                    if (!isDragging) return;
-                    e.preventDefault();
-
-                    const currentMouseX = e.clientX || e.touches[0].clientX;
-                    const currentMouseY = e.clientY || e.touches[0].clientY;
-
-                    let dx = currentMouseX - initialMouseX;
-                    let dy = currentMouseY - initialMouseY;
-
-                    // Update position
-                    let newX = startX + dx;
-                    let newY = startY + dy;
-
-                    // Bound the button to the viewport
-                    const viewportWidth = window.innerWidth;
-                    const viewportHeight = window.innerHeight;
-                    const buttonWidth = button.offsetWidth;
-                    const buttonHeight = button.offsetHeight;
-                    const padding = 16;
-
-                    newX = Math.max(padding, Math.min(newX, viewportWidth - buttonWidth - padding));
-                    newY = Math.max(padding, Math.min(newY, viewportHeight - buttonHeight - padding));
-
-                    button.style.left = `${newX}px`;
-                    button.style.top = `${newY}px`;
-                    button.style.right = 'auto';
-                    button.style.bottom = 'auto';
-                    button.style.transform = 'none';
-                };
-
-                const onMouseUp = (e) => {
-                    isDragging = false;
-                    button.classList.remove('is-dragging');
-                    button.style.transition = 'all 0.3s ease-in-out';
-                    button.style.animation = 'pulse 2s infinite';
-
-                    const endMouseX = e.clientX || e.changedTouches[0].clientX;
-                    const endMouseY = e.clientY || e.changedTouches[0].clientY;
-                    const dragDistance = Math.sqrt(Math.pow(endMouseX - initialMouseX, 2) + Math.pow(endMouseY - initialMouseY, 2));
-
-                    // Check if it was a drag or a click
-                    if (dragDistance > minDragDistance) {
-                        e.preventDefault();
-                    } else {
-                        // It was a click, let the link open
-                        window.open(button.href, '_blank');
-                    }
-
-                    document.removeEventListener('mousemove', onMouseMove);
-                    document.removeEventListener('mouseup', onMouseUp);
-                    document.removeEventListener('touchmove', onMouseMove);
-                    document.removeEventListener('touchend', onMouseUp);
-                };
-
-                button.addEventListener('mousedown', onMouseDown);
-                button.addEventListener('touchstart', onMouseDown, { passive: false });
-            }
         };
 
         document.addEventListener('DOMContentLoaded', () => {

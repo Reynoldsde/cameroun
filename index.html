@@ -601,7 +601,25 @@
                     <p class="text-lg leading-relaxed">
                         Our students don’t just learn; they do. From building websites, designing digital products, and analyzing real datasets, to practicing public speaking, engaging in role plays, and preparing for international exams like IELTS, TOEFL, DELF, and TEF, everything is designed to build confidence, proficiency, and practical job skills.
                     </p>
-                    <p class="text-lg leading-relaxed">
+                    <!-- Integrated Content from the removed section -->
+                    <div class="flex flex-col sm:flex-row justify-center space-y-6 sm:space-y-0 sm:space-x-8 mt-12 text-left">
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-2">Affordable Pricing</h3>
+                            <p class="text-[var(--dark-text-color)]">Competitive rates with flexible installment payment plans.</p>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-2">No Fixed Intakes</h3>
+                            <p class="text-[var(--dark-text-color)]">Start immediately after your placement test - no waiting periods.</p>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-2">Proven Impact</h3>
+                            <p class="text-[var(--dark-text-color)]">
+                                Over <span class="text-[var(--accent-color)] text-3xl font-bold stats-counter" data-count="2500">0</span> learners empowered both locally and internationally.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- End of integrated content -->
+                    <p class="text-lg leading-relaxed mt-6">
                         This approach makes our courses truly job-ready. By the time our students complete the training period, they are not only certified, they are prepared to step directly into fulfilling careers or higher academic opportunities. Whether you're pursuing English, French, Chinese, Swahili, or tech skills, you’ll find our programs built around experience, relevance, and real results. At LTH, you don’t just earn a certificate, you become capable, confident, and career-ready.
                     </p>
                     <a href="https://wa.me/250788244964" target="_blank" class="btn btn-primary mt-8 inline-flex items-center">
@@ -808,7 +826,7 @@
                                 <a href="https://www.instagram.com/loyal.training.hub" target="_blank" class="social-link" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
                                 <a href="https://www.linkedin.com/company/loyal-training-hub" target="_blank" class="social-link" aria-label="LinkedIn">
                                     <i class="ri-linkedin-fill"></i>
-                                }</a>
+                                </a>
                                 <a href="https://youtube.com/@loyaltraininghub?si=33mh4Oqg70XDfp0J" target="_blank" class="social-link" aria-label="YouTube">
                                     <i class="ri-youtube-line"></i>
                                 </a>
@@ -1010,13 +1028,13 @@
                 this.initCustomCursor();
                 this.initScrollAnimations();
                 this.initNavigation();
-                this.initCounters();
                 this.initForms();
                 this.initProgressBars();
                 this.updateOpenStatus();
                 this.initPageNavigation();
                 this.showNavHint();
                 this.initDraggableWhatsAppButton();
+                this.initCounters(); // Call the counter animation function
 
                 // Mark as loaded after initialization
                 setTimeout(() => {
@@ -1317,9 +1335,9 @@
                 }, { threshold: 0.5 });
 
                 if (counters.length > 0) {
-                    const footerStats = document.querySelector('footer .glass-effect');
-                    if (footerStats) {
-                        observer.observe(footerStats);
+                    const statsSection = document.getElementById('unique');
+                    if (statsSection) {
+                        observer.observe(statsSection);
                     } else {
                         counters.forEach(counter => observer.observe(counter));
                     }
@@ -1328,7 +1346,8 @@
 
             animateCounters(counters) {
                 counters.forEach(counter => {
-                    const target = parseInt(counter.dataset.count || counter.textContent);
+                    const target = parseInt(counter.dataset.count);
+                    if (isNaN(target)) return;
                     const duration = 2000;
                     const startTime = performance.now();
 
@@ -1339,12 +1358,12 @@
                         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
                         const currentValue = Math.floor(easeOutQuart * target);
 
-                        counter.textContent = currentValue;
+                        counter.textContent = currentValue.toLocaleString();
 
                         if (progress < 1) {
                             requestAnimationFrame(updateCounter);
                         } else {
-                            counter.textContent = target;
+                            counter.textContent = target.toLocaleString();
                         }
                     };
 

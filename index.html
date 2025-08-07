@@ -18,7 +18,7 @@
             --accent-color: #C5943C; /* Dark Gold for highlights */
             --text-color: #1F2937; /* Dark Gray for main text */
             --dark-text-color: #4B5563; /* Lighter dark gray for sub-text */
-            --link-hover-color: #0A3D62; /* Deep Navy Blue for link hover */
+            --link-hover-color: #04BADE; /* New Ocean Blue for link hover */
             --button-hover-bg: #D9A855; /* Lighter gold for hover */
         }
 
@@ -159,7 +159,7 @@
         #mobile-menu {
             transition: transform 0.3s ease-out;
             transform: translateX(100%);
-            background-color: #0A3D62; /* Deep Navy Blue for contrast */
+            background-color: #04BADE; /* New Ocean Blue for contrast */
             color: #FFFFFF;
         }
         #mobile-menu.hidden {
@@ -188,10 +188,10 @@
         .btn-outline {
             @apply border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white;
         }
-        
-        /* New Donate button style */
+
+        /* New Donate button style - more prominent */
         .btn-donate-nav {
-            @apply px-6 py-2 rounded-full font-bold text-white bg-orange-500 hover:bg-orange-600 transition-all duration-300 ease-in-out shadow-lg;
+            @apply px-6 py-2 rounded-full font-bold text-white bg-gradient-to-r from-orange-500 to-amber-500 transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl ring-2 ring-offset-2 ring-amber-500 hover:ring-orange-500;
             letter-spacing: 0.05em;
         }
 
@@ -357,7 +357,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: pulse 2s infinite;
+            cursor: move;
         }
         #whatsapp-float:hover {
             background-color: #16a34a;
@@ -368,20 +368,54 @@
             object-fit: contain;
             border-radius: 50%;
         }
+        .is-dragging {
+            cursor: grabbing !important;
+            animation: none !important;
+        }
 
         @keyframes pulse {
             0% {
-                transform: translateY(-50%) scale(1);
                 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             }
             70% {
-                transform: translateY(-50%) scale(1.05);
                 box-shadow: 0 0 0 10px rgba(197, 148, 60, 0.4); /* Gold pulse using accent color */
             }
             100% {
-                transform: translateY(-50%) scale(1);
                 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             }
+        }
+
+        /* New: Demo animation for draggable button */
+        @keyframes shake {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            20%, 60% { transform: translateY(-50%) translateX(-5px); }
+            40%, 80% { transform: translateY(-50%) translateX(5px); }
+        }
+        .whatsapp-shake {
+            animation: shake 0.6s infinite ease-in-out;
+        }
+
+        /* New: Draggable Hint Box */
+        #draggable-hint {
+            position: fixed;
+            right: 90px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(197, 148, 60, 0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+        #draggable-hint.show {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* Animate on Scroll Classes */
@@ -444,7 +478,7 @@
             opacity: 1;
             visibility: visible;
         }
-        
+
     </style>
 </head>
 <body class="bg-[var(--primary-bg-color)] text-[var(--text-color)]">
@@ -470,8 +504,8 @@
 
             <!-- Desktop Navigation -->
             <ul class="hidden md:flex space-x-8 items-center">
-                <li><a href="#hero" class="nav-link active">Home</a></li>
                 <li><a href="#about" class="nav-link">About Us</a></li>
+                <li><a href="#unique" class="nav-link">Our Approach</a></li>
                 <li><a href="#courses" class="nav-link">Courses</a></li>
                 <li><a href="#methodology" class="nav-link">Methodology</a></li>
                 <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
@@ -495,10 +529,11 @@
     </div>
 
     <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu" class="fixed top-0 right-0 w-64 h-full bg-[#0A3D62] shadow-lg p-6 pt-20 transform translate-x-full md:hidden transition-transform duration-300 z-40">
+    <div id="mobile-menu" class="fixed top-0 right-0 w-64 h-full bg-[#04BADE] shadow-lg p-6 pt-20 transform translate-x-full md:hidden transition-transform duration-300 z-40">
         <ul class="flex flex-col space-y-6">
             <li><a href="#hero" class="nav-link text-xl block active">Home</a></li>
             <li><a href="#about" class="nav-link text-xl block">About Us</a></li>
+            <li><a href="#unique" class="nav-link text-xl block">Our Approach</a></li>
             <li><a href="#courses" class="nav-link text-xl block">Courses</a></li>
             <li><a href="#methodology" class="nav-link text-xl block">Methodology</a></li>
             <li><a href="#testimonials" class="nav-link text-xl block">Testimonials</a></li>
@@ -555,8 +590,30 @@
             </div>
         </section>
 
+        <!-- What Makes Us Unique Section -->
+        <section id="unique" class="py-20 bg-[var(--primary-bg-color)] page-section">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title text-center animate-on-scroll">What Makes Loyal Training Hub Unique?</h2>
+                <div class="max-w-4xl mx-auto mt-12 space-y-6 text-center text-[var(--dark-text-color)] animate-on-scroll" data-delay="100">
+                    <p class="text-lg leading-relaxed">
+                        At Loyal Training Hub (LTH), we believe the best learning happens through hands-on, real-world experiences. That’s why we go beyond theory by integrating practical sessions and self-directed projects into every program we offer, whether it’s language mastery or software training.
+                    </p>
+                    <p class="text-lg leading-relaxed">
+                        Our students don’t just learn; they do. From building websites, designing digital products, and analyzing real datasets, to practicing public speaking, engaging in role plays, and preparing for international exams like IELTS, TOEFL, DELF, and TEF, everything is designed to build confidence, proficiency, and practical job skills.
+                    </p>
+                    <p class="text-lg leading-relaxed">
+                        This approach makes our courses truly job-ready. By the time our students complete the training period, they are not only certified, they are prepared to step directly into fulfilling careers or higher academic opportunities. Whether you're pursuing English, French, Chinese, Swahili, or tech skills, you’ll find our programs built around experience, relevance, and real results. At LTH, you don’t just earn a certificate, you become capable, confident, and career-ready.
+                    </p>
+                    <a href="https://wa.me/250788244964" target="_blank" class="btn btn-primary mt-8 inline-flex items-center">
+                        <i class="ri-whatsapp-line mr-2"></i> Apply Now
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
         <!-- Our Courses Section -->
-        <section id="courses" class="py-20 bg-[var(--primary-bg-color)] page-section">
+        <section id="courses" class="py-20 bg-[var(--secondary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Our Popular Courses</h2>
 
@@ -601,7 +658,7 @@
         </section>
 
         <!-- Teaching Methodology Section -->
-        <section id="methodology" class="py-20 bg-[var(--secondary-bg-color)] page-section">
+        <section id="methodology" class="py-20 bg-[var(--primary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Our Unique Teaching Methodology</h2>
                 <div class="flex flex-col md:flex-row items-center justify-center md:space-x-12 mt-12">
@@ -643,7 +700,7 @@
         </section>
 
         <!-- Testimonials Section -->
-        <section id="testimonials" class="py-20 bg-[var(--primary-bg-color)] page-section">
+        <section id="testimonials" class="py-20 bg-[var(--secondary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">What Our Students Say</h2>
                 <div id="testimonial-video-container" class="animate-on-scroll" data-delay="100">
@@ -656,7 +713,7 @@
         </section>
 
         <!-- Learning Resources Section -->
-        <section id="resources" class="py-20 bg-[var(--secondary-bg-color)] page-section">
+        <section id="resources" class="py-20 bg-[var(--primary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Learning Resources</h2>
                 <div class="flex flex-col md:flex-row items-center justify-center space-y-10 md:space-y-0 md:space-x-12 mt-12">
@@ -681,7 +738,7 @@
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="py-20 bg-[var(--primary-bg-color)] page-section">
+        <section id="contact" class="py-20 bg-[var(--secondary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Get In Touch With Us</h2>
                 <div class="flex flex-col md:flex-row justify-center items-start space-y-10 md:space-y-0 md:space-x-12 mt-12">
@@ -751,7 +808,7 @@
                                 <a href="https://www.instagram.com/loyal.training.hub" target="_blank" class="social-link" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
                                 <a href="https://www.linkedin.com/company/loyal-training-hub" target="_blank" class="social-link" aria-label="LinkedIn">
                                     <i class="ri-linkedin-fill"></i>
-                                </a>
+                                }</a>
                                 <a href="https://youtube.com/@loyaltraininghub?si=33mh4Oqg70XDfp0J" target="_blank" class="social-link" aria-label="YouTube">
                                     <i class="ri-youtube-line"></i>
                                 </a>
@@ -763,7 +820,7 @@
         </section>
 
         <!-- Donate Section -->
-        <section id="donate" class="py-20 bg-[var(--secondary-bg-color)] page-section">
+        <section id="donate" class="py-20 bg-[var(--primary-bg-color)] page-section">
             <div class="container mx-auto px-4">
                 <h2 class="section-title text-center animate-on-scroll">Support Our Mission</h2>
                 <div class="flex flex-col md:flex-row items-start justify-center space-y-10 md:space-y-0 md:space-x-12 mt-12">
@@ -818,7 +875,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#0A3D62] py-16 text-white">
+    <footer class="bg-[#04BADE] py-16 text-white">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 <!-- About Company -->
@@ -848,6 +905,7 @@
                     <h4 class="footer-title text-white">Quick Links</h4>
                     <ul class="space-y-4">
                         <li><a href="#about" class="footer-link text-gray-300">About Us</a></li>
+                        <li><a href="#unique" class="footer-link text-gray-300">Our Approach</a></li>
                         <li><a href="#courses" class="footer-link text-gray-300">Our Courses</a></li>
                         <li><a href="#methodology" class="footer-link text-gray-300">Teaching Method</a></li>
                         <li><a href="#testimonials" class="footer-link text-gray-300">Success Stories</a></li>
@@ -915,6 +973,11 @@
         <img src="https://png.pngtree.com/png-clipart/20190516/original/pngtree-whatsapp-icon-png-image_3584844.jpg" alt="WhatsApp Icon">
     </a>
 
+    <!-- Draggable Hint -->
+    <div id="draggable-hint" class="md:hidden">
+        You can drag this button!
+    </div>
+
     <!-- Enhanced Back to Top Button -->
     <button id="back-to-top" aria-label="Back to top">
         <i class="ri-arrow-up-line"></i>
@@ -932,6 +995,13 @@
             countersAnimated: false,
             autoPlayInterval: null,
             isScrollingTimeout: null,
+            draggableButtonState: {
+                isDragging: false,
+                offsetX: 0,
+                offsetY: 0,
+                startX: 0,
+                startY: 0
+            },
 
             // Initialize all components
             init() {
@@ -946,6 +1016,7 @@
                 this.updateOpenStatus();
                 this.initPageNavigation();
                 this.showNavHint();
+                this.initDraggableWhatsAppButton();
 
                 // Mark as loaded after initialization
                 setTimeout(() => {
@@ -1136,7 +1207,7 @@
             initNavigation() {
                 const mobileToggle = document.getElementById('mobile-menu-toggle');
                 const mobileMenu = document.getElementById('mobile-menu');
-                const navLinks = document.querySelectorAll('.nav-link, .btn-donate-nav');
+                const navLinks = document.querySelectorAll('.nav-link, .btn-donate-nav, header a');
 
                 navLinks.forEach(link => {
                     link.addEventListener('click', (e) => {
@@ -1162,7 +1233,7 @@
             // New: Handle page navigation based on hash
             initPageNavigation() {
                 const pages = document.querySelectorAll('.page-section');
-                const navLinks = document.querySelectorAll('.nav-link, .btn-donate-nav');
+                const navLinks = document.querySelectorAll('.nav-link');
 
                 const showPage = (pageId) => {
                     let foundPage = false;
@@ -1181,7 +1252,7 @@
 
                     navLinks.forEach(link => {
                         link.classList.remove('active');
-                        if (link.classList.contains('nav-link') && link.getAttribute('href') === `#${pageId}`) {
+                        if (link.getAttribute('href') === `#${pageId}`) {
                             link.classList.add('active');
                         }
                     });
@@ -1476,6 +1547,114 @@
                         navHint.classList.remove('show');
                     }, 5000);
                 }
+            },
+
+            // New Draggable WhatsApp Button Logic
+            initDraggableWhatsAppButton() {
+                const button = document.getElementById('whatsapp-float');
+                const hint = document.getElementById('draggable-hint');
+
+                if (!button) return;
+
+                // Show the hint and animation on page load
+                setTimeout(() => {
+                    button.classList.add('whatsapp-shake');
+                    if (hint) {
+                        hint.classList.add('show');
+                    }
+                }, 3000);
+
+                setTimeout(() => {
+                    button.classList.remove('whatsapp-shake');
+                    if (hint) {
+                        hint.classList.remove('show');
+                    }
+                }, 8000);
+
+
+                let startX, startY, initialMouseX, initialMouseY;
+                let isDragging = false;
+                const minDragDistance = 5; // Minimum distance to register as a drag
+
+                const onMouseDown = (e) => {
+                    isDragging = true;
+                    e.preventDefault();
+
+                    button.classList.add('is-dragging');
+                    button.style.transition = 'none'; // Disable transition for smooth dragging
+                    button.style.animation = 'none'; // Stop pulse animation
+
+                    initialMouseX = e.clientX || e.touches[0].clientX;
+                    initialMouseY = e.clientY || e.touches[0].clientY;
+
+                    // Get current position
+                    const rect = button.getBoundingClientRect();
+                    startX = rect.left;
+                    startY = rect.top;
+
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.addEventListener('mouseup', onMouseUp);
+                    document.addEventListener('touchmove', onMouseMove);
+                    document.addEventListener('touchend', onMouseUp);
+                };
+
+                const onMouseMove = (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+
+                    const currentMouseX = e.clientX || e.touches[0].clientX;
+                    const currentMouseY = e.clientY || e.touches[0].clientY;
+
+                    let dx = currentMouseX - initialMouseX;
+                    let dy = currentMouseY - initialMouseY;
+
+                    // Update position
+                    let newX = startX + dx;
+                    let newY = startY + dy;
+
+                    // Bound the button to the viewport
+                    const viewportWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
+                    const buttonWidth = button.offsetWidth;
+                    const buttonHeight = button.offsetHeight;
+                    const padding = 16;
+
+                    newX = Math.max(padding, Math.min(newX, viewportWidth - buttonWidth - padding));
+                    newY = Math.max(padding, Math.min(newY, viewportHeight - buttonHeight - padding));
+
+                    button.style.left = `${newX}px`;
+                    button.style.top = `${newY}px`;
+                    button.style.right = 'auto';
+                    button.style.bottom = 'auto';
+                    button.style.transform = 'none';
+                };
+
+                const onMouseUp = (e) => {
+                    isDragging = false;
+                    button.classList.remove('is-dragging');
+                    button.style.transition = 'all 0.3s ease-in-out';
+                    button.style.animation = 'pulse 2s infinite';
+
+                    const endMouseX = e.clientX || e.changedTouches[0].clientX;
+                    const endMouseY = e.clientY || e.changedTouches[0].clientY;
+                    const dragDistance = Math.sqrt(Math.pow(endMouseX - initialMouseX, 2) + Math.pow(endMouseY - initialMouseY, 2));
+
+                    // Check if it was a drag or a click
+                    if (dragDistance > minDragDistance) {
+                        e.preventDefault();
+                    } else {
+                        // It was a click, let the link open
+                        window.open(button.href, '_blank');
+                    }
+
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
+                    document.removeEventListener('touchmove', onMouseMove);
+                    document.removeEventListener('touchend', onMouseUp);
+                };
+
+                button.addEventListener('mousedown', onMouseDown);
+                button.addEventListener('touchstart', onMouseDown, { passive: false });
             }
         };
 

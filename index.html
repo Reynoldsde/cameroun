@@ -1,1178 +1,467 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loyal Training Hub Ltd - Empowering Futures Through Education</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
-    <style>
-        /* Define custom CSS variables for the new color palette */
+import React, { useState, useEffect } from 'react';
+import {
+  Menu, X, Home, Briefcase, Image, Users, Star, Calendar, ShoppingCart, UserPlus, Rss,
+  Instagram, Twitter, Facebook, Linkedin,
+  Palette, Handshake, Lightbulb
+} from 'lucide-react';
+
+// Main App component
+export default function App() {
+  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+  const [showTaramaText, setShowTaramaText] = useState(false);
+  const [fadeLoadingScreen, setFadeLoadingScreen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [submissionStatus, setSubmissionStatus] = useState(null);
+
+  // Handle the loading screen timing and fade-out
+  useEffect(() => {
+    // The loading duration has been changed to 10 seconds.
+    const gifDuration = 10000;
+    const textFadeInDuration = 1000;
+    const screenFadeOutDuration = 1000;
+
+    // Show "Tarama" text after the GIF finishes
+    const showTextTimer = setTimeout(() => {
+      setShowTaramaText(true);
+    }, gifDuration);
+
+    // Start fading out the entire screen after the text has been visible for a moment
+    const fadeScreenTimer = setTimeout(() => {
+      setFadeLoadingScreen(true);
+    }, gifDuration + textFadeInDuration);
+
+    // Remove the loading screen from the DOM after it has faded out
+    const removeScreenTimer = setTimeout(() => {
+      setShowLoadingScreen(false);
+    }, gifDuration + textFadeInDuration + screenFadeOutDuration);
+
+    return () => {
+      clearTimeout(showTextTimer);
+      clearTimeout(fadeScreenTimer);
+      clearTimeout(removeScreenTimer);
+    };
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setSubmissionStatus('submitting');
+    // This is a placeholder for a real API call.
+    // In a real application, you would send formData to a backend endpoint here.
+    try {
+      console.log('Simulating form submission with data:', formData);
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network delay
+      setSubmissionStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('Form submission failed:', error);
+      setSubmissionStatus('error');
+    }
+  };
+
+  // Static data for the website sections
+  const navLinks = [
+    { name: 'Home', href: '#home', icon: Home },
+    { name: 'Services', href: '#services', icon: Briefcase },
+    { name: 'Gallery', href: '#gallery', icon: Image },
+    { name: 'Team', href: '#team', icon: Users },
+    { name: 'Testimonials', href: '#testimonials', icon: Star },
+    { name: 'Events', href: '#events', icon: Calendar },
+    { name: 'Community', href: '#community', icon: UserPlus },
+    { name: 'Blog', href: '#blog', icon: Rss },
+  ];
+
+  const services = [
+    {
+      title: 'Event Management',
+      description: 'From concept to execution, we handle every detail to create unforgettable events. Specializing in cultural, music, and corporate gatherings.',
+      icon: Palette
+    },
+    {
+      title: 'Creative Projects',
+      description: 'Bringing artistic visions to life. We collaborate with creatives on everything from film production to art installations and digital campaigns.',
+      icon: Lightbulb
+    },
+    {
+      title: 'Talent Supply',
+      description: 'Connecting top creative talent with projects. We provide a curated roster of artists, designers, musicians, and performers for your needs.',
+      icon: Handshake
+    },
+  ];
+
+  const teamMembers = [
+    { name: 'John Doe', role: 'Founder & CEO', bio: 'A visionary leader passionate about African creative industries.', image: 'https://placehold.co/150x150/d1d5db/374151?text=John' },
+    { name: 'Jane Smith', role: 'Chief Creative Officer', bio: 'An experienced creative director with a flair for innovative projects.', image: 'https://placehold.co/150x150/d1d5db/374151?text=Jane' },
+    { name: 'Peter Green', role: 'Events Manager', bio: 'A master of logistics, ensuring every event runs smoothly and perfectly.', image: 'https://placehold.co/150x150/d1d5db/374151?text=Peter' },
+    { name: 'Sarah Lee', role: 'Community Lead', bio: 'Connecting and nurturing our global network of over 400 creatives.', image: 'https://placehold.co/150x150/d1d5db/374151?text=Sarah' },
+  ];
+
+  const testimonials = [
+    { quote: 'Working with Tarama Rwanda was a game-changer for our festival. Their professionalism and creative insights are unmatched.', author: 'Client A' },
+    { quote: 'They helped us launch our brand with a stunning event that captivated our audience. Highly recommend!', author: 'Client B' },
+    { quote: 'The talent we sourced through Tarama was incredible. We will definitely be collaborating with them again.', author: 'Client C' },
+  ];
+
+  const upcomingEvents = [
+    { title: 'Kigali Art Fair', date: 'August 25, 2025', location: 'Kigali Convention Centre' },
+    { title: 'Tech for Creatives Workshop', date: 'September 10, 2025', location: 'Tarama Hub' },
+    { title: 'Creative Networking Night', date: 'October 5, 2025', location: 'The Spot' },
+  ];
+
+  const socialLinks = [
+    { name: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/tarama.rw/' },
+    { name: 'Twitter', icon: Twitter, href: 'https://x.com/TaramaRwanda' },
+    { name: 'Facebook', icon: Facebook, href: 'https://www.facebook.com/Taramarwanda' },
+    { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/company/tarama-rwanda/' },
+  ];
+
+  return (
+    <>
+      <style>
+        {`
         :root {
-            --primary-bg-color: #F9FAFB; /* Very Light Gray for main background */
-            --secondary-bg-color: #FFFFFF; /* Pure White for cards and sections */
-            --accent-color: #C5943C; /* Dark Gold for highlights */
-            --text-color: #1F2937; /* Dark Gray for main text */
-            --dark-text-color: #4B5563; /* Lighter dark gray for sub-text */
-            --link-hover-color: #0072BC; /* Blue (Pantone) for link hover */
-            --button-hover-bg: #D9A855; /* Lighter gold for hover */
+          --primary-gold: #FFAA1D;
         }
+        .text-fade-in {
+          opacity: 0;
+          transition: opacity 1s ease-in-out;
+        }
+        .text-fade-in.visible {
+          opacity: 1;
+        }
+        `}
+      </style>
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--primary-bg-color);
-            color: var(--text-color);
-            overflow-x: hidden;
-        }
+      {/* Loading Screen */}
+      {showLoadingScreen && (
+        <div
+          className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-gray-950 transition-opacity duration-1000 ${
+            fadeLoadingScreen ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          {/* The image size has been adjusted to be smaller and centered */}
+          <img
+            src="https://i.imgur.com/yEmNcx1.gif"
+            alt="Tarama Rwanda Loading Image"
+            className="w-64 h-auto rounded-lg shadow-lg"
+            onError={(e) => {
+              // Fallback to a placeholder if the image fails to load
+              e.target.onerror = null;
+              e.target.src = "https://placehold.co/500x500/d1d5db/374151?text=Loading...";
+            }}
+          />
+          <div className="relative z-10 mt-8">
+            <div className={`text-6xl font-bold text-white text-fade-in ${showTaramaText ? 'visible' : ''}`}>
+              Tarama
+            </div>
+          </div>
+        </div>
+      )}
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #E5E7EB;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-color);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--button-hover-bg);
-        }
-
-        /* Preloader */
-        #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--secondary-bg-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            z-index: 10000;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-        #preloader.loaded {
-            opacity: 0;
-            visibility: hidden;
-        }
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-top: 4px solid var(--accent-color);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Header on Scroll */
-        #main-header.scrolled {
-            background-color: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        /* Navigation Links */
-        .nav-link {
-            position: relative;
-            color: var(--dark-text-color);
-            padding: 0.5rem 0;
-            transition: color 0.3s ease;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background-color: var(--accent-color);
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 100%;
-        }
-        .nav-link:hover {
-            color: var(--link-hover-color);
-        }
-        .nav-link.active {
-            color: var(--link-hover-color);
-            font-weight: 600;
-        }
-
-        /* Mobile Menu */
-        #mobile-menu {
-            transition: transform 0.3s ease-out;
-            transform: translateX(100%);
-            background-color: #0072BC; /* Blue (Pantone) for contrast */
-            color: #FFFFFF;
-        }
-        #mobile-menu.hidden {
-            transform: translateX(100%);
-        }
-        #mobile-menu:not(.hidden) {
-            transform: translateX(0);
-        }
-        #mobile-menu .nav-link {
-            color: #E5E7EB;
-        }
-        #mobile-menu .nav-link:hover {
-             color: var(--accent-color);
-        }
-
-        /* Buttons */
-        .btn {
-            @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300 ease-in-out flex items-center justify-center;
-        }
-        .btn-primary {
-            @apply bg-[var(--accent-color)] text-white hover:bg-[var(--button-hover-bg)] shadow-lg hover:shadow-xl;
-        }
-        .btn-secondary {
-            @apply bg-[#E5E7EB] text-[var(--dark-text-color)] hover:bg-[#D1D5DB] border border-[#D1D5DB] hover:border-[#9CA3AF];
-        }
-        .btn-outline {
-            @apply border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white;
-        }
-
-        /* New Donate button style - more prominent */
-        .btn-donate-nav {
-            @apply px-6 py-2 rounded-full font-bold text-white bg-gradient-to-r from-orange-500 to-amber-500 transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl ring-2 ring-offset-2 ring-amber-500 hover:ring-orange-500;
-            letter-spacing: 0.05em;
-        }
-
-        /* Section Titles */
-        .section-title {
-            @apply text-4xl md:text-5xl font-extrabold text-[var(--text-color)] mb-6 relative pb-4;
-        }
-        .section-title::after {
-            content: '';
-            @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-[var(--accent-color)] rounded-full;
-        }
-
-        /* Card Styles */
-        .card {
-            @apply bg-[var(--secondary-bg-color)] rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-105;
-        }
-        .card-body {
-            @apply p-6;
-        }
-
-        /* Course Department Cards */
-        .course-department-card {
-            @apply bg-[var(--secondary-bg-color)] rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-105;
-        }
-        .course-department-card img {
-            @apply w-full h-64 object-cover rounded-t-xl;
-        }
-        .course-department-card .card-body {
-            @apply p-6;
-        }
-        .course-department-card ul {
-            @apply list-disc list-inside space-y-2 text-[var(--dark-text-color)];
-        }
-
-
-        /* Methodology Timeline */
-        .timeline-container {
-            position: relative;
-            padding-left: 2rem;
-        }
-        .timeline-line {
-            position: absolute;
-            left: 1.25rem;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background-color: #E5E7EB;
-            border-radius: 2px;
-        }
-        #timeline-progress {
-            position: absolute;
-            left: 1.25rem;
-            top: 0;
-            width: 4px;
-            background-color: var(--accent-color);
-            border-radius: 2px;
-            height: 0;
-            transition: height 0.5s ease-out;
-        }
-        .methodology-step {
-            position: relative;
-            padding-bottom: 3rem;
-        }
-        .methodology-step::before {
-            content: '';
-            position: absolute;
-            left: 0.5rem;
-            top: 0.5rem;
-            width: 1.5rem;
-            height: 1.5rem;
-            background-color: var(--accent-color);
-            border: 4px solid var(--primary-bg-color);
-            border-radius: 50%;
-            z-index: 10;
-        }
-        .methodology-step:last-child {
-            padding-bottom: 0;
-        }
-
-        /* Testimonial Slider */
-        .testimonial-wrapper {
-            display: flex;
-            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .testimonial-slide {
-            flex: 0 0 100%;
-            width: 100%;
-        }
-        .slider-btn {
-            @apply p-3 rounded-full bg-[#E5E7EB] text-[var(--dark-text-color)] hover:bg-[var(--accent-color)] hover:text-white transition-colors duration-300;
-        }
-        .slider-dot {
-            @apply w-3 h-3 rounded-full bg-[#D1D5DB] mx-1 cursor-pointer transition-all duration-300;
-        }
-        .slider-dot.active {
-            @apply bg-[var(--accent-color)] w-5;
-        }
-
-        /* Form Styles */
-        .form-container {
-            @apply bg-[var(--secondary-bg-color)] rounded-xl shadow-inner p-6;
-        }
-        .form-input {
-            @apply w-full p-3 rounded-lg bg-[#E5E7EB] border border-[#D1D5DB] text-[var(--text-color)] placeholder-[var(--dark-text-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all duration-200;
-        }
-        .form-input:focus {
-            @apply ring-[var(--accent-color)] border-[var(--accent-color)];
-        }
-        .form-input.border-red-400 {
-            @apply border-red-400 focus:ring-red-500;
-        }
-        .form-input.border-green-400 {
-            @apply border-green-400 focus:ring-green-500;
-        }
-
-        /* Footer */
-        .footer-title {
-            @apply text-[var(--text-color)] text-lg font-semibold mb-6 relative pb-3;
-        }
-        .footer-title::after {
-            content: '';
-            @apply absolute bottom-0 left-0 w-10 h-1 bg-[var(--accent-color)] rounded-full;
-        }
-        .footer-link {
-            @apply text-[var(--dark-text-color)] hover:text-[var(--accent-color)] transition-colors duration-200;
-        }
-        .social-link {
-            @apply w-10 h-10 flex items-center justify-center rounded-full bg-[#E5E7EB] text-[var(--dark-text-color)] hover:bg-[var(--accent-color)] hover:text-white transition-all duration-300;
-        }
-
-        /* Back to Top Button */
-        #back-to-top {
-            @apply fixed bottom-8 right-8 p-4 rounded-full bg-[var(--accent-color)] text-white shadow-lg hover:bg-[var(--button-hover-bg)] transition-all duration-300 opacity-0 invisible;
-            z-index: 999;
-        }
-        #back-to-top.show {
-            @apply opacity-100 visible;
-        }
-
-        /* Floating WhatsApp Button */
-        #whatsapp-float {
-            position: fixed;
-            right: 1.5rem;
-            bottom: 1.5rem; /* Moved to bottom for simplicity */
-            padding: 0.75rem;
-            border-radius: 9999px;
-            background-color: #22c55e;
-            color: white;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease-in-out;
-            z-index: 1000;
-            width: 70px;
-            height: 70px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        #whatsapp-float:hover {
-            background-color: #16a34a;
-            transform: scale(1.1);
-        }
-        #whatsapp-float img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 50%;
-        }
-
-        /* Animate on Scroll Classes */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-            will-change: transform, opacity;
-        }
-        .animate-on-scroll.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-            will-change: auto;
-        }
-
-        /* Hero section specific animations */
-        .hero-content > * {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSlideUp 0.8s ease-out forwards;
-        }
-        .hero-content h1 { animation-delay: 0.2s; }
-        .hero-content p { animation-delay: 0.4s; }
-        .hero-content .hero-buttons { animation-delay: 0.6s; }
-
-        @keyframes fadeInSlideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Page-specific styles for SPA */
-        .page-section {
-            display: none;
-            min-height: calc(100vh - 80px);
-            padding-top: 80px;
-        }
-        .page-section.active {
-            display: block;
-        }
-
-    </style>
-</head>
-<body class="bg-[var(--primary-bg-color)] text-[var(--text-color)]">
-
-    <div id="preloader">
-        <div class="spinner"></div>
-        <p class="text-[var(--text-color)] text-lg font-semibold">Loading Loyal Training Hub...</p>
-    </div>
-
-    <header id="main-header" class="fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300">
-        <nav class="container mx-auto px-4 flex justify-between items-center">
-            <a href="#hero" class="flex items-center space-x-2">
-                <img src="https://media-mba2-1.cdn.whatsapp.net/v/t61.24694-24/315768647_1444523972620457_2403558140555377205_n.jpg?ccb=11-4&oh=01_Q5Aa2AFgDk6rvEoxk34L0zobQpk8lodB3j9uH1YvRkl2oh6_nA&oe=68A0013B&_nc_sid=5e03e0&_nc_cat=105" alt="Loyal Training Hub Logo" class="h-10 w-auto rounded-full">
-                <span class="text-[var(--text-color)] text-2xl font-bold">Loyal Training Hub</span>
+      {/* Main App Content */}
+      <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
+        {/* Header with Navigation */}
+        <header className="sticky top-0 z-40 bg-white shadow-sm">
+          <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
+            {/* Logo */}
+            <a href="#" className="flex items-center">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzYzEe5wa8PXzdTUAXW2M3lxFRUOqsrgPqDw&s"
+                alt="Tarama Rwanda Logo"
+                className="h-10"
+                onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/150x50/374151/FFFFFF?text=Tarama+Rwanda"; }}
+              />
             </a>
 
-            <ul class="hidden md:flex space-x-8 items-center">
-                <li><a href="#about" class="nav-link">About Us</a></li>
-                <li><a href="#unique" class="nav-link">Our Approach</a></li>
-                <li><a href="#courses" class="nav-link">Courses</a></li>
-                <li><a href="#methodology" class="nav-link">Methodology</a></li>
-                <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
-                <li><a href="#resources" class="nav-link">Resources</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-                <li>
-                    <a href="#donate" class="btn-donate-nav">Donate</a>
+            {/* Desktop Navigation */}
+            <ul className="hidden md:flex space-x-6">
+              {navLinks.map((link) => (
+                <li key={link.name}>
+                  <a href={link.href} className="text-gray-600 hover:text-primary-gold transition-colors flex items-center gap-2" style={{ color: 'var(--primary-gold)' }}>
+                    <link.icon className="w-5 h-5" />
+                    <span>{link.name}</span>
+                  </a>
                 </li>
+              ))}
+              {/* Merch Store link - Placeholder */}
+              <li>
+                <a href="#" className="text-gray-600 hover:text-primary-gold transition-colors flex items-center gap-2" style={{ color: 'var(--primary-gold)' }}>
+                  <ShoppingCart className="w-5 h-5" />
+                  <span>Shop</span>
+                </a>
+              </li>
             </ul>
 
-            <button id="mobile-menu-toggle" class="md:hidden text-[var(--text-color)] text-3xl focus:outline-none">
-                <i class="ri-menu-4-line transition-transform duration-300"></i>
+            {/* Mobile Menu Button */}
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-gray-600 hover:text-primary-gold" style={{ color: 'var(--primary-gold)' }}>
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-        </nav>
-    </header>
+          </nav>
 
-    <div id="mobile-menu" class="fixed top-0 right-0 w-64 h-full bg-[#0072BC] shadow-lg p-6 pt-20 transform translate-x-full md:hidden transition-transform duration-300 z-40">
-        <ul class="flex flex-col space-y-6">
-            <li><a href="#hero" class="nav-link text-xl block active">Home</a></li>
-            <li><a href="#about" class="nav-link text-xl block">About Us</a></li>
-            <li><a href="#unique" class="nav-link text-xl block">Our Approach</a></li>
-            <li><a href="#courses" class="nav-link text-xl block">Courses</a></li>
-            <li><a href="#methodology" class="nav-link text-xl block">Methodology</a></li>
-            <li><a href="#testimonials" class="nav-link text-xl block">Testimonials</a></li>
-            <li><a href="#resources" class="nav-link text-xl block">Resources</a></li>
-            <li><a href="#contact" class="nav-link text-xl block">Contact</a></li>
-            <li><a href="#donate" class="btn-donate-nav text-xl block">Donate</a></li>
-        </ul>
-    </div>
-
-    <main>
-        <section id="hero" class="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-[#FFFFFF] to-[#F9FAFB] page-section active">
-            <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://i.imgur.com/k0ISwq7.gif');"></div>
-            <div class="relative z-10 p-6 max-w-4xl mx-auto hero-content">
-                <h1 class="text-5xl md:text-7xl font-extrabold text-[var(--text-color)] leading-tight mb-6 animate-on-scroll" data-delay="100">
-                    Empowering Futures Through <span class="text-[var(--accent-color)]">Practical Education</span>
-                </h1>
-                <p class="text-lg md:text-xl text-[var(--dark-text-color)] mb-8 animate-on-scroll" data-delay="200">
-                    At Loyal Training Hub, we provide cutting-edge, hands-on training in IT and Languages, equipping you with the skills to thrive in today's dynamic world.
-                </p>
-                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 hero-buttons animate-on-scroll" data-delay="300">
-                    <a href="#courses" class="btn btn-primary">
-                        <i class="ri-book-open-line mr-2"></i> Explore Our Courses
+          {/* Mobile Dropdown Menu */}
+          {isMenuOpen && (
+            <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg p-4 transition-transform duration-300">
+              <ul className="space-y-4">
+                {navLinks.map((link) => (
+                  <li key={link.name}>
+                    <a href={link.href} onClick={() => setIsMenuOpen(false)} className="text-gray-600 hover:text-primary-gold transition-colors flex items-center gap-2" style={{ color: 'var(--primary-gold)' }}>
+                      <link.icon className="w-5 h-5" />
+                      <span>{link.name}</span>
                     </a>
-                    <a href="#contact" class="btn btn-secondary">
-                        <i class="ri-mail-line mr-2"></i> Get in Touch
-                    </a>
-                </div>
+                  </li>
+                ))}
+                <li>
+                  <a href="#" onClick={() => setIsMenuOpen(false)} className="text-gray-600 hover:text-primary-gold transition-colors flex items-center gap-2" style={{ color: 'var(--primary-gold)' }}>
+                    <ShoppingCart className="w-5 h-5" />
+                    <span>Shop</span>
+                  </a>
+                </li>
+              </ul>
             </div>
-        </section>
+          )}
+        </header>
 
-        <section id="about" class="py-20 bg-[var(--secondary-bg-color)] page-section">
-            <div class="container mx-auto px-4">
-                <h2 class="section-title text-center animate-on-scroll">About Loyal Training Hub</h2>
-                <div class="flex flex-col md:flex-row items-center justify-center space-y-10 md:space-y-0 md:space-x-12 mt-12">
-                    <div class="md:w-1/2 animate-on-scroll" data-delay="100">
-                        <img src="https://i.imgur.com/Ax0veGU.jpeg" alt="Loyal Training Hub Team" class="rounded-xl shadow-2xl object-cover w-full h-auto">
-                    </div>
-                    <div class="md:w-1/2 text-[var(--dark-text-color)] space-y-6 animate-on-scroll" data-delay="200">
-                        <p class="leading-relaxed text-lg">
-                            Loyal Training Hub Ltd is a leading educational institution dedicated to fostering talent and driving career growth in Rwanda and beyond. Our mission is to bridge the gap between academic knowledge and industry demands by offering practical, skill-focused training programs.
-                        </p>
-                        <p class="leading-relaxed text-lg">
-                            We believe in a hands-on approach, providing our students with real-world projects, expert mentorship, and a vibrant learning community. Our state-of-the-art facilities and experienced instructors ensure a high-quality learning experience that translates directly into professional success.
-                        </p>
-                        <ul class="list-disc list-inside space-y-2 text-[var(--accent-color)]">
-                            <li><i class="ri-check-double-line text-[var(--accent-color)] mr-2"></i> Industry-relevant curriculum</li>
-                            <li><i class="ri-check-double-line text-[var(--accent-color)] mr-2"></i> Experienced and passionate instructors</li>
-                            <li><i class="ri-check-double-line text-[var(--accent-color)] mr-2"></i> Strong career support and networking</li>
-                        </ul>
-                    </div>
-                </div>
+        <main>
+          {/* Hero Section */}
+          <section id="home" className="relative text-white py-20 md:py-32 overflow-hidden rounded-b-[4rem]" style={{ backgroundColor: 'var(--primary-gold)' }}>
+            <div className="container mx-auto px-4 text-center">
+              <h1 className="text-4xl md:text-6xl font-extrabold mb-4 animate-fadeInUp">
+                Rethinking Africa's Creative Ecosystems
+              </h1>
+              <p className="text-lg md:text-xl max-w-3xl mx-auto mb-8 animate-fadeIn delay-300">
+                Tarama Rwanda is a pan-African youth-led initiative from Kigali, Rwanda, dedicated to developing the Culture, Tech, and Creative Industries in Africa. We are a hub to over 400 creatives across the world.
+              </p>
+              <a
+                href="#services"
+                className="inline-block bg-white text-gray-900 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-200 transition-all transform hover:scale-105 animate-fadeIn delay-500"
+              >
+                Discover Our Impact
+              </a>
             </div>
-        </section>
+          </section>
 
-        <section id="unique" class="py-20 bg-[var(--primary-bg-color)] page-section">
-            <div class="container mx-auto px-4">
-                <h2 class="section-title text-center animate-on-scroll">What Makes Loyal Training Hub Unique?</h2>
-                <div class="max-w-4xl mx-auto mt-12 space-y-6 text-center text-[var(--dark-text-color)] animate-on-scroll" data-delay="100">
-                    <p class="text-lg leading-relaxed">
-                        At Loyal Training Hub (LTH), we believe the best learning happens through hands-on, real-world experiences. That’s why we go beyond theory by integrating practical sessions and self-directed projects into every program we offer, whether it’s language mastery or software training.
-                    </p>
-                    <p class="text-lg leading-relaxed">
-                        Our students don’t just learn; they do. From building websites, designing digital products, and analyzing real datasets, to practicing public speaking, engaging in role plays, and preparing for international exams like IELTS, TOEFL, DELF, and TEF, everything is designed to build confidence, proficiency, and practical job skills.
-                    </p>
-                    <div class="flex flex-col sm:flex-row justify-center space-y-6 sm:space-y-0 sm:space-x-8 mt-12 text-left">
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-2">Affordable Pricing</h3>
-                            <p class="text-[var(--dark-text-color)]">Competitive rates with flexible installment payment plans.</p>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-2">No Fixed Intakes</h3>
-                            <p class="text-[var(--dark-text-color)]">Start immediately after your placement test - no waiting periods.</p>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-2">Proven Impact</h3>
-                            <p class="text-[var(--dark-text-color)]">
-                                Over <span class="text-[var(--accent-color)] text-3xl font-bold stats-counter" data-count="2500">0</span> learners empowered both locally and internationally.
-                            </p>
-                        </div>
+          {/* Services Section */}
+          <section id="services" className="py-20 bg-gray-100">
+            <div className="container mx-auto px-4 text-center">
+              <h2 className="text-4xl font-bold mb-12">Our Services</h2>
+              <div className="grid md:grid-cols-3 gap-8">
+                {services.map((service) => (
+                  <div key={service.title} className="bg-white p-8 rounded-2xl shadow-xl transform transition-transform hover:scale-105 hover:shadow-2xl">
+                    <div className="flex justify-center items-center mb-6" style={{ color: 'var(--primary-gold)' }}>
+                      <service.icon className="w-16 h-16" />
                     </div>
-                    <p class="text-lg leading-relaxed mt-6">
-                        This approach makes our courses truly job-ready. By the time our students complete the training period, they are not only certified, they are prepared to step directly into fulfilling careers or higher academic opportunities. Whether you're pursuing English, French, Chinese, Swahili, or tech skills, you’ll find our programs built around experience, relevance, and real results. At LTH, you don’t just earn a certificate, you become capable, confident, and career-ready.
-                    </p>
-                    <a href="https://wa.me/250788244964" target="_blank" class="btn btn-primary mt-8 inline-flex items-center">
-                        <i class="ri-whatsapp-line mr-2"></i> Apply Now
-                    </a>
-                </div>
+                    <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
+                    <p className="text-gray-600">{service.description}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-        </section>
+          </section>
 
-
-        <section id="courses" class="py-20 bg-[var(--secondary-bg-color)] page-section">
-            <div class="container mx-auto px-4">
-                <h2 class="section-title text-center animate-on-scroll">Our Popular Courses</h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-                    <div class="course-department-card animate-on-scroll" data-delay="100">
-                        <img src="https://fluencycorp.com/wp-content/uploads/2019/07/learning-many-languages-1.jpg" alt="Learning Languages" class="w-full h-64 object-cover rounded-t-xl">
-                        <div class="card-body">
-                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-4">Languages Department</h3>
-                            <p class="text-[var(--dark-text-color)] text-base mb-4">Unlock global opportunities by mastering new languages with our expert instructors.</p>
-                            <h4 class="text-xl font-semibold text-[var(--accent-color)] mb-2">Courses Offered:</h4>
-                            <ul>
-                                <li>Swahili</li>
-                                <li>English</li>
-                                <li>French</li>
-                                <li>Kinyarwanda (for foreigners)</li>
-                                <li>Chinese</li>
-                                <li>Dutch</li>
-                            </ul>
-                            <a href="https://wa.me/250788244964?text=Hello%2C%20I%27m%20interested%20in%20your%20Language%20Courses.%20Could%20you%20please%20provide%20more%20information%3F" target="_blank" class="btn btn-primary w-full mt-6">Inquire About Language Courses <i class="ri-whatsapp-line ml-2"></i></a>
-                        </div>
+          {/* Gallery Section */}
+          <section id="gallery" className="py-20">
+            <div className="container mx-auto px-4 text-center">
+              <h2 className="text-4xl font-bold mb-12">Our Gallery</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  'https://images.unsplash.com/photo-1517457210348-da070f6cb7d3?q=80&w=2940&auto=format&fit=crop',
+                  'https://images.unsplash.com/photo-1549880193-41c19b22e176?q=80&w=2940&auto=format&fit=crop',
+                  'https://images.unsplash.com/photo-1516240217032-4916a04a6015?q=80&w=2940&auto=format&fit=crop',
+                  'https://images.unsplash.com/photo-1522858100583-09477b63f738?q=80&w=2940&auto=format&fit=crop',
+                  'https://images.unsplash.com/photo-1511216393521-49b828a2a475?q=80&w=2940&auto=format&fit=crop',
+                  'https://images.unsplash.com/photo-1511986422312-32b49d567083?q=80&w=2940&auto=format&fit=crop'
+                ].map((src, index) => (
+                  <div key={index} className="relative group overflow-hidden rounded-xl shadow-lg">
+                    <img src={src} alt={`Gallery Image ${index + 1}`} className="w-full h-72 object-cover transform transition-transform group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" style={{ backgroundColor: 'var(--primary-gold)' }}>
+                      <p className="text-gray-900 text-lg font-bold">Event Moment</p>
                     </div>
-
-                    <div class="course-department-card animate-on-scroll" data-delay="200">
-                        <img src="https://www.tuv.com/content-media-files/master-content/services/academy-life-care/a02-training-hr-development/1730-tuv-rheinland-it-certification-training-courses/tuv-rheinland-it-certification-training-courses-fo-159912250_core_2_2_1.jpg" alt="IT Department" class="w-full h-64 object-cover rounded-t-xl">
-                        <div class="card-body">
-                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-4">IT Department</h3>
-                            <p class="text-[var(--dark-text-color)] text-base mb-4">Build the technical skills demanded by today's rapidly evolving digital landscape.</p>
-                            <h4 class="text-xl font-semibold text-[var(--accent-color)] mb-2">Courses Offered:</h4>
-                            <ul>
-                                <li>Full-Stack Web Development</li>
-                                <li>Data Science & Analytics</li>
-                                <li>Cyber Security Fundamentals</li>
-                                <li>Mobile App Development</li>
-                            </ul>
-                            <a href="https://wa.me/250788244964?text=Hello%2C%20I%27m%20interested%20in%20your%20IT%20Courses.%20Could%20you%20please%20provide%20more%20information%3F" target="_blank" class="btn btn-primary w-full mt-6">Inquire About IT Courses <i class="ri-whatsapp-line ml-2"></i></a>
-                        </div>
-                    </div>
-                </div>
+                  </div>
+                ))}
+              </div>
             </div>
-        </section>
+          </section>
 
-        <section id="methodology" class="py-20 bg-[var(--primary-bg-color)] page-section">
-            <div class="container mx-auto px-4">
-                <h2 class="section-title text-center animate-on-scroll">Our Unique Teaching Methodology</h2>
-                <div class="flex flex-col md:flex-row items-center justify-center md:space-x-12 mt-12">
-                    <div class="md:w-1/2 relative timeline-container animate-on-scroll" data-delay="100">
-                        <div class="timeline-line"></div>
-                        <div id="timeline-progress"></div>
-                        <div class="space-y-12">
-                            <div class="methodology-step pl-12">
-                                <h3 class="text-2xl font-bold text-[var(--text-color)] mb-2">1. Foundational Knowledge</h3>
-                                <p class="text-[var(--dark-text-color)] leading-relaxed">
-                                    We start with strong theoretical basics, ensuring every student understands the core concepts before diving into practical applications.
-                                </p>
-                            </div>
-                            <div class="methodology-step pl-12">
-                                <h3 class="text-2xl font-bold text-[var(--text-color)] mb-2">2. Hands-On Practical Training</h3>
-                                <p class="text-[var(--dark-text-color)] leading-relaxed">
-                                    Our courses emphasize active learning through real-world projects, coding challenges, and case studies, building practical skills.
-                                </p>
-                            </div>
-                            <div class="methodology-step pl-12">
-                                <h3 class="text-2xl font-bold text-[var(--text-color)] mb-2">3. Expert Mentorship & Feedback</h3>
-                                <p class="text-[var(--dark-text-color)] leading-relaxed">
-                                    Students receive personalized guidance from industry experts, with regular feedback sessions to refine their skills and understanding.
-                                </p>
-                            </div>
-                            <div class="methodology-step pl-12">
-                                <h3 class="text-2xl font-bold text-[var(--text-color)] mb-2">4. Career Development & Support</h3>
-                                <p class="text-[var(--dark-text-color)] leading-relaxed">
-                                    We provide robust career services, including resume building, interview preparation, and job placement assistance, ensuring a smooth transition into the workforce.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="md:w-1/2 mt-10 md:mt-0 animate-on-scroll" data-delay="200">
-                        </div>
-                </div>
+          {/* About Us / Team Page Section */}
+          <section id="team" className="py-20 bg-gray-100">
+            <div className="container mx-auto px-4 text-center">
+              <h2 className="text-4xl font-bold mb-12">Meet the Team</h2>
+              <div className="grid md:grid-cols-4 gap-8">
+                {teamMembers.map((member) => (
+                  <div key={member.name} className="bg-white p-6 rounded-2xl shadow-xl">
+                    <img src={member.image} alt={member.name} className="w-32 h-32 rounded-full mx-auto mb-4 object-cover" />
+                    <h3 className="text-2xl font-bold">{member.name}</h3>
+                    <p className="font-medium mb-4" style={{ color: 'var(--primary-gold)' }}>{member.role}</p>
+                    <p className="text-gray-600">{member.bio}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-        </section>
+          </section>
 
-        <section id="testimonials" class="py-20 bg-[var(--secondary-bg-color)] page-section">
-            <div class="container mx-auto px-4">
-                <h2 class="section-title text-center animate-on-scroll">What Our Students Say</h2>
-                <div id="testimonial-video-container" class="animate-on-scroll" data-delay="100">
-                    <video id="testimonial-video" controls loop autoplay muted playsinline class="w-full h-auto rounded-lg">
-                        <source src="https://i.imgur.com/ahcphLv.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
+          {/* Testimonials Section */}
+          <section id="testimonials" className="py-20 text-white" style={{ backgroundColor: 'var(--primary-gold)' }}>
+            <div className="container mx-auto px-4 text-center">
+              <h2 className="text-4xl font-bold mb-12">What Our Clients Say</h2>
+              <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
+                {testimonials.map((testimonial, index) => (
+                  <div key={index} className="bg-white text-gray-900 p-8 rounded-2xl shadow-xl">
+                    <Star className="w-8 h-8 mb-4" style={{ color: 'var(--primary-gold)' }} />
+                    <p className="italic text-lg mb-4">"{testimonial.quote}"</p>
+                    <p className="font-bold">- {testimonial.author}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-        </section>
+          </section>
 
-        <section id="resources" class="py-20 bg-[var(--primary-bg-color)] page-section">
-            <div class="container mx-auto px-4">
-                <h2 class="section-title text-center animate-on-scroll">Learning Resources</h2>
-                <div class="flex flex-col md:flex-row items-center justify-center space-y-10 md:space-y-0 md:space-x-12 mt-12">
-                    <div class="md:w-1/2 animate-on-scroll" data-delay="100">
-                        <h3 class="text-2xl font-bold text-[var(--text-color)] mb-6">Explore Our Learning Videos</h3>
-                        <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden shadow-2xl">
-                             <iframe width="560" height="315" src="https://www.youtube.com/embed/TpxphleE1bs?si=oa1osWPzMJ9qrBji" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="w-full h-full"></iframe>
-                        </div>
-                        <p class="text-[var(--dark-text-color)] mt-6 leading-relaxed">
-                            Dive into our curated video content designed to supplement your learning journey. From foundational concepts to advanced techniques, our videos offer visual explanations to enhance your understanding.
-                        </p>
+          {/* Events Section */}
+          <section id="events" className="py-20">
+            <div className="container mx-auto px-4 text-center">
+              <h2 className="text-4xl font-bold mb-12">Upcoming Events</h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {upcomingEvents.map((event, index) => (
+                  <div key={index} className="bg-white p-8 rounded-2xl shadow-xl transform transition-transform hover:scale-105">
+                    <div className="flex items-center mb-4" style={{ color: 'var(--primary-gold)' }}>
+                      <Calendar className="w-6 h-6 mr-3" />
+                      <span className="text-lg font-medium">{event.date}</span>
                     </div>
-                    <div class="md:w-1/2 animate-on-scroll" data-delay="200">
-                        <h3 class="text-2xl font-bold text-[var(--text-color)] mb-6">Enhance Your Skills</h3>
-                        <img src="https://academichelp.net/wp-content/uploads/2023/05/Language-Learning-1-1024x694.jpg" alt="The 4 Language Skills" class="rounded-xl shadow-2xl object-cover w-full h-auto">
-                        <p class="text-[var(--dark-text-color)] mt-6 leading-relaxed">
-                            We believe in a holistic approach to education, combining theoretical knowledge with practical application. Our resources are designed to help you master essential skills like speaking, listening, writing, and reading, crucial for any professional field.
-                        </p>
-                    </div>
-                </div>
+                    <h3 className="2xl font-bold mb-2">{event.title}</h3>
+                    <p className="text-gray-600">{event.location}</p>
+                    <button className="mt-6 text-white font-bold py-2 px-6 rounded-full transition-colors" style={{ backgroundColor: 'var(--primary-gold)', hover: 'bg-yellow-600' }}>
+                      Learn More
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
-        </section>
+          </section>
 
-        <section id="contact" class="py-20 bg-[var(--secondary-bg-color)] page-section">
-            <div class="container mx-auto px-4">
-                <h2 class="section-title text-center animate-on-scroll">Get In Touch With Us</h2>
-                <div class="flex flex-col md:flex-row justify-center items-start space-y-10 md:space-y-0 md:space-x-12 mt-12">
-                    <div class="md:w-1/2 animate-on-scroll" data-delay="100">
-                        <h3 class="text-2xl font-bold text-[var(--text-color)] mb-6">Send Us a Message</h3>
-                        <form id="contact-form" class="space-y-6 form-container" novalidate>
-                            <div>
-                                <label for="name" class="block text-[var(--dark-text-color)] text-sm font-medium mb-2">Your Name</label>
-                                <input type="text" id="name" name="name" class="form-input" placeholder="John Doe" required>
-                            </div>
-                            <div>
-                                <label for="email" class="block text-[var(--dark-text-color)] text-sm font-medium mb-2">Your Email</label>
-                                <input type="email" id="email" name="email" class="form-input" placeholder="john.doe@example.com" required>
-                            </div>
-                            <div>
-                                <label for="subject" class="block text-[var(--dark-text-color)] text-sm font-medium mb-2">Subject</label>
-                                <input type="text" id="subject" name="subject" class="form-input" placeholder="Inquiry about courses">
-                            </div>
-                            <div>
-                                <label for="message" class="block text-[var(--dark-text-color)] text-sm font-medium mb-2">Your Message</label>
-                                <textarea id="message" name="message" rows="5" class="form-input" placeholder="Type your message..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-full">
-                                <i class="ri-send-plane-line mr-2"></i> Send Message
-                            </button>
-                            <div id="contact-form-status" class="text-sm text-center mt-4"></div>
-                        </form>
-                    </div>
-
-                    <div class="md:w-1/2 animate-on-scroll" data-delay="200">
-                        <h3 class="text-2xl font-bold text-[var(--text-color)] mb-6">Contact Information</h3>
-                        <div class="space-y-6 text-[var(--dark-text-color)]">
-                            <div class="flex items-start">
-                                <i class="ri-map-pin-2-line text-[var(--accent-color)] text-2xl mr-4"></i>
-                                <div>
-                                    <p class="font-semibold">Address:</p>
-                                    <p class="text-[var(--dark-text-color)]">KG 15 Ave, Kigali, Rwanda</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <i class="ri-phone-line text-[var(--accent-color)] text-2xl mr-4"></i>
-                                <div>
-                                    <p class="font-semibold">Phone:</p>
-                                    <a href="tel:+250788244964" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] transition-colors">+250 788 244 964</a>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <i class="ri-mail-send-line text-[var(--accent-color)] text-2xl mr-4"></i>
-                                <div>
-                                    <p class="font-semibold">Email:</p>
-                                    <a href="mailto:loyal.training.hub@gmail.com" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] transition-colors">loyal.training.hub@gmail.com</a>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <i class="ri-time-line text-[var(--accent-color)] text-2xl mr-4"></i>
-                                <div>
-                                    <p class="font-semibold">Hours:</p>
-                                    <span id="open-status-contact" class="text-[var(--dark-text-color)]">Mon-Fri: 8AM-6PM</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-8">
-                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-4">Follow Us</h3>
-                            <div class="flex space-x-4">
-                                <a href="https://web.facebook.com/profile.php?id=100086507744005" target="_blank" class="social-link" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
-                                <a href="https://x.com/loyal_training" target="_blank" class="social-link" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
-                                <a href="https://www.instagram.com/loyal.training.hub" target="_blank" class="social-link" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
-                                <a href="https://www.linkedin.com/company/loyal-training-hub" target="_blank" class="social-link" aria-label="LinkedIn">
-                                    <i class="ri-linkedin-fill"></i>
-                                </a>
-                                <a href="https://youtube.com/@loyaltraininghub?si=33mh4Oqg70XDfp0J" target="_blank" class="social-link" aria-label="YouTube">
-                                    <i class="ri-youtube-line"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          {/* Community Signup Form Section */}
+          <section id="community" className="py-20 bg-gray-100">
+            <div className="container mx-auto px-4 text-center max-w-2xl">
+              <h2 className="text-4xl font-bold mb-4">Join the Tarama Community</h2>
+              <p className="text-gray-600 mb-8">
+                Are you a creative? Join our global network of innovators and collaborators.
+              </p>
+              <div className="bg-white p-8 rounded-2xl shadow-xl">
+                <form onSubmit={handleFormSubmit} className="space-y-6">
+                  <div>
+                    <label htmlFor="name" className="block text-left text-gray-700 font-medium mb-1">Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2"
+                      style={{ '--tw-ring-color': 'var(--primary-gold)' }}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-left text-gray-700 font-medium mb-1">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2"
+                      style={{ '--tw-ring-color': 'var(--primary-gold)' }}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="message" className="block text-left text-gray-700 font-medium mb-1">Your Creative Field</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows="4"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2"
+                      style={{ '--tw-ring-color': 'var(--primary-gold)' }}
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full text-white font-bold py-3 rounded-full hover:bg-yellow-600 transition-colors disabled:bg-opacity-50"
+                    style={{ backgroundColor: 'var(--primary-gold)' }}
+                    disabled={submissionStatus === 'submitting'}
+                  >
+                    {submissionStatus === 'submitting' ? 'Submitting...' : 'Join Now'}
+                  </button>
+                </form>
+                {submissionStatus === 'success' && (
+                  <div className="mt-4 p-4 rounded-lg bg-green-100 text-green-700">
+                    Thank you for your interest! We'll be in touch.
+                  </div>
+                )}
+                {submissionStatus === 'error' && (
+                  <div className="mt-4 p-4 rounded-lg bg-red-100 text-red-700">
+                    Something went wrong. Please try again.
+                  </div>
+                )}
+              </div>
             </div>
-        </section>
+          </section>
 
-        <section id="donate" class="py-20 bg-[var(--primary-bg-color)] page-section">
-            <div class="container mx-auto px-4">
-                <h2 class="section-title text-center animate-on-scroll">Support Our Mission</h2>
-                <div class="flex flex-col md:flex-row items-start justify-center space-y-10 md:space-y-0 md:space-x-12 mt-12">
-                    <div class="md:w-1/2 animate-on-scroll" data-delay="100">
-                        <h3 class="text-2xl font-bold text-[var(--text-color)] mb-6">Donate via Mobile Money (MTN)</h3>
-                        <div class="form-container p-6 space-y-4">
-                            <img src="https://tazonta.com/wp-content/uploads/2024/09/mtn-momo-logo-e1729657805751.jpg" alt="MTN Mobile Money Logo" class="w-full h-48 object-cover rounded-lg mb-4">
-                            <p class="text-[var(--dark-text-color)] leading-relaxed">
-                                Your contribution helps us continue providing quality education and support to our students. You can easily donate via MTN Mobile Money.
-                            </p>
-                            <div class="bg-[#E5E7EB] p-4 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between">
-                                <span class="text-[var(--text-color)] font-semibold text-lg mb-2 sm:mb-0">MTN Mobile Money Number:</span>
-                                <span class="text-[var(--accent-color)] font-bold text-xl">0782407285</span>
-                            </div>
-                            <p class="text-[var(--dark-text-color)] text-sm italic">
-                                Please ensure the recipient name displayed is: <span class="font-bold text-[var(--text-color)]">LOYAL TRAINING HUB</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="md:w-1/2 animate-on-scroll" data-delay="200">
-                        <h3 class="text-2xl font-bold text-[var(--text-color)] mb-6">Donate via Bank Transfer</h3>
-                        <div class="form-container p-6 space-y-4">
-                            <img src="https://wp.inspiring-workplaces.com/wp-content/uploads/2025/06/BK-logo-white-841x1024.png" alt="Bank of Kigali Logo" class="w-full h-48 object-cover rounded-lg mb-4">
-                            <p class="text-[var(--dark-text-color)] leading-relaxed">
-                                For larger contributions or international transfers, you can use our bank account details provided below.
-                            </p>
-                            <div class="space-y-3 text-[var(--dark-text-color)]">
-                                <div class="flex justify-between items-center bg-[#E5E7EB] p-3 rounded-lg">
-                                    <span class="font-semibold">Bank Swift Code:</span>
-                                    <span class="text-[var(--accent-color)] font-bold">EQbL RW RW</span>
-                                </div>
-                                <div class="flex justify-between items-center bg-[#E5E7EB] p-3 rounded-lg">
-                                    <span class="font-semibold">Bank Account Name:</span>
-                                    <span class="text-[var(--accent-color)] font-bold">LOYAL TRAINING HUB LTD</span>
-                                </div>
-                                <div class="flex justify-between items-center bg-[#E5E7EB] p-3 rounded-lg">
-                                    <span class="font-semibold">Bank Account Number:</span>
-                                    <span class="text-[var(--accent-color)] font-bold">4013200912230</span>
-                                </div>
-                                <div class="flex justify-between items-center bg-[#E5E7EB] p-3 rounded-lg">
-                                    <span class="font-semibold">Bank Account Currency:</span>
-                                    <span class="text-[var(--accent-color)] font-bold">RWANDAN FRANCS</span>
-                                </div>
-                            </div>
-                            <p class="text-[var(--dark-text-color)] text-sm italic">
-                                Thank you for your generosity and support!
-                            </p>
-                        </div>
-                    </div>
-                </div>
+          {/* Blog/News Section (Optional) */}
+          <section id="blog" className="py-20">
+              <div className="container mx-auto px-4 text-center">
+                  <h2 className="text-4xl font-bold mb-12">Latest News & Blog</h2>
+                  <p className="text-gray-600 max-w-3xl mx-auto">
+                      A dedicated section for updates, press releases, and creative opportunities.
+                      In a full implementation, this section would pull content from a blog management system.
+                  </p>
+              </div>
+          </section>
+
+          {/* Merchandise Store (Placeholder) */}
+          <section id="merchandise" className="py-20 bg-gray-100">
+              <div className="container mx-auto px-4 text-center">
+                  <h2 className="text-4xl font-bold mb-12">Merchandise Store</h2>
+                  <p className="text-gray-600 max-w-3xl mx-auto">
+                      This is where your e-commerce shop would be. It would require a full backend to manage products, inventory, and integrate with a payment system like Irembo Pay.
+                  </p>
+                  <div className="mt-8">
+                      <ShoppingCart className="w-24 h-24 mx-auto opacity-50" style={{ color: 'var(--primary-gold)' }} />
+                  </div>
+              </div>
+          </section>
+
+          {/* Admin Dashboard (Placeholder) */}
+          <section id="admin" className="py-20">
+              <div className="container mx-auto px-4 text-center">
+                  <h2 className="text-4xl font-bold mb-12">Admin Dashboard</h2>
+                  <p className="text-gray-600 max-w-3xl mx-auto">
+                      The Admin Dashboard would be a separate, secure part of the application for your team to easily update content. It would be a full-stack component with user authentication and database access.
+                  </p>
+              </div>
+          </section>
+        </main>
+
+        {/* Footer */}
+        <footer className="bg-gray-900 text-gray-300 py-12">
+          <div className="container mx-auto px-4 text-center">
+            <div className="flex justify-center space-x-6 mb-6">
+              {socialLinks.map((link) => (
+                <a key={link.name} href={link.href} target="_blank" rel="noopener noreferrer" className="hover:text-primary-gold transition-colors" style={{ color: 'var(--primary-gold)' }}>
+                  <link.icon className="w-7 h-7" />
+                </a>
+              ))}
             </div>
-        </section>
-    </main>
-
-    <footer class="bg-[#0072BC] py-16 text-white">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                <div>
-                    <a href="#hero" class="flex items-center space-x-2 mb-6">
-                        <img src="https://media-mba2-1.cdn.whatsapp.net/v/t61.24694-24/315768647_1444523972620457_2403558140555377205_n.jpg?ccb=11-4&oh=01_Q5Aa2AFgDk6rvEoxk34L0zobQpk8lodB3j9uH1YvRkl2oh6_nA&oe=68A0013B&_nc_sid=5e03e0&_nc_cat=105" alt="Loyal Training Hub Logo" class="h-10 w-auto rounded-full">
-                        <span class="text-white text-2xl font-bold">Loyal Training Hub</span>
-                    </a>
-                    <p class="text-gray-300 leading-relaxed mb-6">
-                        Empowering individuals with practical skills in IT, Languages to excel in a competitive global landscape.
-                    </p>
-                    <div class="flex space-x-3">
-                        <a href="https://web.facebook.com/profile.php?id=100086507744005" target="_blank" class="social-link" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
-                        <a href="https://x.com/loyal_training" target="_blank" class="social-link" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
-                        <a href="https://www.instagram.com/loyal.training.hub" target="_blank" class="social-link" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
-                        <a href="https://www.linkedin.com/company/loyal-training-hub" target="_blank" class="social-link" aria-label="LinkedIn">
-                            <i class="ri-linkedin-fill"></i>
-                        </a>
-                        <a href="https://youtube.com/@loyaltraininghub?si=33mh4Oqg70XDfp0J" target="_blank" class="social-link" aria-label="YouTube">
-                            <i class="ri-youtube-line"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="footer-title text-white">Quick Links</h4>
-                    <ul class="space-y-4">
-                        <li><a href="#about" class="footer-link text-gray-300">About Us</a></li>
-                        <li><a href="#unique" class="footer-link text-gray-300">Our Approach</a></li>
-                        <li><a href="#courses" class="footer-link text-gray-300">Our Courses</a></li>
-                        <li><a href="#methodology" class="footer-link text-gray-300">Teaching Method</a></li>
-                        <li><a href="#testimonials" class="footer-link text-gray-300">Success Stories</a></li>
-                        <li><a href="#resources" class="footer-link text-gray-300">Learning Resources</a></li>
-                        <li><a href="#donate" class="footer-link text-gray-300">Donate</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="footer-title text-white">Contact Info</h4>
-                    <ul class="space-y-4">
-                        <li class="flex items-start group">
-                            <i class="ri-map-pin-2-line text-[var(--accent-color)] mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
-                            <div>
-                                <span class="text-gray-300 font-medium">Address:</span><br>
-                                <span class="text-gray-300">KG 15 Ave, Kigali, Rwanda</span>
-                            </div>
-                        </li>
-                        <li class="flex items-start group">
-                            <i class="ri-phone-line text-[var(--accent-color)] mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
-                            <div>
-                                <span class="text-gray-300 font-medium">Phone:</span><br>
-                                <a href="tel:+250788244964"
-                                   class="text-gray-300 hover:text-[var(--accent-color)] transition-colors">+250 788 244 964</a>
-                            </div>
-                        </li>
-                        <li class="flex items-start group">
-                            <i class="ri-mail-send-line text-[var(--accent-color)] mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
-                            <div>
-                                <span class="text-gray-300 font-medium">Email:</span><br>
-                                <a href="mailto:loyal.training.hub@gmail.com" class="text-gray-300 hover:text-[var(--accent-color)] transition-colors">loyal.training.hub@gmail.com</a>
-                            </div>
-                        </li>
-                        <li class="flex items-start group">
-                            <i class="ri-time-line text-[var(--accent-color)] mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
-                            <div>
-                                <span class="text-gray-300 font-medium">Hours:</span><br>
-                                <span id="open-status" class="text-gray-300">Mon-Fri: 8AM-6PM</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-700 pt-8 mt-12">
-                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                    <div class="text-gray-300 text-sm">
-                        <p>&copy; 2025 Loyal Training Hub. All rights reserved. Made with ❤️ by Ibrix Digital.</p>
-                    </div>
-                    <div class="flex space-x-6 text-sm">
-                        <a href="#" class="footer-link text-gray-300">Privacy Policy</a>
-                        <a href="#" class="footer-link text-gray-300">Terms of Service</a>
-                        <a href="#" class="footer-link text-gray-300">Cookie Policy</a>
-                        <a href="#" class="footer-link text-gray-300">Sitemap</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <a href="https://wa.me/250788244964" target="_blank" id="whatsapp-float" aria-label="Chat on WhatsApp">
-        <img src="https://png.pngtree.com/png-clipart/20190516/original/pngtree-whatsapp-icon-png-image_3584844.jpg" alt="WhatsApp Icon">
-    </a>
-
-    <button id="back-to-top" aria-label="Back to top">
-        <i class="ri-arrow-up-line"></i>
-    </button>
-
-    <script>
-        // Enhanced Application State
-        const App = {
-            isLoaded: false,
-            countersAnimated: false,
-
-            // Initialize all components
-            init() {
-                this.setupEventListeners();
-                this.initPreloader();
-                this.initScrollAnimations();
-                this.initNavigation();
-                this.initForms();
-                this.initProgressBars();
-                this.updateOpenStatus();
-                this.initPageNavigation();
-            },
-
-            // Event Listeners Setup
-            setupEventListeners() {
-                window.addEventListener('load', () => this.handleWindowLoad());
-                window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
-                document.addEventListener('DOMContentLoaded', () => this.handleDOMLoaded());
-                window.addEventListener('hashchange', () => this.handleHashChange());
-            },
-
-            // Enhanced Preloader
-            initPreloader() {
-                const preloader = document.getElementById('preloader');
-                if (!preloader) return;
-
-                window.addEventListener('load', () => {
-                    preloader.classList.add('loaded');
-                    document.body.style.overflow = 'visible';
-
-                    setTimeout(() => {
-                        preloader.remove();
-                    }, 800);
-                });
-            },
-
-            // Enhanced Scroll Animations
-            initScrollAnimations() {
-                const observerOptions = {
-                    threshold: 0.1,
-                    rootMargin: '0px 0px -10% 0px'
-                };
-
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const delay = entry.target.dataset.delay || 0;
-                            setTimeout(() => {
-                                entry.target.classList.add('is-visible');
-                            }, delay);
-                        }
-                    });
-                }, observerOptions);
-
-                document.querySelectorAll('.animate-on-scroll').forEach(el => {
-                    observer.observe(el);
-                });
-
-                this.initTimelineProgress();
-                this.initCounters();
-            },
-
-            initTimelineProgress() {
-                const progressBar = document.getElementById('timeline-progress');
-                if (!progressBar) return;
-
-                const timelineSection = document.getElementById('methodology');
-
-                if (!timelineSection) return;
-
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const sectionTop = timelineSection.offsetTop;
-                            const sectionHeight = timelineSection.offsetHeight;
-                            const scrollPosition = window.scrollY;
-
-                            const scrollProgress = Math.min(1, Math.max(0, (scrollPosition - sectionTop + window.innerHeight / 2) / sectionHeight));
-                            progressBar.style.height = `${scrollProgress * 100}%`;
-                        } else if (window.scrollY < timelineSection.offsetTop) {
-                            progressBar.style.height = '0%';
-                        } else if (window.scrollY > timelineSection.offsetTop + timelineSection.offsetHeight) {
-                            progressBar.style.height = '100%';
-                        }
-                    });
-                }, { threshold: 0, rootMargin: '0px 0px -50% 0px' });
-
-                observer.observe(timelineSection);
-            },
-
-
-            // Enhanced Navigation
-            initNavigation() {
-                const mobileToggle = document.getElementById('mobile-menu-toggle');
-                const mobileMenu = document.getElementById('mobile-menu');
-                const navLinks = document.querySelectorAll('.nav-link, .btn-donate-nav');
-
-                navLinks.forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        if (link.getAttribute('href').startsWith('#')) {
-                            e.preventDefault();
-                            const targetId = link.getAttribute('href').substring(1);
-                            window.location.hash = targetId;
-
-                            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                                this.toggleMobileMenu();
-                            }
-                        }
-                    });
-                });
-
-                if (mobileToggle && mobileMenu) {
-                    mobileToggle.addEventListener('click', () => {
-                        this.toggleMobileMenu();
-                    });
-                }
-            },
-
-            initPageNavigation() {
-                const pages = document.querySelectorAll('.page-section');
-                const navLinks = document.querySelectorAll('.nav-link');
-
-                const showPage = (pageId) => {
-                    pages.forEach(page => {
-                        page.classList.remove('active');
-                        if (page.id === pageId) {
-                            page.classList.add('active');
-                        }
-                    });
-
-                    navLinks.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === `#${pageId}`) {
-                            link.classList.add('active');
-                        }
-                    });
-
-                    const currentUrl = window.location.href.split('#')[0];
-                    if (window.location.href !== `${currentUrl}#${pageId}`) {
-                        window.location.hash = pageId;
-                    }
-                };
-
-                this.handleHashChange = () => {
-                    const hash = window.location.hash.substring(1);
-                    showPage(hash || 'hero');
-                };
-
-                this.handleHashChange();
-            },
-
-            toggleMobileMenu() {
-                const mobileMenu = document.getElementById('mobile-menu');
-                const mobileToggle = document.getElementById('mobile-menu-toggle');
-                const icon = mobileToggle.querySelector('i');
-
-                if (mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.remove('hidden');
-                    icon.className = 'ri-close-line transition-transform duration-300';
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    mobileMenu.classList.add('hidden');
-                    icon.className = 'ri-menu-4-line transition-transform duration-300';
-                    document.body.style.overflow = 'visible';
-                }
-            },
-
-            // Enhanced Counters Animation
-            initCounters() {
-                const counters = document.querySelectorAll('.stats-counter');
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting && !this.countersAnimated) {
-                            this.animateCounters(counters);
-                            this.countersAnimated = true;
-                        }
-                    });
-                }, { threshold: 0.5 });
-
-                counters.forEach(counter => observer.observe(counter));
-            },
-
-            animateCounters(counters) {
-                counters.forEach(counter => {
-                    const target = parseInt(counter.dataset.count);
-                    if (isNaN(target)) return;
-                    const duration = 2000;
-                    let startTimestamp = null;
-                    const startNumber = 0;
-
-                    const step = (timestamp) => {
-                        if (!startTimestamp) startTimestamp = timestamp;
-                        const progress = timestamp - startTimestamp;
-                        const easeOutQuad = (t) => t * (2 - t);
-                        const animationProgress = easeOutQuad(Math.min(progress / duration, 1));
-                        const currentValue = Math.floor(animationProgress * target);
-                        counter.textContent = currentValue.toLocaleString();
-
-                        if (progress < duration) {
-                            window.requestAnimationFrame(step);
-                        } else {
-                            counter.textContent = target.toLocaleString();
-                        }
-                    };
-                    window.requestAnimationFrame(step);
-                });
-            },
-
-            // Enhanced Forms
-            initForms() {
-                const contactForm = document.getElementById('contact-form');
-                const contactStatusDiv = document.getElementById('contact-form-status');
-
-                if (contactForm) {
-                    contactForm.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        this.handleFormSubmission(contactForm, contactStatusDiv, 'contact');
-                    });
-                }
-            },
-
-            handleFormSubmission(form, statusDiv, formType) {
-                const submitBtn = form.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-
-                let allInputsValid = true;
-                form.querySelectorAll('[required]').forEach(input => {
-                    if (!input.checkValidity()) {
-                        allInputsValid = false;
-                    }
-                });
-
-                if (!allInputsValid) {
-                    this.showFormStatus(statusDiv, 'Please fill in all required fields.', 'error');
-                    return;
-                }
-
-                submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Processing...';
-                submitBtn.disabled = true;
-
-                setTimeout(() => {
-                    if (formType === 'contact') {
-                        this.showFormStatus(statusDiv, 'Your message has been sent successfully! We will get back to you soon.', 'success');
-                    }
-                    form.reset();
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }, 1500);
-            },
-
-            showFormStatus(statusDiv, message, type) {
-                if (!statusDiv) return;
-                const className = type === 'success' ? 'text-green-400' : 'text-red-400';
-                statusDiv.innerHTML = `<div class="${className}">${message}</div>`;
-                setTimeout(() => {
-                    statusDiv.innerHTML = '';
-                }, 5000);
-            },
-
-            // Back to Top Button Logic
-            initProgressBars() {
-                const backToTopBtn = document.getElementById('back-to-top');
-                if (backToTopBtn) {
-                    backToTopBtn.addEventListener('click', () => {
-                        window.scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        });
-                    });
-                }
-            },
-
-            // Handle scroll events
-            handleScroll() {
-                const scrollY = window.scrollY;
-                const header = document.getElementById('main-header');
-                const backToTopBtn = document.getElementById('back-to-top');
-
-                if (header) {
-                    if (scrollY > 50) {
-                        header.classList.add('scrolled');
-                    } else {
-                        header.classList.remove('scrolled');
-                    }
-                }
-
-                if (backToTopBtn) {
-                    if (scrollY > 300) {
-                        backToTopBtn.classList.add('show');
-                    } else {
-                        backToTopBtn.classList.remove('show');
-                    }
-                }
-            },
-
-            handleWindowLoad() {
-                this.isLoaded = true;
-            },
-
-            handleDOMLoaded() {
-            },
-
-            updateOpenStatus() {
-                const openStatusFooter = document.getElementById('open-status');
-                const openStatusContact = document.getElementById('open-status-contact');
-                const now = new Date();
-                const day = now.getDay();
-                const hour = now.getHours();
-                const isOpen = (day >= 1 && day <= 5 && hour >= 8 && hour < 18);
-                const statusText = isOpen ? 'Open Now' : 'Closed';
-                const statusClass = isOpen ? 'text-green-500' : 'text-red-500';
-
-                if (openStatusFooter) {
-                    openStatusFooter.textContent = statusText;
-                    openStatusFooter.classList.remove('text-[var(--dark-text-color)]', 'text-green-500', 'text-red-500');
-                    openStatusFooter.classList.add(statusClass);
-                }
-                if (openStatusContact) {
-                    openStatusContact.textContent = statusText;
-                    openStatusContact.classList.remove('text-[var(--dark-text-color)]', 'text-green-500', 'text-red-500');
-                    openStatusContact.classList.add(statusClass);
-                }
-            },
-        };
-
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof App !== 'undefined') {
-                App.init();
-            }
-        });
-    </script>
-</body>
-</html>
-
+            <p className="text-gray-500 text-sm">&copy; 2025 Tarama Rwanda. All Rights Reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </>
+  );
+}

@@ -1,247 +1,181 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Center Pro | Celestial</title>
+    <title>Task Center Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
-        :root {
-            --background: #0D0F1B;
-            --surface: #131524;
-            --primary: #8A2BE2;
-            --secondary: #4A00E0;
-            --accent: #00BFFF;
-            --text-primary: #E0E0E0;
-            --text-secondary: #A0A0A0;
-            --border-color: rgba(255, 255, 255, 0.1);
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .background-image {
+            background-image: url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2020&auto=format&fit=crop');
+            background-size: cover; background-position: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
-
-        body { 
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background);
-            color: var(--text-primary);
+        .card-container {
+            backdrop-filter: blur(10px); background-color: rgba(0, 0, 0, 0.2); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border-radius: 1.25rem; border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        /* Animated Gradient Background */
-        .background-gradient {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: -1;
-            background: linear-gradient(245deg, var(--primary), var(--secondary), var(--background), #0a041f);
-            background-size: 400% 400%;
-            animation: gradient-animation 25s ease infinite;
-        }
-        @keyframes gradient-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Celestial Card Style */
-        .celestial-card {
-            background-color: rgba(19, 21, 36, 0.6); /* --surface with opacity */
-            backdrop-filter: blur(16px) saturate(180%);
-            border: 1px solid var(--border-color);
-            border-radius: 1.25rem;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .celestial-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 20px 0 var(--accent);
-        }
-
-        /* Aurora Effect inside Cards */
-        .celestial-card::before {
-            content: '';
-            position: absolute;
-            top: 0; right: 0; bottom: 0; left: 0;
-            z-index: 0;
-            background: radial-gradient(circle at 100% 0%, var(--accent), transparent 30%),
-                        radial-gradient(circle at 0% 100%, var(--primary), transparent 40%);
-            opacity: 0.15;
-            transition: opacity 0.5s ease;
-        }
-        .celestial-card:hover::before {
-            opacity: 0.3;
-        }
-        .celestial-card > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Buttons */
-        .celestial-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            font-weight: 600;
-            color: white;
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.2);
-        }
-        .btn-primary {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-        .btn-primary:hover {
-            box-shadow: 0 0 20px 0 var(--primary);
-            transform: scale(1.05);
-        }
-        .btn-secondary {
-             background: linear-gradient(90deg, var(--accent), #0077b3);
-        }
-        .btn-secondary:hover {
-             box-shadow: 0 0 20px 0 var(--accent);
-             transform: scale(1.05);
-        }
-
-        /* Inputs */
-        .celestial-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        .celestial-input::placeholder { color: var(--text-secondary); }
-        .celestial-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 10px 0 var(--accent);
-        }
-
-        /* Animations */
-        .page { animation: fadeIn 0.6s ease-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Custom Scrollbar for Admin/About pages */
-        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: var(--accent);
-            border-radius: 10px;
-            border: 2px solid var(--surface);
-        }
-
-        /* Loader */
-        .loader {
-            width: 56px; height: 56px;
-            border: 5px solid var(--border-color);
-            border-bottom-color: var(--accent);
-            border-radius: 50%;
-            display: inline-block;
-            box-sizing: border-box;
-            animation: rotation 1s linear infinite;
-        }
-        @keyframes rotation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Logo Slider */
+        .loader { border-top-color: #2563eb; border-right-color: #2563eb; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .modal-content { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         .logo-slider { width: 100%; overflow: hidden; white-space: nowrap; -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent); mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent); }
         .logo-slider-inner { display: inline-block; animation: slide-logos 30s linear infinite; }
-        .logo-slider img { height: 40px; margin: 0 2rem; filter: grayscale(1) brightness(2); transition: filter 0.3s; display: inline-block; }
-        .logo-slider img:hover { filter: grayscale(0) brightness(1); }
+        .logo-slider img { height: 50px; margin: 0 2rem; filter: grayscale(100%) opacity(70%); transition: filter 0.3s; display: inline-block; }
+        .logo-slider img:hover { filter: grayscale(0%) opacity(100%); }
         @keyframes slide-logos { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
     </style>
 </head>
 <body class="light">
 
-    <div class="background-gradient"></div>
+    <div class="background-image"></div>
+    <div class="absolute inset-0 bg-black/60 z-0"></div>
 
-    <div id="login-page" class="min-h-screen flex items-center justify-center p-4 page">
-        <div class="celestial-card p-8 max-w-sm w-full text-white">
-            <div class="text-center mb-8">
-                <i data-lucide="orbit" class="w-16 h-16 mx-auto text-accent mb-2"></i>
-                <h1 class="text-3xl font-bold text-center drop-shadow-md">Task Center Pro</h1>
-                <p class="text-text-secondary mt-1">Celestial Edition</p>
-            </div>
+    <div id="login-page" class="min-h-screen flex items-center justify-center p-4 relative z-10">
+        <div class="card-container rounded-2xl p-8 max-w-sm w-full text-white">
+            <h1 class="text-3xl font-bold text-center mb-6 drop-shadow-md">Task Center Pro</h1>
             <form id="auth-form" class="space-y-4">
-                <input type="email" id="email" placeholder="Email Address" required class="celestial-input">
-                <input type="password" id="password" placeholder="Password" required class="celestial-input">
-                <input type="text" id="invite-code" placeholder="Invitation Code (for signup)" class="celestial-input">
-                <div class="flex space-x-4 pt-4">
-                    <button type="button" id="login-btn" class="celestial-btn btn-primary w-full"><i data-lucide="log-in"></i><span>Login</span></button>
-                    <button type="button" id="signup-btn" class="celestial-btn btn-secondary w-full"><i data-lucide="user-plus"></i><span>Sign Up</span></button>
+                <input type="email" id="email" placeholder="Email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/10 text-white placeholder-gray-400">
+                <input type="password" id="password" placeholder="Password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/10 text-white placeholder-gray-400">
+                <input type="text" id="invite-code" placeholder="Invitation Code (for signup)" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/10 text-white placeholder-gray-400">
+                <div class="flex space-x-2 md:space-x-4">
+                    <button type="button" id="login-btn" class="w-full bg-blue-600 text-white text-sm md:text-base font-bold py-2 px-3 md:px-4 rounded-full hover:bg-blue-700 transition-all shadow-lg">Login</button>
+                    <button type="button" id="signup-btn" class="w-full bg-blue-800 text-white text-sm md:text-base font-bold py-2 px-3 md:px-4 rounded-full hover:bg-blue-900 transition-all shadow-lg">Sign Up</button>
                 </div>
             </form>
-            <p id="message" class="text-center mt-4 text-white drop-shadow-md h-5"></p>
+            <p id="message" class="text-center mt-4 text-white drop-shadow-md"></p>
         </div>
     </div>
 
-    <div id="main-menu-page" class="hidden min-h-screen flex flex-col items-center justify-center p-4 relative z-10 page">
-        <nav class="absolute top-6 right-6 flex items-center space-x-4">
-             <a href="#" id="nav-admin" class="hidden bg-surface/80 backdrop-blur-sm text-white py-2 px-4 rounded-full hover:text-accent transition-colors shadow-md flex items-center gap-2"><i data-lucide="shield"></i>Admin</a>
-             <a href="#" id="nav-support" class="bg-surface/80 backdrop-blur-sm text-white py-2 px-4 rounded-full hover:text-accent transition-colors shadow-md flex items-center gap-2"><i data-lucide="life-buoy"></i>Support</a>
-             <button id="sign-out-btn" class="bg-red-500/80 text-white py-2 px-4 rounded-full hover:bg-red-600/80 transition-colors shadow-md flex items-center gap-2"><i data-lucide="log-out"></i>Sign Out</button>
+    <div id="main-menu-page" class="min-h-screen flex flex-col items-center justify-center p-4 relative z-10 hidden">
+        <nav class="absolute top-4 right-4 flex space-x-4">
+            <a href="#" id="nav-admin" class="bg-blue-600/80 text-white py-2 px-4 rounded-full hover:bg-blue-700/80 transition-colors shadow-md hidden">Admin</a>
+            <a href="#" id="nav-support" class="bg-blue-600/80 text-white py-2 px-4 rounded-full hover:bg-blue-700/80 transition-colors shadow-md">Support</a>
+            <button id="sign-out-btn" class="bg-red-500/80 text-white py-2 px-4 rounded-full hover:bg-red-600/80 transition-colors shadow-md">Sign Out</button>
         </nav>
-        <div class="celestial-card rounded-2xl p-8 max-w-3xl w-full text-center flex flex-col items-center justify-center min-h-[550px]">
-            <i data-lucide="rocket" class="w-20 h-20 text-accent mb-4"></i>
-            <h1 class="text-4xl font-bold mb-4 text-white drop-shadow-md">Professional Task Center</h1>
-            <p class="text-lg text-text-secondary mb-8 drop-shadow-md max-w-md">Your gateway to a seamless digital experience. Earn rewards by completing simple tasks from leading brands.</p>
-            <div class="flex-grow flex items-center justify-center w-full my-8">
+        <div class="card-container rounded-2xl p-8 max-w-2xl w-full text-center flex flex-col items-center justify-center min-h-[500px]">
+            <h1 class="text-3xl font-bold mb-4 text-white drop-shadow-md">Professional Task Center</h1>
+            <p class="text-lg text-white mb-8 drop-shadow-md">Your gateway to a seamless digital experience. Earn rewards by completing simple tasks from leading brands.</p>
+            <div class="flex-grow flex items-center justify-center w-full">
                 <div class="logo-slider">
                     <div class="logo-slider-inner">
                         <img src="https://www.webmaxy.co/blog/wp-content/uploads/2025/03/Everything-About-Meta-Business-Partners.webp" alt="Meta Logo"><img src="https://cdn.sanity.io/images/8r84dcl1/portfolio/d13c28990a3f172305676b7ca57f2a5140e8331d-823x350.jpg?rect=151,0,523,350&w=578&h=387" alt="Brand Logo 2"><img src="https://www.adsmurai.com/hubfs/Header_Press%20%281%29.png" alt="Ads Murai Logo"><img src="https://images.ctfassets.net/gogvzi849aaj/2WUs1ZWrSgI0G499ZtC8wD/21032d843d047afd534c06422c400932/PowerPartner_Toolkit_2024_LIFBTW.png" alt="Power Partner Logo"><img src="https://www.webmaxy.co/blog/wp-content/uploads/2025/03/Everything-About-Meta-Business-Partners.webp" alt="Meta Logo"><img src="https://cdn.sanity.io/images/8r84dcl1/portfolio/d13c28990a3f172305676b7ca57f2a5140e8331d-823x350.jpg?rect=151,0,523,350&w=578&h=387" alt="Brand Logo 2"><img src="https://www.adsmurai.com/hubfs/Header_Press%20%281%29.png" alt="Ads Murai Logo"><img src="https://images.ctfassets.net/gogvzi849aaj/2WUs1ZWrSgI0G499ZtC8wD/21032d843d047afd534c06422c400932/PowerPartner_Toolkit_2024_LIFBTW.png" alt="Power Partner Logo">
                     </div>
                 </div>
             </div>
-            <div class="flex space-x-4 mt-auto">
-                <button id="about-btn" class="celestial-btn btn-primary"><i data-lucide="info"></i><span>About Us</span></button>
-                <button id="start-btn" class="celestial-btn btn-secondary"><i data-lucide="play-circle"></i><span>Start Tasks</span></button>
-                <button id="account-btn" class="celestial-btn btn-primary"><i data-lucide="user"></i><span>Account</span></button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="tasks-page" class="hidden min-h-screen p-4 md:p-8 relative z-10 page">
-        <nav class="flex justify-between items-center py-4">
-            <h1 class="text-3xl font-bold text-white drop-shadow-md flex items-center gap-3"><i data-lucide="list-checks"></i>Your Tasks</h1>
-            <div class="flex space-x-4">
-                <button id="refresh-tasks-btn" class="celestial-btn btn-secondary"><i data-lucide="refresh-cw"></i>Refresh</button>
-                <button id="nav-back-tasks" class="celestial-btn btn-primary"><i data-lucide="arrow-left"></i>Back</button>
-            </div>
-        </nav>
-        <div class="mt-4 p-4 rounded-xl bg-surface/80 backdrop-blur-sm text-white text-center shadow-lg flex justify-around items-center border border-border-color">
-            <h2 class="text-2xl font-bold drop-shadow-md">Balance: $<span id="balance-amount">0.00</span></h2>
-            <h3 id="task-counter" class="text-xl font-semibold drop-shadow-md"></h3>
-        </div>
-        <div id="task-container" class="mt-8 flex justify-center"></div>
-        <div id="loader" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-            <div class="celestial-card p-8 rounded-lg text-center text-white"><div class="loader mx-auto"></div><p id="loader-message" class="mt-4 text-xl font-semibold">Submitting Task...</p></div>
-        </div>
-    </div>
-    
-    <div id="message-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 page">
-        <div class="celestial-card p-6 rounded-xl shadow-2xl w-full max-w-sm text-white">
-            <h3 id="modal-title" class="text-lg font-bold mb-2 flex items-center gap-2"></h3>
-            <p id="modal-message" class="text-text-secondary"></p>
-            <div class="flex justify-end mt-4">
-                <button id="modal-close-btn" class="celestial-btn btn-primary">OK</button>
+            <div class="flex space-x-2 mt-auto">
+                <button id="about-btn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition-all shadow-lg text-sm">About Us</button>
+                <button id="start-btn" class="bg-blue-800 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-900 transition-all shadow-lg text-sm">Start Tasks</button>
+                <button id="account-btn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition-all shadow-lg text-sm">Account</button>
             </div>
         </div>
     </div>
 
+    <div id="about-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden">
+        <nav class="flex justify-between items-center py-4">
+            <h1 class="text-3xl font-bold text-white drop-shadow-md">About Us</h1>
+            <button id="nav-back-about" class="bg-blue-600/80 text-white py-2 px-4 rounded-full hover:bg-blue-700/80 transition-colors shadow-md">Back to Main Menu</button>
+        </nav>
+        <div class="card-container rounded-2xl p-8 text-gray-200 max-h-[85vh] overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-4 text-white drop-shadow-md">Digital Marketing That Drives Revenue®</h2>
+            <p class="mb-4">WebFX is a tech-enabled digital marketing solutions provider, and we create custom strategies for each of our clients based on their needs and goals.</p>
+            <p class="mb-4">Our team is made up of award-winning marketers, designers, and developers, and we know what it takes to get real results online. We also keep the focus on the metrics that mean the most, like leads and revenue generated. We know that hitting these goals is what moves businesses forward, and we believe that our clients’ success is the best measure of our own performance.</p>
+            <div class="flex justify-center my-6"><img src="https://images.unsplash.com/photo-1552581234-26160f608093?q=80&w=2070&auto=format&fit=crop" alt="Image of team working together" class="rounded-lg shadow-xl w-full md:w-3/4"></div>
+            <p class="mb-4">As a result, we’ve driven over $10 billion in sales and over 24 million leads for our clients. We’ve also built the most connected media team in the industry, with over 40 in-house influencers dedicated to building relationships and earning publication on prominent websites.</p>
+            <h3 class="text-xl font-bold mt-6 mb-2 text-white drop-shadow-md">We keep the focus on driving results.</h3>
+            <div class="flex justify-center my-6"><img src="https://images.unsplash.com/photo-1542744173-05336fcc7ba4?q=80&w=2070&auto=format&fit=crop" alt="Image of a professional office setting" class="rounded-lg shadow-xl w-full md:w-3/4"></div>
+            <p class="mb-4">At WebFX, our clients are always our top priority — but we firmly believe in creating an environment that’s more than just a place to work. Building a positive company culture has always been important to us, and as a result, we’ve been named the #1 Best Place to Work in PA 9 years in a row.</p>
+        </div>
+    </div>
+
+    <div id="tasks-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden">
+        <nav class="flex justify-between items-center py-4">
+            <h1 class="text-3xl font-bold text-white drop-shadow-md">Your Tasks</h1>
+            <div class="flex space-x-4">
+                <button id="refresh-tasks-btn" class="bg-blue-600/80 text-white py-2 px-4 rounded-full hover:bg-blue-700/80 transition-colors shadow-md">Refresh</button>
+                <button id="nav-back-tasks" class="bg-blue-800/80 text-white py-2 px-4 rounded-full hover:bg-blue-900/80 transition-colors shadow-md">Back to Main Menu</button>
+            </div>
+        </nav>
+        <div class="mt-4 p-4 rounded-lg bg-black/30 backdrop-blur-sm text-white text-center shadow-lg flex justify-around items-center">
+            <h2 class="text-2xl font-bold drop-shadow-md">Balance: $<span id="balance-amount">0.00</span></h2>
+            <h3 id="task-counter" class="text-xl font-semibold drop-shadow-md"></h3>
+        </div>
+        <div id="task-container" class="mt-8 flex justify-center"></div>
+        <div id="loader" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="card-container p-8 rounded-lg text-center text-white"><div class="loader w-16 h-16 border-4 border-gray-200 rounded-full mx-auto"></div><p id="loader-message" class="mt-4 text-xl font-semibold">Submitting Task...</p></div>
+        </div>
+    </div>
+
+    <div id="account-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden">
+        <nav class="flex justify-between items-center py-4"><h1 class="text-3xl font-bold text-white drop-shadow-md">Account Details</h1><button id="nav-back-account" class="bg-blue-600/80 text-white py-2 px-4 rounded-full hover:bg-blue-700/80 transition-colors shadow-md">Back to Main Menu</button></nav>
+        <div class="card-container p-8 max-w-sm mx-auto rounded-2xl w-full space-y-6 text-white">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold drop-shadow-md" id="user-name"></h2><p class="drop-shadow-md" id="user-email"></p>
+                <div class="mt-4 p-4 rounded-lg bg-black/30 backdrop-blur-sm text-white text-center shadow-lg"><h3 class="text-xl font-bold drop-shadow-md">Balance: $<span id="account-balance">0.00</span></h3></div>
+            </div>
+            <div class="space-y-2"><h3 class="text-xl font-bold drop-shadow-md">Set Username</h3><input type="text" id="username-input" placeholder="Enter your username" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/10 text-white placeholder-gray-400"><button id="set-username-btn" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition-all shadow-lg">Save Username</button></div>
+            <form id="withdraw-form" class="space-y-2">
+                <h3 class="text-xl font-bold text-center drop-shadow-md">Withdraw Funds</h3><p class="text-xs text-center text-gray-400 pb-2">Note: All withdrawal requests are reviewed by an administrator before processing.</p>
+                <input type="number" id="amount" placeholder="Amount to withdraw" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/10 text-white placeholder-gray-400">
+                <input type="text" id="wallet-address" placeholder="TRC20 Wallet Address" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/10 text-white placeholder-gray-400">
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition-all shadow-lg">Request Withdrawal</button>
+            </form>
+            <p id="withdraw-message" class="text-center mt-4 text-white drop-shadow-md"></p>
+        </div>
+    </div>
+
+    <div id="admin-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden">
+        <nav class="flex justify-between items-center py-4"><h1 class="text-3xl font-bold text-white drop-shadow-md">Admin Dashboard</h1><button id="nav-back-admin" class="bg-blue-600/80 text-white py-2 px-4 rounded-full hover:bg-blue-700/80 transition-colors shadow-md">Back to Main Menu</button></nav>
+        <div class="card-container p-8 max-h-[85vh] overflow-y-auto space-y-8">
+            <div>
+                <h2 class="text-2xl font-bold mb-4 text-white drop-shadow-md">Manage Users</h2>
+                <div id="users-list" class="space-y-4 text-gray-200"></div>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-bold mb-4 text-white drop-shadow-md">Manage Task Sets</h2>
+                <div class="p-4 bg-black/20 rounded-lg space-y-3 mb-6">
+                    <h3 class="text-xl font-semibold text-white">Create & Assign New Task Set</h3>
+                    <p class="text-sm text-gray-400">This creates a set of 35 product tasks and assigns it to a user.</p>
+                    <input type="text" id="new-set-name" placeholder="Task Set Name (e.g., VIP Batch 1)" class="w-full px-4 py-2 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none">
+                    <input type="email" id="assign-set-email" placeholder="Assign to User's Email" class="w-full px-4 py-2 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none">
+                    <button id="create-set-btn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition-colors shadow-md">Create and Assign Set</button>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3">Existing Sets</h3>
+                <div id="task-sets-list" class="space-y-4"></div>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-bold mb-4 text-white drop-shadow-md">Manage Withdrawal Requests</h2>
+                <div id="withdrawal-requests-list" class="space-y-4 text-gray-200"></div>
+            </div>
+            
+            <div>
+                <h2 class="text-2xl font-bold mb-4 text-white drop-shadow-md">Manage Invitation Codes</h2>
+                <div id="invite-codes-list" class="space-y-4 text-gray-200"></div>
+                <div class="flex justify-center mt-4"><button id="generate-code-btn" class="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition-colors shadow-md">Generate New Code</button></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="support-page" class="min-h-screen flex flex-col items-center justify-center p-4 relative z-10 hidden">
+        <div class="card-container rounded-2xl p-8 max-w-sm w-full text-center text-white">
+            <h1 class="text-3xl font-bold mb-6 drop-shadow-md">Contact Support</h1>
+            <p class="mb-4 drop-shadow-md">For any issues or questions, please contact our support team:</p>
+            <div class="space-y-4">
+                <a href="https://wa.me/1234567890" target="_blank" class="w-full inline-block bg-blue-600 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-700 transition-all shadow-lg">Contact via WhatsApp</a>
+                <a href="https://t.me/yourtelegramid" target="_blank" class="w-full inline-block bg-blue-800 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-900 transition-all shadow-lg">Contact via Telegram</a>
+            </div>
+        </div>
+        <div class="mt-4 text-center">
+            <button id="nav-back-support" class="text-white hover:underline drop-shadow-md">Back to Main Menu</button>
+        </div>
+    </div>
+
+    <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"><div class="bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-sm modal-content text-white"><h3 id="modal-title" class="text-lg font-bold mb-2"></h3><p id="modal-message" class="text-gray-200"></p><div class="flex justify-end mt-4"><button id="modal-close-btn" class="bg-blue-600/80 text-white py-2 px-4 rounded-full hover:bg-blue-700/80 transition-colors">OK</button></div></div></div>
+
     <script type="module">
-        // --- Your existing Supabase JavaScript logic goes here ---
-        // It should work with the new class names without changes, as IDs are the same.
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
         // Supabase configuration
@@ -252,17 +186,9 @@
         // --- Global State & Navigation ---
         const pageElements = { login: document.getElementById('login-page'), 'main-menu': document.getElementById('main-menu-page'), about: document.getElementById('about-page'), tasks: document.getElementById('tasks-page'), account: document.getElementById('account-page'), admin: document.getElementById('admin-page'), support: document.getElementById('support-page'),};
         let allTasks = []; let currentTaskIndex = 0;
-        let totalTasksInSetCount = 0;
+        let totalTasksInSetCount = 0; // To store the total number of tasks in a user's set
         function showPage(pageName) { Object.values(pageElements).forEach(el => el.classList.add('hidden')); if (pageElements[pageName]) pageElements[pageName].classList.remove('hidden'); }
-        
-        function showModal(title, message, isSuccess = true) {
-            const titleEl = document.getElementById('modal-title');
-            const icon = isSuccess ? `<i data-lucide="check-circle" class="text-green-400"></i>` : `<i data-lucide="x-circle" class="text-red-400"></i>`;
-            titleEl.innerHTML = `${icon} ${title}`;
-            document.getElementById('modal-message').textContent = message;
-            document.getElementById('message-modal').classList.remove('hidden');
-            lucide.createIcons();
-        }
+        function showModal(title, message) { document.getElementById('modal-title').textContent = title; document.getElementById('modal-message').textContent = message; document.getElementById('message-modal').classList.remove('hidden'); }
         document.getElementById('modal-close-btn').addEventListener('click', () => document.getElementById('message-modal').classList.add('hidden'));
 
         // --- Auth Logic ---
@@ -274,16 +200,25 @@
         async function handleLogin() {
             messageEl.textContent = 'Logging in...';
             const { error } = await supabase.auth.signInWithPassword({ email: emailInput.value, password: passwordInput.value });
-            if (error) { messageEl.textContent = error.message; }
+            if (error) {
+                messageEl.textContent = error.message;
+            }
         }
         async function handleSignup() {
             messageEl.textContent = '';
-            if (!emailInput.value || !passwordInput.value || !inviteCodeInput.value) { messageEl.textContent = 'Please fill out all fields.'; return; }
+            if (!emailInput.value || !passwordInput.value || !inviteCodeInput.value) {
+                messageEl.textContent = 'Please fill out all fields.';
+                return;
+            }
             const { data: codeData, error: codeError } = await supabase.from('invitation_codes').select('*').eq('code', inviteCodeInput.value).eq('is_used', false).single();
-            if (codeError || !codeData) { messageEl.textContent = 'Invalid or used invitation code.'; return; }
+            if (codeError || !codeData) {
+                messageEl.textContent = 'Invalid or used invitation code.';
+                return;
+            }
             const { data, error } = await supabase.auth.signUp({ email: emailInput.value, password: passwordInput.value });
-            if (error) { messageEl.textContent = error.message; } 
-            else {
+            if (error) {
+                messageEl.textContent = error.message;
+            } else {
                 await supabase.from('invitation_codes').update({ is_used: true, used_by: data.user.id }).eq('id', codeData.id);
                 await supabase.from('users').insert([{ id: data.user.id, email: data.user.email, balance: 10.00, role: 'user' }]);
                 showModal('Success', 'Sign up successful! Please check your email for a confirmation link.');
@@ -299,19 +234,68 @@
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
                 const { data, error } = await supabase.from('users').select('balance, role').eq('id', user.id).single();
-                if (error) { console.error('Error fetching user data:', error); return; }
+                
+                // Add console log for easier debugging
+                console.log('User data from DB:', data);
+                if (error) {
+                    console.error('Error fetching user data:', error);
+                    // Hide admin link if there's an error, as we can't confirm role
+                    navAdminLink.classList.add('hidden');
+                    return;
+                }
+
                 if (data) {
                     balanceEl.textContent = parseFloat(data.balance).toFixed(2);
-                    if(document.getElementById('account-balance')) document.getElementById('account-balance').textContent = parseFloat(data.balance).toFixed(2);
+                    document.getElementById('account-balance').textContent = parseFloat(data.balance).toFixed(2);
+                    // Trim the role to prevent whitespace issues and make the check case-insensitive
                     const userRole = data.role ? data.role.trim().toLowerCase() : '';
                     navAdminLink.classList.toggle('hidden', userRole !== 'admin');
                 }
-            } else { showPage('login'); }
+            } else {
+                showPage('login');
+            }
         }
 
         async function loadAllTasks() {
-            // ... Your existing loadAllTasks function ...
-            // The displayNextTask part needs a slight update for the new card style
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            document.getElementById('task-container').innerHTML = `<p class="text-white">Loading your assigned tasks...</p>`;
+            document.getElementById('task-counter').textContent = '';
+            totalTasksInSetCount = 0; // Reset count
+
+            const { data: set, error: setError } = await supabase.from('task_sets').select('id').eq('assigned_to_user_id', user.id).single();
+            if (setError || !set) {
+                document.getElementById('task-container').innerHTML = `<p class="text-white text-center">You have not been assigned a task set yet.<br>Please contact support.</p>`;
+                return;
+            }
+
+            // First, get the total count of tasks in the set for accurate progress display
+            const { count, error: countError } = await supabase.from('tasks').select('*', { count: 'exact', head: true }).eq('task_set_id', set.id);
+            if (countError) {
+                showModal('Error', 'Could not determine task count.');
+                console.error(countError);
+            } else {
+                totalTasksInSetCount = count;
+            }
+
+            const { data: completed } = await supabase.from('completed_tasks').select('task_id').eq('user_id', user.id);
+            const completedTaskIds = completed?.map(c => c.task_id) || [];
+            
+            let query = supabase.from('tasks').select('*').eq('task_set_id', set.id);
+            if (completedTaskIds.length > 0) {
+                 query = query.not('id', 'in', `(${completedTaskIds.join(',')})`);
+            }
+            const { data: tasks, error: tasksError } = await query;
+            
+            if (tasksError) {
+                showModal('Error', 'Could not load tasks.');
+                console.error(tasksError);
+            } else {
+                allTasks = tasks;
+                currentTaskIndex = 0;
+                displayNextTask();
+            }
         }
         
         function displayNextTask() {
@@ -319,37 +303,229 @@
             const completedCount = totalTasksInSetCount - allTasks.length;
 
             if (allTasks.length === 0 || currentTaskIndex >= allTasks.length) {
-                taskContainer.innerHTML = `<div class="celestial-card p-8 text-center"><i data-lucide="party-popper" class="w-16 h-16 mx-auto text-accent mb-4"></i><h3 class="text-2xl font-bold">All Tasks Completed!</h3><p class="text-text-secondary mt-2">Well done! You've completed all tasks in your set.</p></div>`;
-                document.getElementById('task-counter').textContent = totalTasksInSetCount > 0 ? `Progress: ${totalTasksInSetCount} / ${totalTasksInSetCount}` : `All Complete!`;
-                lucide.createIcons();
+                taskContainer.innerHTML = `<p class="text-center text-white drop-shadow-md">You've completed all tasks in your set. Well done!</p>`;
+                document.getElementById('task-counter').textContent = totalTasksInSetCount > 0 ? `Progress: ${totalTasksInSetCount} / ${totalTasksInSetCount}` : `Progress: All Complete!`;
                 return;
             }
 
             document.getElementById('task-counter').textContent = `Progress: ${completedCount + currentTaskIndex + 1} / ${totalTasksInSetCount}`;
             const task = allTasks[currentTaskIndex];
-            taskContainer.innerHTML = `<div class="celestial-card p-6 flex flex-col items-center text-center max-w-sm w-full">
-                <img src="${task.image_url}" alt="Task" class="w-32 h-32 object-cover rounded-full mb-4 shadow-xl border-4 border-surface">
+            taskContainer.innerHTML = `<div class="card-container rounded-xl p-6 flex flex-col items-center text-center max-w-sm w-full">
+                <img src="${task.image_url}" alt="Task" class="w-32 h-32 object-cover rounded-full mb-4 shadow-xl bg-gray-500">
                 <h3 class="text-xl font-semibold text-white">${task.title}</h3>
-                <div class="my-4 text-center">
-                    <p class="text-text-secondary">Earn: <span class="font-bold text-green-400">$${parseFloat(task.earned).toFixed(2)}</span></p>
-                    <p class="text-text-secondary">Cost: <span class="font-bold text-red-400">$${parseFloat(task.price).toFixed(2)}</span></p>
-                </div>
-                <button class="submit-task-btn celestial-btn btn-secondary w-full" data-task-id="${task.id}" data-price="${task.price}" data-earned="${task.earned}"><i data-lucide="check"></i>Submit</button>
+                <p class="text-white my-2 drop-shadow-sm">Earn: $${parseFloat(task.earned).toFixed(2)}</p>
+                <p class="text-white mb-4 drop-shadow-sm">Cost: $${parseFloat(task.price).toFixed(2)}</p>
+                <button class="submit-task-btn bg-blue-600 text-white font-bold py-2 px-6 rounded-full hover:bg-blue-700" data-task-id="${task.id}" data-price="${task.price}" data-earned="${task.earned}">Submit</button>
             </div>`;
             taskContainer.querySelector('.submit-task-btn').addEventListener('click', handleSubmitTask);
-            lucide.createIcons();
         }
 
         async function handleSubmitTask(e) {
-            // ... This function remains the same
+            const { taskId, price, earned } = e.target.dataset;
+            document.getElementById('loader').classList.remove('hidden');
+            const { data: { user } } = await supabase.auth.getUser();
+
+            try {
+                const { data: userData, error: fetchError } = await supabase.from('users').select('balance').eq('id', user.id).single();
+                if (fetchError) throw fetchError;
+
+                const newBalance = userData.balance + parseFloat(earned) - parseFloat(price);
+                const { error: updateError } = await supabase.from('users').update({ balance: newBalance }).eq('id', user.id);
+                if (updateError) throw updateError;
+                
+                const { error: completionError } = await supabase.from('completed_tasks').insert({ user_id: user.id, task_id: taskId });
+                if (completionError) throw completionError;
+
+                showModal('Success', `Task submitted! You earned $${parseFloat(earned).toFixed(2)}.`);
+                await fetchUserData();
+                currentTaskIndex++;
+                displayNextTask();
+            } catch (error) {
+                showModal('Error', 'An error occurred during submission.');
+                console.error('Task submission error:', error.message);
+            } finally {
+                document.getElementById('loader').classList.add('hidden');
+            }
         }
 
-        // --- All other JavaScript functions (Account, Admin, etc.) remain the same ---
-        // I have omitted them here for brevity but you should paste your existing JS logic back in.
+        // --- Account Logic ---
+        const userNameEl = document.getElementById('user-name');
+        const userEmailEl = document.getElementById('user-email');
+        const usernameInput = document.getElementById('username-input');
+        const withdrawMessageEl = document.getElementById('withdraw-message');
         
+        async function displayAccountInfo() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const { data } = await supabase.from('users').select('balance, username').eq('id', user.id).single();
+                if (data) {
+                    userNameEl.textContent = data.username || user.email.split('@')[0];
+                    userEmailEl.textContent = user.email;
+                    document.getElementById('account-balance').textContent = parseFloat(data.balance).toFixed(2);
+                }
+            }
+        }
+        async function handleSetUsername() {
+             const { data: { user } } = await supabase.auth.getUser();
+            const username = usernameInput.value.trim();
+            if (username.length < 3) {
+                showModal('Error', 'Username must be at least 3 characters.');
+                return;
+            }
+            const { error } = await supabase.from('users').update({ username }).eq('id', user.id);
+            if (error) showModal('Error', 'Failed to update username.');
+            else {
+                showModal('Success', 'Username updated!');
+                await displayAccountInfo();
+            }
+        }
+        async function handleWithdrawal(e) {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const walletAddress = document.getElementById('wallet-address').value.trim();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!amount || amount <= 0 || !walletAddress) {
+                withdrawMessageEl.textContent = 'Please fill out all fields correctly.';
+                return;
+            }
+            try {
+                const { data: userData, error: fetchError } = await supabase.from('users').select('balance').eq('id', user.id).single();
+                if (fetchError) throw fetchError;
+                if (userData.balance < amount) {
+                    withdrawMessageEl.textContent = 'Insufficient balance.';
+                    return;
+                }
+                const { error: requestError } = await supabase.from('withdrawal_requests').insert({ user_id: user.id, amount, wallet_address: walletAddress, status: 'pending' });
+                if (requestError) throw requestError;
+                const newBalance = userData.balance - amount;
+                const { error: updateError } = await supabase.from('users').update({ balance: newBalance }).eq('id', user.id);
+                if (updateError) throw updateError;
+                withdrawMessageEl.textContent = `Withdrawal of $${amount.toFixed(2)} requested successfully.`;
+                await fetchUserData(); // To update balance everywhere
+                await displayAccountInfo();
+            } catch (error) {
+                console.error('Withdrawal error:', error.message);
+                withdrawMessageEl.textContent = 'An error occurred during withdrawal.';
+            }
+        }
+
+        // --- Admin Logic ---
+        const usersListEl = document.getElementById('users-list');
+        const withdrawalRequestsListEl = document.getElementById('withdrawal-requests-list');
+        const inviteCodesListEl = document.getElementById('invite-codes-list');
+        
+        async function refreshAdminDashboard() { await Promise.all([fetchAllUsers(), fetchTaskSets(), fetchWithdrawalRequests(), fetchAllInviteCodes()]); }
+        async function fetchAllUsers() {
+            const { data, error } = await supabase.from('users').select('*');
+            if (error) return;
+            usersListEl.innerHTML = '';
+            data.forEach(user => {
+                usersListEl.innerHTML += `
+                    <div class="bg-white/10 p-3 rounded-lg flex justify-between items-center flex-wrap">
+                        <span class="mr-4">${user.username || user.email} (Balance: $${parseFloat(user.balance).toFixed(2)})</span>
+                        <div class="flex space-x-2">
+                            <button class="bg-blue-500/80 text-white text-xs py-1 px-3 rounded-full hover:bg-blue-600/80" data-id="${user.id}" data-action="edit-balance">Edit Balance</button>
+                            <button class="bg-red-500/80 text-white text-xs py-1 px-3 rounded-full hover:bg-red-600/80" data-id="${user.id}" data-action="delete-user">Delete</button>
+                        </div>
+                    </div>`;
+            });
+        }
+        async function fetchWithdrawalRequests() {
+            const { data, error } = await supabase.from('withdrawal_requests').select('*, users(email)').order('created_at', { ascending: false });
+            if (error) { console.error(error); return; }
+            withdrawalRequestsListEl.innerHTML = data.length === 0 ? `<p>No pending requests.</p>` : '';
+            data.forEach(req => {
+                const buttons = req.status === 'pending' ? `
+                    <div class="flex space-x-2 mt-2">
+                        <button class="w-full bg-green-500/80 text-white py-1 px-3 rounded-full hover:bg-green-600/80" data-id="${req.id}" data-action="approve-withdrawal">Approve</button>
+                        <button class="w-full bg-red-500/80 text-white py-1 px-3 rounded-full hover:bg-red-600/80" data-id="${req.id}" data-user-id="${req.user_id}" data-amount="${req.amount}" data-action="reject-withdrawal">Reject</button>
+                    </div>` : '';
+                withdrawalRequestsListEl.innerHTML += `
+                    <div class="bg-white/10 p-3 rounded-lg">
+                        <p><strong>User:</strong> ${req.users.email}</p>
+                        <p><strong>Amount:</strong> $${parseFloat(req.amount).toFixed(2)} | <strong>Wallet:</strong> ${req.wallet_address}</p>
+                        <p><strong>Status:</strong> <span class="${req.status === 'pending' ? 'text-yellow-400' : 'text-green-400'}">${req.status}</span></p>
+                        ${buttons}
+                    </div>`;
+            });
+        }
+        async function fetchAllInviteCodes() {
+            const { data, error } = await supabase.from('invitation_codes').select('*');
+            if (error) return;
+            inviteCodesListEl.innerHTML = '';
+            data.forEach(code => {
+                const statusColor = code.is_used ? 'text-red-400' : 'text-green-400';
+                inviteCodesListEl.innerHTML += `<div class="bg-white/10 p-3 rounded-lg"><span>Code: ${code.code} <span class="${statusColor}">(${code.is_used ? 'Used' : 'Unused'})</span></span></div>`;
+            });
+        }
+
+        async function fetchTaskSets() {
+            const { data, error } = await supabase.from('task_sets').select('id, name, users(email)');
+            if (error) { console.error('Error fetching sets:', error); return; }
+            const listEl = document.getElementById('task-sets-list');
+            listEl.innerHTML = data.length === 0 ? `<p>No task sets created yet.</p>` : '';
+            data.forEach(set => {
+                const assignedEmail = set.users ? set.users.email : 'Unassigned';
+                listEl.innerHTML += `<div class="bg-white/10 p-3 rounded-lg flex justify-between items-center">
+                    <span>${set.name} (Assigned to: ${assignedEmail})</span>
+                    <button class="bg-red-500/80 text-xs text-white py-1 px-3 rounded-full" data-action="delete-set" data-id="${set.id}">Delete</button>
+                </div>`;
+            });
+        }
+
+        async function findUserByEmail(email) {
+            const cleanEmail = email.trim().toLowerCase();
+            if (!cleanEmail) return { user: null, error: 'Email is required.' };
+            const { data, error } = await supabase.from('users').select('id, email').eq('email', cleanEmail).single();
+            if (error) {
+                console.error("Error finding user:", error.message);
+                if (error.code === 'PGRST116') {
+                    return { user: null, error: `User not found. If you are sure this user exists, please check your database's Row Level Security (RLS) policies to ensure admins can view all users.` };
+                }
+                return { user: null, error: 'An error occurred while searching for the user.' };
+            }
+            return { user: data, error: null };
+        }
+
+        async function handleCreateAndAssignSet() {
+            const name = document.getElementById('new-set-name').value;
+            const email = document.getElementById('assign-set-email').value;
+            if (!name || !email) { showModal('Error', 'Set Name and User Email are required.'); return; }
+
+            const { user, error: userError } = await findUserByEmail(email);
+            if (userError) { showModal('Error', userError); return; }
+            
+            showModal('Processing...', 'Creating new task set. This may take a moment.');
+            const { data: set, error: setError } = await supabase.from('task_sets').insert({ name: name, assigned_to_user_id: user.id }).select().single();
+            if (setError) { showModal('Error', 'Could not create task set.'); console.error(setError); return; }
+
+            const tasksToInsert = [];
+            for (let i = 1; i <= 35; i++) {
+                tasksToInsert.push({
+                    task_set_id: set.id, title: `Product ${i} / 35`, status: 'active',
+                    earned: (Math.random() * 0.5 + 0.1).toFixed(2), price: (Math.random() * 0.1).toFixed(2),
+                    image_url: `https://placehold.co/128x128/2563eb/ffffff?text=P${i}`
+                });
+            }
+            const { error: tasksError } = await supabase.from('tasks').insert(tasksToInsert);
+            if (tasksError) { showModal('Error', 'Could not create tasks for the set.'); console.error(tasksError); }
+            else { showModal('Success', `Task set "${name}" created and assigned to ${user.email}.`); }
+            
+            refreshAdminDashboard();
+        }
+
+        async function generateNewCode() {
+            const newCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+            const { error } = await supabase.from('invitation_codes').insert([{ code: newCode }]);
+            if (error) showModal('Error', 'Failed to generate code.');
+            else {
+                showModal('Success', `New code generated: ${newCode}`);
+                await fetchAllInviteCodes();
+            }
+        }
+
         // --- Event Listeners ---
         document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
             // Auth & Main Nav
             document.getElementById('login-btn').addEventListener('click', handleLogin);
             document.getElementById('signup-btn').addEventListener('click', handleSignup);
@@ -357,16 +533,54 @@
             document.getElementById('about-btn').addEventListener('click', () => showPage('about'));
             document.getElementById('start-btn').addEventListener('click', () => { showPage('tasks'); loadAllTasks(); });
             document.getElementById('refresh-tasks-btn').addEventListener('click', loadAllTasks);
-            document.getElementById('account-btn').addEventListener('click', () => { showPage('account'); /* call displayAccountInfo */ });
-            document.getElementById('nav-admin').addEventListener('click', () => { showPage('admin'); /* call refreshAdminDashboard */ });
+            document.getElementById('account-btn').addEventListener('click', () => { showPage('account'); displayAccountInfo(); });
+            document.getElementById('nav-admin').addEventListener('click', () => { showPage('admin'); refreshAdminDashboard(); });
             document.getElementById('nav-support').addEventListener('click', () => showPage('support'));
-            ['about', 'tasks', 'account', 'admin', 'support'].forEach(p => {
-                const navBackBtn = document.getElementById(`nav-back-${p}`);
-                if (navBackBtn) navBackBtn.addEventListener('click', () => showPage('main-menu'));
+            ['about', 'tasks', 'account', 'admin', 'support'].forEach(p => document.getElementById(`nav-back-${p}`)?.addEventListener('click', () => showPage('main-menu')));
+            // Account Page
+            document.getElementById('withdraw-form').addEventListener('submit', handleWithdrawal);
+            document.getElementById('set-username-btn').addEventListener('click', handleSetUsername);
+            // Admin Page
+            document.getElementById('create-set-btn').addEventListener('click', handleCreateAndAssignSet);
+            document.getElementById('generate-code-btn').addEventListener('click', generateNewCode);
+            document.getElementById('admin-page').addEventListener('click', async (e) => {
+                const { action, id } = e.target.dataset;
+                if (!action || !id) return;
+                
+                if (action === 'delete-set') {
+                    if (confirm('Are you sure? This will delete the set and all 35 tasks within it.')) {
+                        await supabase.from('tasks').delete().eq('task_set_id', id);
+                        await supabase.from('task_sets').delete().eq('id', id);
+                        refreshAdminDashboard();
+                    }
+                } else if (action === 'delete-user') {
+                    if (confirm('Are you sure you want to delete this user? This cannot be undone.')) {
+                        // Note: You may need to configure RLS or make this a server-side call
+                        // to delete users from the auth schema. This only deletes from the 'users' table.
+                        const { error } = await supabase.from('users').delete().eq('id', id);
+                        if(error) showModal('Error', error.message);
+                        await fetchAllUsers();
+                    }
+                } else if (action === 'approve-withdrawal') {
+                    await supabase.from('withdrawal_requests').update({ status: 'approved' }).eq('id', id);
+                    await fetchWithdrawalRequests();
+                } else if (action === 'reject-withdrawal') {
+                    const userId = e.target.dataset.userId;
+                    const amount = parseFloat(e.target.dataset.amount);
+                    const { data: user } = await supabase.from('users').select('balance').eq('id', userId).single();
+                    if (user) {
+                        await supabase.from('users').update({ balance: user.balance + amount }).eq('id', userId);
+                    }
+                    await supabase.from('withdrawal_requests').update({ status: 'rejected' }).eq('id', id);
+                    await fetchWithdrawalRequests();
+                } else if (action === 'edit-balance') {
+                    const newBalance = prompt('Enter the new balance for this user:');
+                    if (newBalance !== null && !isNaN(newBalance)) {
+                        await supabase.from('users').update({ balance: parseFloat(newBalance) }).eq('id', id);
+                        await fetchAllUsers();
+                    }
+                }
             });
-            
-            // ... Paste your other event listeners for Account and Admin pages here ...
-            
             supabase.auth.onAuthStateChange((event, session) => {
                 if (session) { showPage('main-menu'); fetchUserData(); } 
                 else { showPage('login'); }
@@ -375,3 +589,6 @@
     </script>
 </body>
 </html>
+
+
+

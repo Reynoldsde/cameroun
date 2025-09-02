@@ -8,205 +8,144 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        :root {
-            --primary-color: #0073e6; --secondary-color: #005cb3; --accent-color: #ff9900;
-            --success-color: #10b981; --warning-color: #ff9900; --error-color: #ef4444;
-            --glass-bg: rgba(255, 255, 255, 0.1); --glass-border: rgba(255, 255, 255, 0.2);
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('https://bigthink.com/wp-content/uploads/2023/02/AdobeStock_558949687.jpg?w=640'); background-size: cover; background-position: center; background-attachment: fixed; color: #e5e7eb; line-height: 1.6; overflow-x: hidden; }
+        :root { --primary-color: #0073e6; --secondary-color: #005cb3; --accent-color: #ff9900; --success-color: #10b981; --warning-color: #ff9900; --error-color: #ef4444; --glass-bg: rgba(255, 255, 255, 0.1); --glass-border: rgba(255, 255, 255, 0.2); }
+        body { font-family: 'Inter', sans-serif; background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('https://www.tlgmarketing.com/wp-content/uploads/2023/07/not-used.png'); background-size: cover; background-position: center; background-attachment: fixed; color: #e5e7eb; line-height: 1.6; overflow-x: hidden; }
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 1rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
         .glass-input { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; backdrop-filter: blur(10px); }
         .glass-input::placeholder { color: rgba(255, 255, 255, 0.6); }
         .glass-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 115, 230, 0.1); }
-        .btn-primary { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border: none; color: white; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 115, 230, 0.3); }
+        .btn { padding: 0.5rem 1rem; border-radius: 9999px; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; box-shadow: 0 4px 15px rgba(0, 115, 230, 0.3); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 115, 230, 0.4); }
-        .btn-primary:disabled { background: #555; cursor: not-allowed; transform: none; box-shadow: none; }
-        .btn-secondary { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; font-weight: 500; transition: all 0.3s ease; }
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-1px); }
-        .btn-warning { background: linear-gradient(135deg, var(--warning-color), #d97706); color: white; }
-        .btn-success { background: linear-gradient(135deg, var(--success-color), #059669); color: white; font-weight: 600; }
-        .btn-danger { background: linear-gradient(135deg, var(--error-color), #dc2626); color: white; font-weight: 600; }
+        .btn-secondary { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
+        .btn-success { background: linear-gradient(135deg, var(--success-color), #059669); color: white; }
+        .btn-danger { background: linear-gradient(135deg, var(--error-color), #dc2626); color: white; }
         .loader { border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid var(--primary-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .fade-in { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .form-group { margin-bottom: 1rem; }
-        .form-control { width: 100%; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.875rem; }
         .notification-container { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
         .notification { max-width: 400px; padding: 1rem; border-radius: 0.5rem; color: white; font-weight: 500; transform: translateX(120%); transition: transform 0.3s ease; opacity: 0; }
         .notification.show { transform: translateX(0); opacity: 1; }
         .notification.success { background: linear-gradient(135deg, var(--success-color), #059669); }
         .notification.error { background: linear-gradient(135deg, var(--error-color), #dc2626); }
-        .notification.info { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); }
-        .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); z-index: 50; }
+        .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); z-index: 50; display: flex; }
         .modal-content { background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .admin-section { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1rem; padding: 1.5rem; }
+        .terms-text h3 { font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; color: var(--primary-color); border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem; }
+        .terms-text p, .terms-text li { margin-bottom: 1rem; line-height: 1.75; color: #d1d5db; }
+        .terms-text ul { list-style-position: inside; }
+        .main-menu-card { transition: all 0.3s ease; }
+        .main-menu-card:hover { transform: translateY(-5px) scale(1.02); background: rgba(255, 255, 255, 0.15); }
     </style>
 </head>
 <body class="bg-slate-900">
+    <!-- Notifications & Modals -->
     <div id="notification-container" class="notification-container"></div>
+    <div id="loading-modal" class="modal-backdrop items-center justify-center hidden"><div class="modal-content p-8 rounded-xl text-center"><div class="loader mx-auto"></div><p id="loading-message" class="mt-4">Loading...</p></div></div>
+    <div id="universal-modal" class="modal-backdrop items-center justify-center hidden"><div class="modal-content p-6 rounded-xl w-full max-w-sm"></div></div>
 
-    <div id="login-page" class="min-h-screen flex items-center justify-center p-4 relative z-10">
-        <div class="glass-card p-8 max-w-md w-full fade-in">
-             <div class="text-center mb-8">
-                <img src="https://mma.prnewswire.com/media/728321/WebFX_Logo.jpg?p=facebook" alt="WebFX Logo" class="w-48 mx-auto mb-4 rounded-lg">
-                <h2 class="text-3xl font-bold text-center mb-2">WebFX</h2>
-                <p class="text-gray-300">Digital Marketing That Drives Results</p>
-            </div>
+    <!-- Page Containers -->
+    <div id="login-page" class="min-h-screen flex items-center justify-center p-4 relative z-10 hidden">
+        <div class="glass-card p-8 max-w-md w-full">
+             <div class="text-center mb-8"><img src="https://mma.prnewswire.com/media/728321/WebFX_Logo.jpg?p=facebook" alt="WebFX Logo" class="w-32 h-32 object-cover rounded-full mx-auto mb-4 border-2 border-white/20"><h2 class="text-3xl font-bold text-center mb-2">WebFX</h2><p class="text-gray-300">Digital Marketing That Drives Results</p></div>
             <form id="auth-form" class="space-y-4">
-                <div class="form-group"><input type="email" id="email" placeholder="Email Address" required class="form-control glass-input" autocomplete="email"></div>
-                <div class="form-group"><input type="password" id="password" placeholder="Password" required class="form-control glass-input" autocomplete="current-password"></div>
-                <div class="form-group" id="invite-code-group"><input type="text" id="invite-code" placeholder="Invitation Code (for signup)" class="form-control glass-input" autocomplete="off"></div>
-                <div class="flex space-x-3">
-                    <button type="button" id="login-btn" class="flex-1 btn-primary py-3 px-4 rounded-lg font-semibold"><i class="fas fa-sign-in-alt mr-2"></i>Login</button>
-                    <button type="button" id="signup-btn" class="flex-1 btn-secondary py-3 px-4 rounded-lg font-semibold"><i class="fas fa-user-plus mr-2"></i>Sign Up</button>
-                </div>
+                <div><input type="email" id="email" placeholder="Email Address" required class="w-full p-3 rounded-lg glass-input" autocomplete="email"></div>
+                <div><input type="password" id="password" placeholder="Password" required class="w-full p-3 rounded-lg glass-input" autocomplete="current-password"></div>
+                <div><input type="text" id="invite-code" placeholder="Invitation Code (for signup)" class="w-full p-3 rounded-lg glass-input" autocomplete="off"></div>
+                <div class="flex space-x-3"><button type="button" id="login-btn" class="w-full btn btn-primary py-3"><i class="fas fa-sign-in-alt mr-2"></i>Login</button><button type="button" id="signup-btn" class="w-full btn btn-secondary py-3"><i class="fas fa-user-plus mr-2"></i>Sign Up</button></div>
             </form>
-            <div id="auth-message" class="text-center mt-4 text-sm"></div>
+            <div class="text-center mt-6 text-xs text-gray-400">
+                <p>By signing up, you agree to our <button id="terms-link" class="underline hover:text-white">Terms and Conditions</button>.</p>
+            </div>
         </div>
     </div>
-    
     <div id="main-menu-page" class="min-h-screen flex flex-col relative z-10 hidden">
-        <nav class="p-4 flex justify-between items-center">
-            <div class="flex items-center space-x-3"><img src="https://mma.prnewswire.com/media/728321/WebFX_Logo.jpg?p=facebook" alt="WebFX Logo" class="h-10 rounded-md"><span class="text-xl font-bold">WebFX</span></div>
-            <div class="flex space-x-3">
-                <button id="nav-admin" class="btn-secondary py-2 px-4 rounded-lg hidden"><i class="fas fa-cog mr-2"></i>Admin</button>
-                <button id="nav-support" class="btn-secondary py-2 px-4 rounded-lg"><i class="fas fa-headset mr-2"></i>Support</button>
-                <button id="sign-out-btn" class="btn-danger py-2 px-4 rounded-lg"><i class="fas fa-sign-out-alt mr-2"></i>Sign Out</button>
-            </div>
-        </nav>
-        <div class="flex-1 flex items-center justify-center p-4">
-            <div class="glass-card p-8 max-w-4xl w-full text-center">
-                <h1 class="text-3xl font-bold mb-4">Welcome to WebFX</h1>
-                <p class="text-xl text-gray-300 mb-8">Explore tasks and contribute to digital marketing campaigns that drive real results.</p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <button id="about-btn" class="btn-secondary py-3 px-6 rounded-lg"><i class="fas fa-info-circle mr-2"></i>About Us</button>
-                    <button id="start-btn" class="btn-primary py-3 px-6 rounded-lg"><i class="fas fa-play mr-2"></i>Start Tasks</button>
-                    <button id="account-btn" class="btn-secondary py-3 px-6 rounded-lg"><i class="fas fa-user mr-2"></i>Account</button>
-                </div>
-            </div>
-        </div>
+        <nav class="p-4 flex justify-between items-center"><div class="flex items-center space-x-3"><img src="https://mma.prnewswire.com/media/728321/WebFX_Logo.jpg?p=facebook" alt="WebFX Logo" class="h-10 w-10 object-cover rounded-full"><span class="text-xl font-bold">WebFX</span></div><div class="flex space-x-3"><button id="nav-admin" class="btn btn-secondary hidden"><i class="fas fa-cog mr-2"></i>Admin</button><button id="nav-support" class="btn btn-secondary"><i class="fas fa-headset mr-2"></i>Support</button><button id="sign-out-btn" class="btn btn-danger"><i class="fas fa-sign-out-alt mr-2"></i>Sign Out</button></div></nav>
+        <div class="flex-1 flex items-center justify-center p-4"><div class="glass-card p-8 max-w-5xl w-full"><h1 class="text-3xl font-bold mb-2 text-center">Welcome Back, <span id="main-menu-username">User</span>!</h1><p class="text-center text-gray-300 mb-8">Here's a summary of your account.</p><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"><div class="glass-card p-4 text-center"><h3 class="text-lg font-semibold">Current Balance</h3><p class="text-2xl font-bold text-success">$<span id="main-menu-balance">0.00</span></p></div><div class="glass-card p-4 text-center"><h3 class="text-lg font-semibold">Tasks Completed</h3><p class="text-2xl font-bold text-primary" id="main-menu-tasks-completed">0</p></div><div class="glass-card p-4 text-center"><h3 class="text-lg font-semibold">Total Earnings</h3><p class="text-2xl font-bold text-yellow-400">$<span id="main-menu-total-earned">0.00</span></p></div></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"><button id="start-btn" class="glass-card p-6 text-center main-menu-card"><i class="fas fa-play text-3xl mb-2 text-primary"></i><h3 class="font-bold text-lg">Start Tasks</h3></button><button id="account-btn" class="glass-card p-6 text-center main-menu-card"><i class="fas fa-user text-3xl mb-2 text-primary"></i><h3 class="font-bold text-lg">My Account</h3></button><button id="certificate-btn" class="glass-card p-6 text-center main-menu-card"><i class="fas fa-certificate text-3xl mb-2 text-primary"></i><h3 class="font-bold text-lg">View Certificate</h3></button><button id="about-btn" class="glass-card p-6 text-center main-menu-card"><i class="fas fa-info-circle text-3xl mb-2 text-primary"></i><h3 class="font-bold text-lg">About Us</h3></button></div></div></div>
     </div>
-    <div id="about-page" class="min-h-screen p-4 relative z-10 hidden">
-        <nav class="flex justify-between items-center py-4 mb-6">
-            <h1 class="text-3xl font-bold flex items-center"><i class="fas fa-info-circle mr-3 text-primary"></i>About Us</h1>
-            <button id="nav-back-about" class="btn-secondary py-2 px-4 rounded-lg"><i class="fas fa-arrow-left mr-2"></i>Back to Main Menu</button>
-        </nav>
-        <div class="glass-card p-8 max-h-[80vh] overflow-y-auto"><h3 class="text-2xl font-bold mb-6 text-center"><i class="fas fa-info-circle mr-2"></i>About Us</h3></div>
+    <div id="about-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden">
+        <nav class="flex justify-between items-center py-4 mb-6"><h1 class="text-3xl font-bold flex items-center"><i class="fas fa-info-circle mr-3 text-primary"></i>About Us</h1><button id="nav-back-about" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Back to Menu</button></nav>
+        <div class="glass-card p-8 max-h-[85vh] overflow-y-auto about-text"><h2 class="text-2xl font-bold mb-4 text-center">Digital Marketing That Drives Revenue®</h2><p>WebFX is a tech-enabled digital marketing solutions provider, and we create custom strategies for each of our clients based on their needs and goals.</p><p>Our team is made up of award-winning marketers, designers, and developers, and we know what it takes to get real results online. We also keep the focus on the metrics that mean the most, like leads and revenue generated. We know that hitting these goals is what moves businesses forward, and we believe that our clients’ success is the best measure of our own performance.</p><div class="my-8"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" class="rounded-lg shadow-xl mx-auto w-full max-w-3xl" alt="A marketing team collaborating around a whiteboard."></div><h3>We keep the focus on driving results.</h3><p>Through our years of experience, we’ve also learned that while each channel has its own set of advantages, they all work best when strategically paired with other channels. That’s why we offer full-service strategies to each of our clients and use a combination of digital channels to increase visibility, conversions, and revenue.</p><p>As a result, we’ve driven over $10 billion in sales and over 24 million leads for our clients. We’ve also built the most connected media team in the industry, with over 40 in-house influencers dedicated to building relationships and earning publication on prominent websites.</p><div class="my-8"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" class="rounded-lg shadow-xl mx-auto w-full max-w-3xl" alt="Diverse group of professionals in a modern office."></div><h3>More than just a place to work</h3><p>At WebFX, our clients are always our top priority — but we firmly believe in creating an environment that’s more than just a place to work. Building a positive company culture has always been important to us, and as a result, we’ve been named the #1 Best Place to Work in PA 9 years in a row.</p><p>We also believe in the importance of improving the lives of others, which is why we established #FXBuilds in 2014. For every high-impact task we complete, WebFX adds to the #FXBuilds fund, which we use to support organizations that provide education, shelter, and clean drinking water to people around the world.</p></div>
     </div>
-    <div id="tasks-page" class="min-h-screen p-4 relative z-10 hidden">
-        <nav class="flex justify-between items-center py-4 mb-6">
-            <h1 class="text-3xl font-bold flex items-center"><i class="fas fa-tasks mr-3 text-primary"></i>Your Tasks</h1>
-            <div class="flex space-x-3">
-                <button id="refresh-tasks-btn" class="btn-secondary py-2 px-4 rounded-lg"><i class="fas fa-sync-alt mr-2"></i>Refresh</button>
-                <button id="nav-back-tasks" class="btn-primary py-2 px-4 rounded-lg"><i class="fas fa-arrow-left mr-2"></i>Back to Main Menu</button>
-            </div>
-        </nav>
-        <div class="glass-card p-6 mb-6">
-            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                <h2 class="text-2xl font-bold flex items-center"><i class="fas fa-wallet mr-2 text-success"></i>Balance: $<span id="balance-amount">0.00</span></h2>
-                <h3 id="task-counter" class="text-xl font-semibold">Loading...</h3>
-            </div>
-        </div>
+    <div id="tasks-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden">
+        <nav class="flex justify-between items-center py-4 mb-6"><h1 class="text-3xl font-bold flex items-center"><i class="fas fa-tasks mr-3 text-primary"></i>Your Tasks</h1><div class="flex space-x-3"><button id="refresh-tasks-btn" class="btn btn-secondary"><i class="fas fa-sync-alt mr-2"></i>Refresh</button><button id="nav-back-tasks" class="btn btn-primary"><i class="fas fa-arrow-left mr-2"></i>Back to Menu</button></div></nav>
+        <div class="glass-card p-6 mb-6"><div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0"><h2 class="text-2xl font-bold flex items-center"><i class="fas fa-wallet mr-2 text-success"></i>Balance: $<span id="balance-amount">0.00</span></h2><h3 id="task-counter" class="text-xl font-semibold">Loading...</h3></div></div>
         <div id="task-container" class="flex justify-center"><div class="loader"></div></div>
     </div>
-    <div id="account-page" class="min-h-screen p-4 relative z-10 hidden">
-        <nav class="flex justify-between items-center py-4 mb-6">
-            <h1 class="text-3xl font-bold flex items-center"><i class="fas fa-user mr-3 text-primary"></i>Account Details</h1>
-            <button id="nav-back-account" class="btn-secondary py-2 px-4 rounded-lg"><i class="fas fa-arrow-left mr-2"></i>Back to Main Menu</button>
-        </nav>
-        <div class="max-w-md mx-auto">
-            <div class="glass-card p-8 space-y-6">
-                <h2 id="user-name" class="text-2xl font-bold text-center">Loading...</h2>
-                <p id="user-email" class="text-gray-300 text-center">Loading...</p>
-                <h3 class="text-xl font-bold text-center">Balance: $<span id="account-balance">0.00</span></h3>
-                <div class="form-group"><input type="text" id="username-input" placeholder="Enter your username" class="form-control glass-input"></div>
-                <button id="set-username-btn" class="w-full btn-primary py-2 px-4 rounded-lg">Save Username</button>
-                <form id="withdraw-form" class="space-y-3">
-                    <input type="number" id="amount" placeholder="Amount to withdraw" required class="form-control glass-input" step="0.01" min="0.01">
-                    <input type="text" id="wallet-address" placeholder="TRC20 Wallet Address" required class="form-control glass-input">
-                    <button type="submit" class="w-full btn-success py-2 px-4 rounded-lg">Request Withdrawal</button>
-                </form>
-            </div>
+    <div id="account-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden">
+        <nav class="flex justify-between items-center py-4 mb-6"><h1 class="text-3xl font-bold flex items-center"><i class="fas fa-user mr-3 text-primary"></i>Account Details</h1><button id="nav-back-account" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Back to Menu</button></nav>
+        <div class="max-w-md mx-auto"><div class="glass-card p-8 space-y-6"><h2 id="user-name" class="text-2xl font-bold text-center">Loading...</h2><p id="user-email" class="text-gray-300 text-center">Loading...</p><h3 class="text-xl font-bold text-center">Balance: $<span id="account-balance">0.00</span></h3><div><input type="text" id="username-input" placeholder="Enter your username" class="w-full p-3 rounded-lg glass-input"></div><button id="set-username-btn" class="w-full btn btn-primary py-3">Save Username</button><form id="withdraw-form" class="space-y-3 pt-4 border-t border-white/10"><h3 class="text-lg font-semibold text-center">Withdraw Funds</h3><input type="number" id="amount" placeholder="Amount to withdraw" required class="w-full p-3 rounded-lg glass-input" step="0.01" min="0.01"><input type="text" id="wallet-address" placeholder="TRC20 Wallet Address" required class="w-full p-3 rounded-lg glass-input"><button type="submit" class="w-full btn btn-success py-3">Request Withdrawal</button></form></div></div>
+    </div>
+    <div id="admin-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden">
+        <nav class="flex justify-between items-center py-4 mb-6"><h1 class="text-3xl font-bold flex items-center"><i class="fas fa-cog mr-3 text-primary"></i>Admin Dashboard</h1><button id="nav-back-admin" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Back to Menu</button></nav>
+        <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div class="admin-section col-span-1 lg:col-span-3 xl:col-span-2"><h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-users mr-2"></i>User Management</h2><div id="users-list" class="space-y-2 max-h-96 overflow-y-auto pr-2"></div></div>
+            <div class="admin-section"><h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-hand-holding-usd mr-2"></i>Withdrawal Requests</h2><div id="withdrawal-requests-list" class="space-y-2 max-h-96 overflow-y-auto pr-2"></div></div>
+            <div class="admin-section"><h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-ticket-alt mr-2"></i>Invitation Codes</h2><div id="invite-codes-list" class="space-y-2 max-h-80 overflow-y-auto pr-2 mb-4"></div><button id="generate-code-btn" class="w-full btn btn-primary"><i class="fas fa-plus mr-2"></i>Generate New Code</button></div>
+            <div class="admin-section col-span-1 lg:col-span-2"><h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-layer-group mr-2"></i>Task Set Management</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><h3 class="font-semibold mb-2">Create New Task Set</h3><div class="space-y-3 p-4 bg-black/20 rounded-lg"><input type="text" id="new-set-name" placeholder="Task Set Name" class="w-full p-2 rounded-lg glass-input"><button id="create-set-btn" class="w-full btn btn-primary">Create Set</button></div></div><div><h3 class="font-semibold mb-2">Existing Task Sets</h3><div id="task-sets-list" class="space-y-2 max-h-60 overflow-y-auto pr-2"></div></div></div></div>
+            <div class="admin-section col-span-1 lg:col-span-2"><h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-tasks mr-2"></i>Product Management</h2><form id="create-task-form" class="space-y-3 p-4 bg-black/20 rounded-lg"><h3 class="font-semibold">Create New Product</h3><input type="text" id="task-title" placeholder="Product Title" required class="w-full p-2 rounded-lg glass-input"><input type="url" id="task-image-url" placeholder="Image URL" required class="w-full p-2 rounded-lg glass-input"><div class="grid grid-cols-2 gap-2"><input type="number" id="task-price" placeholder="Price" required class="w-full p-2 rounded-lg glass-input" step="0.01"><input type="number" id="task-earning" placeholder="Earning" required class="w-full p-2 rounded-lg glass-input" step="0.01"></div><select id="task-set-select" required class="w-full p-2 rounded-lg glass-input"></select><div class="flex items-center gap-2"><input type="checkbox" id="task-is-premium" class="h-4 w-4 rounded"><label for="task-is-premium">Premium Product</label></div><button type="submit" class="w-full btn btn-primary">Create Product</button></form></div>
         </div>
     </div>
-    <div id="admin-page" class="min-h-screen p-4 relative z-10 hidden">
-         <nav class="flex justify-between items-center py-4 mb-6"><h1 class="text-3xl font-bold flex items-center"><i class="fas fa-cog mr-3 text-primary"></i>Admin Dashboard</h1><button id="nav-back-admin" class="btn-secondary py-2 px-4 rounded-lg"><i class="fas fa-arrow-left mr-2"></i>Back to Main Menu</button></nav>
+    <div id="support-page" class="min-h-screen flex items-center justify-center p-4 relative z-10 hidden">
+        <div class="glass-card p-8 max-w-md w-full text-center"><button id="nav-back-support" class="absolute top-4 right-4 btn btn-secondary text-xs">Back</button><i class="fas fa-headset text-4xl text-primary mb-4"></i><h1 class="text-2xl font-bold mb-4">Contact Support</h1><p class="text-gray-300">For any questions or issues, please contact our support team.</p></div>
     </div>
-    <div id="user-management-page" class="min-h-screen p-4 relative z-10 hidden">
-        <button id="nav-back-user-mgmt">Back to Admin</button>
-        <input type="text" id="user-search" placeholder="Search users..."><select id="role-filter"><option value="">All Roles</option></select><select id="task-filter"><option value="">All Users</option></select>
-        <button id="refresh-usermgmt-btn">Refresh</button><div id="users-management-list"></div>
+    <div id="certificate-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden">
+        <nav class="flex justify-between items-center py-4 mb-6"><h1 class="text-3xl font-bold flex items-center"><i class="fas fa-certificate mr-3 text-primary"></i>Certificate</h1><button id="nav-back-certificate" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Back to Menu</button></nav>
+        <div class="glass-card p-8 text-center"><img src="https://media.licdn.com/dms/image/v2/D4E22AQFykm_hL6HXEA/feedshare-shrink_800/feedshare-shrink_800/0/1685538963558?e=2147483647&v=beta&t=_FvT54asRcT2C4Ry21p5MwDqjdMxgUwCNiLW_dVy44Y" alt="Certificate of Achievement" class="max-w-full h-auto rounded-lg mx-auto"><a href="https://media.licdn.com/dms/image/v2/D4E22AQFykm_hL6HXEA/feedshare-shrink_800/feedshare-shrink_800/0/1685538963558?e=2147483647&v=beta&t=_FvT54asRcT2C4Ry21p5MwDqjdMxgUwCNiLW_dVy44Y" download="WebFX_Certificate.jpg" class="btn btn-primary mt-6">Download Certificate</a></div>
     </div>
-    <div id="support-page" class="min-h-screen p-4 relative z-10 hidden">
-        <nav class="flex justify-between items-center py-4 mb-6"><h1 class="text-3xl font-bold">Support</h1><button id="nav-back-support" class="btn-secondary py-2 px-4 rounded-lg">Back to Menu</button></nav>
+    <div id="terms-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden">
+        <nav class="flex justify-between items-center py-4 mb-6"><h1 class="text-3xl font-bold flex items-center"><i class="fas fa-file-contract mr-3 text-primary"></i>Terms and Conditions</h1><button id="nav-back-terms" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Back to Login</button></nav>
+        <div class="glass-card p-8 max-h-[85vh] overflow-y-auto terms-text">
+            <h3>User Agreement</h3> <p>These Terms and Conditions are governed by the following terminology and interpretation principles: User Agreement: The agreement under these Terms and Conditions. Rebate Charge: The fee applied to the User’s account. Account Information Provider: The documents and details related to the User's services. Services: The services pledged by the User to deliver, as outlined in the User Agreement.</p>
+            <h3>1. Data Submission</h3><ul><li>1.1) Users must maintain a minimum balance of 58 USDT to submit the first set of 20 products.</li><li>1.2) A minimum of 100 USDT is required to reset the account for data submission.</li><li>1.3) Upon completing 20 data submissions, Users must withdraw the full amount before resetting their account for new submissions.</li><li>1.4) The minimum withdrawal amount is 58 USDT.</li></ul>
+            <h3>2. Withdrawals</h3><ul><li>2.1) The maximum withdrawal amount for regular Users is 10,000 USDT. Upon reaching this limit, the system automatically upgrades the User to VIP 2.</li><li>2.2) After completing 20 data submissions, VIP 1 Users can apply for withdrawals.</li><li>2.3) Incomplete data submissions prevent Users from applying for withdrawals.</li><li>2.4) Users who abandon data submissions midway are ineligible for withdrawals or refunds.</li><li>2.5) Withdrawal requests must be submitted; otherwise, no processing will take place.</li></ul>
+            <h3>3. Funds Management</h3><ul><li>3.1) All User funds are securely stored and can be fully withdrawn once data submissions are complete.</li><li>3.2) Data is processed by the system, ensuring no manual errors or loss of funds.</li><li>3.3) Any accidental fund loss is the platform’s responsibility.</li><li>3.4) New Users must deposit 20 USDT to activate their work account, ensuring confidentiality.</li></ul>
+            <h3>4. Account Security</h3><ul><li>4.1) Do not share login or withdrawal passwords. The platform is not responsible for any loss resulting from User negligence.</li><li>4.2) Avoid using easily identifiable passwords such as birthdays or phone numbers.</li><li>4.3) For forgotten passwords, contact customer service for assistance.</li></ul>
+            <h3>5. Data Submissions</h3><ul><li>5.1) VIP 1 Users can submit two sets of data daily with 0.5% profit per submission.</li><li>5.2) VIP 2 Users can submit two sets daily with a 1.0% profit per submission.</li><li>5.3) VIP 3 Users can submit three sets daily with 1.5% profit per submission.</li><li>5.4) VIP 4 Users can submit three sets daily with 2.0% profit per submission.</li><li>5.5) Once data submissions are completed, funds and commissions are returned to the User’s account.</li><li>5.6) The system randomly assigns data based on the User's total account balance.</li><li>5.7) Assigned data cannot be canceled or skipped.</li></ul>
+            <h3>6. Merged Data</h3><ul><li>6.1) Merged data may contain up to 3 products; Users are randomly assigned between 1-3.</li><li>6.2) Users earn 10x commission on merged data submissions compared to regular submissions.</li><li>6.3) After completing merged data, all funds are returned to the User’s account.</li><li>6.4) Merged data is randomly assigned based on the User's account balance.</li><li>6.5) Merged data assignments cannot be canceled or skipped.</li></ul>
+            <h3>7. Advance Payments</h3><ul><li>7.1) Advance payments are at the User's discretion.</li><li>7.2) If merged data requires advance payment, Users should pay the negative balance shown on their account.</li><li>7.3) Always confirm the merchant's wallet address before making any payment.</li><li>7.4) The platform is not responsible for payments made to incorrect wallet addresses.</li></ul>
+            <h3>8. Merchant Cooperation</h3><ul><li>8.1) Merchants expect data submissions to be completed promptly. Delays may affect the merchant’s progress.</li><li>8.2) Users may encounter 1-3 merged data products in a submission set, with a possibility of a 4th.</li><li>8.3) To maintain platform credibility, submissions must be completed within 8 hours. Delays may result in penalties or account freezing.</li></ul>
+            <h3>9. Invitations</h3><ul><li>9.1) Users can invite others using their invitation code.</li><li>9.2) Invitation privileges are restricted until the User completes their data submissions.</li><li>9.3) Invitation codes refresh after 30 working days.</li><li>9.4) Referrers earn 20% of the total profit made by referees on the day of their activities.</li></ul>
+            <h3>10. Credit Score</h3><ul><li>10.1) Users must maintain a 100% credit score by completing data submissions.</li><li>10.2) Failure to submit data reduces the credit score.</li><li>10.3) Incomplete orders and submission delays impact credit scores.</li><li>10.4) A lower credit score may affect withdrawal requests.</li></ul>
+            <h3>11. Operating Hours (EST)</h3><ul><li>11.1) Platform hours: 10:00 AM – 10:59 PM.</li><li>11.2) Customer service hours: 10:00 AM – 10:59 PM.</li><li>11.3) Withdrawal processing hours: 10:00 AM – 10:59 PM.</li></ul>
+            <p class="mt-8 text-center text-gray-400 text-sm">The final interpretation of these terms belongs to WebFX.<br>COPYRIGHT © 2024 WEBFX. ALL RIGHTS RESERVED.</p>
+        </div>
     </div>
-    <div id="loading-modal" class="modal-backdrop flex items-center justify-center hidden"><div class="modal-content p-8 rounded-xl text-center"><div class="loader mx-auto"></div><p>Loading...</p></div></div>
-    <div id="universal-modal" class="modal-backdrop flex items-center justify-center hidden"><div class="modal-content p-6 rounded-xl w-full max-w-sm"></div></div>
+
 
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
         const supabaseUrl = 'https://mhtetxmyhjbbqkolbzka.supabase.co';
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1odGV0eG15aGpiYnFrb2xiemthIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3ODE1MjcsImV4cCI6MjA3MjM1NzUyN30.3V5G_DGHMdls1MhbE4f5vEZM9e2jNttg0Eq8BbJOx-s';
         const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
         let currentUser = null;
         let userProfile = null;
+        let allTasks = [];
+        let currentTaskIndex = 0;
+        let totalTasksInSetCount = 0;
+        let allPages = {};
 
-        const pages = {
-            login: document.getElementById('login-page'), mainMenu: document.getElementById('main-menu-page'), about: document.getElementById('about-page'), tasks: document.getElementById('tasks-page'),
-            account: document.getElementById('account-page'), admin: document.getElementById('admin-page'), userManagement: document.getElementById('user-management-page'), support: document.getElementById('support-page'),
-        };
-        
-        function showPage(pageId) { Object.values(pages).forEach(page => page.classList.add('hidden')); if (pages[pageId]) pages[pageId].classList.remove('hidden'); }
-        function showLoading() { document.getElementById('loading-modal').classList.remove('hidden'); }
-        function hideLoading() { document.getElementById('loading-modal').classList.add('hidden'); }
-        function showModal(title, message) { 
-            const modal = document.getElementById('universal-modal');
-            const content = modal.querySelector('.modal-content') || modal;
-            content.innerHTML = `<div class="text-center p-4"><h3 class="font-bold text-lg">${title}</h3><p class="py-4">${message}</p><button class="btn-primary py-2 px-4 rounded-lg" onclick="document.getElementById('universal-modal').classList.add('hidden')">OK</button></div>`;
-            modal.classList.remove('hidden');
-        }
-        function showNotification(message, type = 'info') {
-            const container = document.getElementById('notification-container');
-            const el = document.createElement('div');
-            el.className = `notification ${type}`;
-            el.textContent = message;
-            container.appendChild(el);
-            setTimeout(() => el.classList.add('show'), 10);
-            setTimeout(() => { el.classList.remove('show'); el.addEventListener('transitionend', () => el.remove()); }, 5000);
-        }
+        function showPage(pageId) { Object.values(allPages).forEach(page => page.classList.add('hidden')); if (allPages[pageId]) allPages[pageId].classList.remove('hidden'); }
+        function showLoading(message = 'Loading...') { document.getElementById('loading-message').textContent = message; document.getElementById('loading-modal').classList.remove('hidden'); document.getElementById('loading-modal').classList.add('flex');}
+        function hideLoading() { document.getElementById('loading-modal').classList.add('hidden'); document.getElementById('loading-modal').classList.remove('flex');}
+        function showModal(title, message) { const modal = document.getElementById('universal-modal'); modal.querySelector('.modal-content').innerHTML = `<div class="text-center p-4"><h3 class="font-bold text-lg">${title}</h3><p class="py-4">${message}</p><button class="btn btn-primary" onclick="document.getElementById('universal-modal').classList.add('hidden')">OK</button></div>`; modal.classList.remove('hidden'); modal.classList.add('flex');}
+        function showNotification(message, type = 'info') { const container = document.getElementById('notification-container'); const el = document.createElement('div'); el.className = `notification ${type}`; el.textContent = message; container.appendChild(el); setTimeout(() => el.classList.add('show'), 10); setTimeout(() => { el.classList.remove('show'); el.addEventListener('transitionend', () => el.remove()); }, 5000); }
+        function showPromptModal(title, bodyHtml, onSubmit) { const modal = document.getElementById('universal-modal'); const content = modal.querySelector('.modal-content'); content.innerHTML = `<div class="p-4"><h3 class="font-bold text-lg mb-4">${title}</h3>${bodyHtml}<div class="flex justify-end space-x-2 mt-4"><button id="modal-cancel-btn" class="btn btn-secondary">Cancel</button><button id="modal-submit-btn" class="btn btn-primary">Submit</button></div></div>`; modal.classList.remove('hidden'); modal.classList.add('flex'); document.getElementById('modal-cancel-btn').onclick = () => { modal.classList.add('hidden'); modal.classList.remove('flex'); }; document.getElementById('modal-submit-btn').onclick = async () => { if (await onSubmit()) { modal.classList.add('hidden'); modal.classList.remove('flex'); }};}
 
-        async function handleLogin() {
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
-            if (!email || !password) return showModal('Error', 'Please fill in all fields.');
-            showLoading();
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
-            hideLoading();
-            if (error) return showModal('Error', 'Invalid login credentials.');
-        }
-
+        async function handleLogin() { const email = document.getElementById('email').value.trim(); const password = document.getElementById('password').value.trim(); if (!email || !password) return showModal('Error', 'Please fill in all fields.'); showLoading('Logging in...'); const { error } = await supabase.auth.signInWithPassword({ email, password }); hideLoading(); if (error) return showModal('Error', 'Invalid login credentials.'); }
         async function handleSignup() {
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const inviteCode = document.getElementById('invite-code').value.trim();
             if (!inviteCode) return showModal('Signup Failed', 'An invitation code is required.');
-            showLoading();
+            showLoading('Signing up...');
             try {
-                const { data: codeData, error: codeError } = await supabase.from('invitation_codes').select('id, is_used').eq('code', inviteCode).single();
-                if (codeError || !codeData) throw new Error('Invalid or non-existent invitation code.');
-                if (codeData.is_used) throw new Error('This invitation code has already been used.');
-                
                 const { data, error: signUpError } = await supabase.auth.signUp({ email, password });
-                if (signUpError) throw new Error(signUpError.message);
+                if (signUpError) throw signUpError;
                 if (!data.user) throw new Error('Signup failed to return user data.');
-                
-                // The handle_new_user trigger in 1_Schema.sql will automatically create the profile.
-                await supabase.from('invitation_codes').update({ is_used: true, used_by: data.user.id }).eq('id', codeData.id);
+                const { error: rpcError } = await supabase.rpc('claim_invite_code', { invite_code: inviteCode, new_user_id: data.user.id });
+                if (rpcError) throw rpcError;
                 hideLoading();
                 showModal('Signup Successful', 'Please check your email to verify your account.');
             } catch (error) {
@@ -214,39 +153,23 @@
                 showModal('Signup Failed', error.message);
             }
         }
+        async function handleSignOut() { showLoading('Signing out...'); await supabase.auth.signOut(); hideLoading(); }
 
-        async function handleSignOut() {
-            showLoading();
-            await supabase.auth.signOut();
-            hideLoading();
-        }
-
-        async function fetchUserData() {
+        async function fetchUserData(updateDashboard = false) {
             if (!currentUser) return;
-            showLoading();
+            showLoading('Loading profile...');
             let { data, error } = await supabase.from('users').select('*').eq('id', currentUser.id).single();
-            
-            if (error && error.code !== 'PGRST116') {
-                hideLoading();
-                console.error("Database fetch error:", error);
-                return showModal('Database Error', 'Could not load your profile. Please ensure RLS policies are active in your Supabase project.');
-            }
-            
+            if (error && error.code !== 'PGRST116') { hideLoading(); console.error("DB fetch error:", error); return showModal('Database Error', 'Could not load profile. Please check RLS policies.'); }
             if (!data) {
-                console.warn('User profile not found. Creating a new one...');
-                const { data: newUserProfile, error: insertError } = await supabase.from('users').insert({ id: currentUser.id, email: currentUser.email, balance: 0, role: 'user' }).select().single();
-                if (insertError) {
-                    hideLoading();
-                    console.error("Profile creation error:", insertError);
-                    return showModal('Critical Error', 'Could not create a user profile.');
-                }
+                const { data: newUserProfile, error: insertError } = await supabase.from('users').insert({ id: currentUser.id, email: currentUser.email }).select().single();
+                if (insertError) { hideLoading(); console.error("Profile creation error:", insertError); return showModal('Critical Error', 'Could not create user profile.'); }
                 data = newUserProfile;
             }
             userProfile = data;
             hideLoading();
             updateUI();
+            if(updateDashboard) await updateDashboardStats();
         }
-
         function updateUI() {
             if (!userProfile) return;
             document.getElementById('user-name').textContent = userProfile.username || 'Not Set';
@@ -255,73 +178,147 @@
             document.getElementById('balance-amount').textContent = parseFloat(userProfile.balance || 0).toFixed(2);
             document.getElementById('nav-admin').classList.toggle('hidden', userProfile.role !== 'admin');
         }
+        async function updateDashboardStats() {
+            if(!userProfile) return;
+            document.getElementById('main-menu-username').textContent = userProfile.username || currentUser.email.split('@')[0];
+            document.getElementById('main-menu-balance').textContent = parseFloat(userProfile.balance || 0).toFixed(2);
+            const { count, error } = await supabase.from('completed_tasks').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id);
+            document.getElementById('main-menu-tasks-completed').textContent = count || 0;
+            document.getElementById('main-menu-total-earned').textContent = parseFloat(userProfile.balance || 0).toFixed(2);
+        }
+        async function handleSetUsername() { const newUsername = document.getElementById('username-input').value.trim(); if (!newUsername) return showModal('Error', 'Username cannot be empty.'); showLoading('Updating...'); const { error } = await supabase.from('users').update({ username: newUsername }).eq('id', currentUser.id); hideLoading(); if (error) return showModal('Error', 'Failed to update username.'); userProfile.username = newUsername; updateUI(); showNotification('Username updated!', 'success'); }
+        async function handleWithdrawal(e) { e.preventDefault(); const amount = parseFloat(document.getElementById('amount').value); const walletAddress = document.getElementById('wallet-address').value.trim(); if (isNaN(amount) || amount <= 0 || !walletAddress || amount > userProfile.balance) { return showModal('Invalid Request', 'Please check withdrawal amount and wallet address.'); } showLoading('Submitting...'); try { await supabase.from('withdrawals').insert({ user_id: currentUser.id, amount, wallet_address: walletAddress, status: 'pending' }); const newBalance = userProfile.balance - amount; await supabase.from('users').update({ balance: newBalance }).eq('id', currentUser.id); userProfile.balance = newBalance; updateUI(); hideLoading(); showModal('Success', 'Your withdrawal request has been submitted.'); e.target.reset(); } catch (error) { hideLoading(); showModal('Error', 'Failed to submit withdrawal request.'); } }
 
-        async function handleSetUsername() {
-            const newUsername = document.getElementById('username-input').value.trim();
-            if (!newUsername) return showModal('Error', 'Username cannot be empty.');
-            showLoading();
-            const { error } = await supabase.from('users').update({ username: newUsername }).eq('id', currentUser.id);
+        async function refreshAdminDashboard() { showLoading('Refreshing Admin Data...'); await Promise.all([fetchAllUsers(), fetchTaskSets(), fetchWithdrawalRequests(), fetchAllInviteCodes(), loadTaskSetsForDropdown()]); hideLoading(); }
+        async function fetchAllUsers() { const listEl = document.getElementById('users-list'); const { data, error } = await supabase.from('users').select('*, task_sets(name)').order('email'); if(error) return listEl.innerHTML = `<p class="text-red-400">Could not load users.</p>`; listEl.innerHTML = data.map(user => `<div class="bg-black/20 p-2 rounded-lg flex justify-between items-center text-sm flex-wrap"><div><p class="font-semibold">${user.username || user.email}</p><p class="text-xs text-gray-400">Balance: $${parseFloat(user.balance).toFixed(2)} | Role: ${user.role}</p><p class="text-xs text-gray-400">Set: ${user.task_sets ? user.task_sets.name : 'None'}</p></div><div class="flex items-center space-x-1 mt-1 sm:mt-0"><button class="btn btn-secondary text-xs" data-action="assign-task" data-id="${user.id}" data-email="${user.email}">Assign</button><button class="btn btn-secondary text-xs" data-action="edit-balance" data-id="${user.id}" data-balance="${user.balance}">Balance</button><button class="btn btn-danger text-xs" data-action="delete-user" data-id="${user.id}">Delete</button></div></div>`).join(''); }
+        async function fetchWithdrawalRequests() { const listEl = document.getElementById('withdrawal-requests-list'); const { data, error } = await supabase.from('withdrawals').select('*, users(email)').order('created_at', { ascending: false }); if(error) return listEl.innerHTML = `<p class="text-red-400">Could not load requests.</p>`; listEl.innerHTML = data.length === 0 ? `<p class="text-gray-400">No pending requests.</p>` : data.map(req => `<div class="bg-black/20 p-2 rounded-lg text-sm"><p><strong>User:</strong> ${req.users.email}</p><p><strong>Amount:</strong> $${parseFloat(req.amount).toFixed(2)}</p><p><strong>Status:</strong> ${req.status}</p>${req.status === 'pending' ? `<div class="flex space-x-2 mt-2"><button class="w-full btn btn-success text-xs" data-action="approve-withdrawal" data-id="${req.id}">Approve</button><button class="w-full btn btn-danger text-xs" data-action="reject-withdrawal" data-id="${req.id}" data-user-id="${req.user_id}" data-amount="${req.amount}">Reject</button></div>` : ''}</div>`).join('');}
+        async function fetchAllInviteCodes() { const listEl = document.getElementById('invite-codes-list'); const { data, error } = await supabase.from('invitation_codes').select('*'); if(error) return listEl.innerHTML = `<p class="text-red-400">Could not load codes.</p>`; listEl.innerHTML = data.map(code => `<div class="bg-black/20 p-2 rounded-lg text-sm flex justify-between items-center"><span>${code.code}</span><span class="${code.is_used ? 'text-red-400' : 'text-green-400'}">${code.is_used ? 'Used' : 'Unused'}</span></div>`).join('');}
+        async function fetchTaskSets() { const listEl = document.getElementById('task-sets-list'); const { data, error } = await supabase.from('task_sets').select('id, name'); if (error) return listEl.innerHTML = `<p class="text-red-400">Could not load task sets.</p>`; listEl.innerHTML = data.length === 0 ? `<p class="text-gray-400">No sets created.</p>` : data.map(set => `<div class="bg-black/20 p-2 rounded-lg flex justify-between items-center text-sm"><div><p class="font-semibold">${set.name}</p></div><button class="btn btn-danger text-xs" data-action="delete-set" data-id="${set.id}">Delete</button></div>`).join('');}
+        async function generateNewCode() { showLoading('Generating...'); const newCode = Math.random().toString(36).substring(2, 10).toUpperCase(); const { error } = await supabase.from('invitation_codes').insert({ code: newCode }); hideLoading(); if(error) return showModal('Error', error.message); showNotification(`New code generated: ${newCode}`, 'success'); await fetchAllInviteCodes(); }
+        async function handleCreateSet() { const setName = document.getElementById('new-set-name').value.trim(); if (!setName) return showModal('Error', 'Task set name cannot be empty.'); showLoading('Creating set...'); const { error } = await supabase.from('task_sets').insert({ name: setName }); hideLoading(); if (error) return showModal('Error', 'Failed to create task set: ' + error.message); showNotification('Task set created!', 'success'); document.getElementById('new-set-name').value = ''; await fetchTaskSets(); }
+        async function handleEditBalance(userId, currentBalance) { const bodyHtml = `<p class="text-sm text-gray-400 mb-2">Enter the new total balance.</p><input type="number" id="new-balance-input" class="w-full p-2 rounded-lg glass-input" value="${parseFloat(currentBalance).toFixed(2)}" step="0.01">`; showPromptModal('Edit User Balance', bodyHtml, async () => { const newBalance = parseFloat(document.getElementById('new-balance-input').value); if (isNaN(newBalance) || newBalance < 0) { showNotification('Please enter a valid balance.', 'error'); return false; } showLoading('Updating balance...'); const { error } = await supabase.from('users').update({ balance: newBalance }).eq('id', userId); hideLoading(); if (error) { showModal('Error', error.message); return false; } showNotification('Balance updated.', 'success'); await fetchAllUsers(); return true; }); }
+        async function handleAssignTask(userId, userEmail) { showLoading('Fetching sets...'); const { data: sets, error } = await supabase.from('task_sets').select('id, name'); hideLoading(); if (error) return showModal('Error', 'Could not fetch task sets.'); if (sets.length === 0) return showModal('No Sets Available', 'You must create a task set first.'); const optionsHtml = sets.map(set => `<option value="${set.id}">${set.name}</option>`).join(''); const bodyHtml = `<p class="text-sm text-gray-400 mb-2">Assign a task set to ${userEmail}.</p><select id="task-set-select-modal" class="w-full p-2 rounded-lg glass-input">${optionsHtml}</select>`; showPromptModal('Assign Task Set', bodyHtml, async () => { const selectedSetId = parseInt(document.getElementById('task-set-select-modal').value, 10); showLoading('Assigning...'); const { error: assignError } = await supabase.from('users').update({ assigned_task_set_id: selectedSetId }).eq('id', userId); hideLoading(); if (assignError) { showModal('Error', 'Failed to assign task set.'); return false; } showNotification('Task set assigned.', 'success'); await refreshAdminDashboard(); return true; }); }
+        async function loadTaskSetsForDropdown() { const selectEl = document.getElementById('task-set-select'); selectEl.innerHTML = '<option value="">Select Task Set...</option>'; const { data, error } = await supabase.from('task_sets').select('id, name'); if (error) return console.error('Failed to load task sets for dropdown'); data.forEach(set => selectEl.innerHTML += `<option value="${set.id}">${set.name}</option>`); }
+        async function handleCreateTask(e) { e.preventDefault(); const form = e.target; const task = { title: form.querySelector('#task-title').value, image_url: form.querySelector('#task-image-url').value, price: parseFloat(form.querySelector('#task-price').value), earned: parseFloat(form.querySelector('#task-earning').value), task_set_id: form.querySelector('#task-set-select').value, is_premium: form.querySelector('#task-is-premium').checked }; if (!task.title || !task.task_set_id || isNaN(task.price) || isNaN(task.earned)) return showNotification('Please fill in all required fields.', 'error'); showLoading('Creating product...'); const { error } = await supabase.from('tasks').insert(task); hideLoading(); if (error) return showModal('Error', 'Failed to create product: ' + error.message); showNotification('Product created successfully!', 'success'); form.reset(); }
+        
+        async function loadAllTasks() {
+            if (!userProfile || !userProfile.assigned_task_set_id) {
+                document.getElementById('task-container').innerHTML = `<div class="glass-card p-8 text-center"><p class="text-xl">You have not been assigned a task set. Please contact support.</p></div>`;
+                document.getElementById('task-counter').textContent = 'No Tasks Assigned';
+                return;
+            }
+            const taskSetId = userProfile.assigned_task_set_id;
+            showLoading('Loading tasks...');
+            const { data: allTasksInSet, error: allTasksError, count: totalCount } = await supabase.from('tasks').select('*', { count: 'exact' }).eq('task_set_id', taskSetId);
+            if (allTasksError) { hideLoading(); return showModal('Error', 'Could not load tasks.'); }
+            
+            const { data: completed, error: completedError } = await supabase.from('completed_tasks').select('task_id').eq('user_id', currentUser.id);
+            if (completedError) { hideLoading(); return showModal('Error', 'Could not load your progress.'); }
+
+            const completedTaskIds = completed.map(c => c.task_id);
+            allTasks = allTasksInSet.filter(task => !completedTaskIds.includes(task.id));
+            totalTasksInSetCount = totalCount;
+            currentTaskIndex = 0;
             hideLoading();
-            if (error) return showModal('Error', 'Failed to update username.');
-            userProfile.username = newUsername;
-            updateUI();
-            showNotification('Username updated!', 'success');
+            displayNextTask();
         }
 
-        async function handleWithdrawal(e) {
-            e.preventDefault();
-            const amount = parseFloat(document.getElementById('amount').value);
-            const walletAddress = document.getElementById('wallet-address').value.trim();
-            if (isNaN(amount) || amount <= 0 || !walletAddress || amount > userProfile.balance) {
-                return showModal('Invalid Request', 'Please check withdrawal amount and wallet address.');
+        function displayNextTask() {
+            const taskContainer = document.getElementById('task-container');
+            const completedCount = totalTasksInSetCount - allTasks.length;
+            if (allTasks.length === 0) {
+                taskContainer.innerHTML = `<div class="glass-card p-8 text-center"><i class="fas fa-trophy text-4xl text-yellow-400 mb-4"></i><h3 class="text-xl font-bold">Congratulations!</h3><p>You've completed all tasks in your set.</p></div>`;
+                document.getElementById('task-counter').textContent = `Progress: ${totalTasksInSetCount} / ${totalTasksInSetCount}`;
+                return;
             }
-            showLoading();
+            document.getElementById('task-counter').textContent = `Progress: ${completedCount} / ${totalTasksInSetCount}`;
+            const task = allTasks[currentTaskIndex];
+            taskContainer.innerHTML = `<div class="glass-card p-6 max-w-sm w-full text-center"><img src="${task.image_url}" alt="${task.title}" class="w-32 h-32 object-cover rounded-full mb-4 shadow-lg mx-auto bg-gray-700"><h3 class="text-xl font-bold">${task.title}</h3><div class="flex justify-around my-4"><div class="text-center"><p class="text-sm text-gray-400">Price</p><p class="font-bold text-red-400">$${task.price.toFixed(2)}</p></div><div class="text-center"><p class="text-sm text-gray-400">Earn</p><p class="font-bold text-green-400">$${task.earned.toFixed(2)}</p></div></div><button class="btn btn-primary w-full" id="submit-task-btn" data-task-id="${task.id}" data-price="${task.price}" data-earned="${task.earned}" data-is-premium="${task.is_premium}">Submit Product</button></div>`;
+            document.getElementById('submit-task-btn').addEventListener('click', handleSubmitTask);
+        }
+
+        async function handleSubmitTask(e) { 
+            const button = e.target.closest('button'); 
+            const { taskId, price, earned, isPremium } = button.dataset; 
+            const isPremiumTask = isPremium === 'true';
+            if (isPremiumTask && userProfile.balance < parseFloat(price)) { return showModal('Premium Product Encountered', 'Congratulations, You have encountered a premium product. Please contact customer service.'); } 
+            showLoading('Submitting task...');
             try {
-                await supabase.from('withdrawals').insert({ user_id: currentUser.id, amount, wallet_address: walletAddress, status: 'pending' });
-                const newBalance = userProfile.balance - amount;
-                await supabase.from('users').update({ balance: newBalance }).eq('id', currentUser.id);
+                const newBalance = userProfile.balance - parseFloat(price) + parseFloat(earned);
+                const { error: updateError } = await supabase.from('users').update({ balance: newBalance }).eq('id', currentUser.id);
+                if (updateError) throw updateError;
+                const { error: completionError } = await supabase.from('completed_tasks').insert({ user_id: currentUser.id, task_id: taskId });
+                if (completionError) throw completionError;
+                
                 userProfile.balance = newBalance;
                 updateUI();
-                hideLoading();
-                showModal('Success', 'Your withdrawal request has been submitted.');
-                e.target.reset();
+                showNotification(`Task submitted! You earned $${parseFloat(earned).toFixed(2)}`, 'success');
+                allTasks.splice(currentTaskIndex, 1);
+                displayNextTask();
             } catch (error) {
+                showModal('Error', 'Failed to submit task: ' + error.message);
+            } finally {
                 hideLoading();
-                showModal('Error', 'Failed to submit withdrawal request.');
             }
         }
 
-        function setupEventListeners() {
+        document.addEventListener('DOMContentLoaded', () => {
+            allPages.login = document.getElementById('login-page');
+            allPages.mainMenu = document.getElementById('main-menu-page');
+            allPages.about = document.getElementById('about-page');
+            allPages.tasks = document.getElementById('tasks-page');
+            allPages.account = document.getElementById('account-page');
+            allPages.admin = document.getElementById('admin-page');
+            allPages.support = document.getElementById('support-page');
+            allPages.certificate = document.getElementById('certificate-page');
+            allPages.terms = document.getElementById('terms-page');
+
             document.getElementById('login-btn').addEventListener('click', handleLogin);
             document.getElementById('signup-btn').addEventListener('click', handleSignup);
             document.getElementById('sign-out-btn').addEventListener('click', handleSignOut);
+            document.getElementById('nav-admin').addEventListener('click', () => { showPage('admin'); refreshAdminDashboard(); });
             document.getElementById('about-btn').addEventListener('click', () => showPage('about'));
-            document.getElementById('start-btn').addEventListener('click', () => showPage('tasks'));
+            document.getElementById('start-btn').addEventListener('click', () => { showPage('tasks'); loadAllTasks(); });
+            document.getElementById('refresh-tasks-btn').addEventListener('click', loadAllTasks);
             document.getElementById('account-btn').addEventListener('click', () => showPage('account'));
-            document.getElementById('nav-admin').addEventListener('click', () => showPage('admin'));
             document.getElementById('nav-support').addEventListener('click', () => showPage('support'));
-            document.querySelectorAll('[id^="nav-back-"]').forEach(btn => {
-                if(btn) btn.addEventListener('click', () => showPage('mainMenu'))
-            });
-            document.getElementById('refresh-tasks-btn').addEventListener('click', () => {});
+            document.getElementById('certificate-btn').addEventListener('click', () => showPage('certificate'));
+            document.getElementById('terms-link').addEventListener('click', () => showPage('terms'));
+            document.getElementById('nav-back-admin').addEventListener('click', () => showPage('mainMenu'));
+            document.getElementById('nav-back-about').addEventListener('click', () => showPage('mainMenu'));
+            document.getElementById('nav-back-tasks').addEventListener('click', () => showPage('mainMenu'));
+            document.getElementById('nav-back-account').addEventListener('click', () => showPage('mainMenu'));
+            document.getElementById('nav-back-support').addEventListener('click', () => showPage('mainMenu'));
+            document.getElementById('nav-back-certificate').addEventListener('click', () => showPage('mainMenu'));
+            document.getElementById('nav-back-terms').addEventListener('click', () => showPage('login'));
             document.getElementById('set-username-btn').addEventListener('click', handleSetUsername);
             document.getElementById('withdraw-form').addEventListener('submit', handleWithdrawal);
-            if(document.getElementById('refresh-usermgmt-btn')) document.getElementById('refresh-usermgmt-btn').addEventListener('click', () => {});
-            if(document.getElementById('nav-back-user-mgmt')) document.getElementById('nav-back-user-mgmt').addEventListener('click', () => showPage('admin'));
-        }
-
-        supabase.auth.onAuthStateChange((event, session) => {
-            currentUser = session?.user || null;
-            userProfile = null;
-            if (currentUser) {
-                fetchUserData();
-                showPage('mainMenu');
-            } else {
-                showPage('login');
-            }
+            document.getElementById('create-set-btn').addEventListener('click', handleCreateSet);
+            document.getElementById('generate-code-btn').addEventListener('click', generateNewCode);
+            document.getElementById('create-task-form').addEventListener('submit', handleCreateTask);
+            document.getElementById('admin-page').addEventListener('click', async (e) => {
+                const button = e.target.closest('button[data-action]');
+                if (!button) return;
+                const { action, id } = button.dataset;
+                if (action === 'delete-user') { if (confirm('Are you sure? This is permanent.')) { const { error } = await supabase.rpc('delete_user_and_data', { user_id_to_delete: id }); if (error) showModal('Error', error.message); else { showNotification('User deleted.', 'success'); await fetchAllUsers(); } } }
+                else if (action === 'edit-balance') { handleEditBalance(id, button.dataset.balance); }
+                else if (action === 'assign-task') { handleAssignTask(id, button.dataset.email); }
+            });
+            
+            supabase.auth.onAuthStateChange((event, session) => {
+                currentUser = session?.user || null;
+                userProfile = null;
+                if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') {
+                    if (session) {
+                        currentUser = session.user;
+                        showPage('mainMenu');
+                        fetchUserData(true);
+                    } else { showPage('login'); }
+                } else if (event === 'SIGNED_OUT') {
+                    showPage('login');
+                }
+            });
         });
-
-        document.addEventListener('DOMContentLoaded', setupEventListeners);
     </script>
 </body>
 </html>

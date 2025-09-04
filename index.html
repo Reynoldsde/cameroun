@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WebFX Pro - Elite Digital Marketing Platform</title>
-  <meta name="description" content="WebFX Pro: The Premier Digital Marketing & Task Management Platform for Driving Revenue." />
+  <meta name="description" content="WebFX Pro: The Premier Digital Marketing & Mission Platform for Driving Revenue." />
   <meta name="author" content="WebFX" />
   
   <meta property="og:title" content="WebFX Pro - Elite Digital Marketing Platform" />
-  <meta property="og:description" content="WebFX Pro: The Premier Digital Marketing & Task Management Platform for Driving Revenue." />
+  <meta property="og:description" content="WebFX Pro: The Premier Digital Marketing & Mission Platform for Driving Revenue." />
   <meta property="og:type" content="website" />
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display-swap');
     
     :root {
       --primary-color: #0073e6;
@@ -130,6 +130,14 @@
       border-color: var(--text-secondary);
     }
 
+    .btn-warning {
+        background: var(--accent-color);
+        color: white;
+    }
+    .btn-warning:hover {
+        background: #d97706; /* amber-600 */
+    }
+
     /* Page transition animation */
     .page-container {
         animation: fadeIn 0.6s ease-in-out;
@@ -140,8 +148,8 @@
     }
 
     /* Custom scrollbar for a premium feel */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
@@ -199,6 +207,20 @@
     .partner-logo:hover img {
         transform: scale(1.1);
     }
+
+    /* VIP Card Styles */
+    .vip-card {
+        border-width: 2px;
+        transition: all 0.3s ease;
+    }
+    .vip-card.current-vip {
+        transform: translateY(-8px) scale(1.05);
+    }
+
+    #vip-bronze.current-vip { box-shadow: 0 0 25px rgba(205, 127, 50, 0.6); }
+    #vip-silver.current-vip { box-shadow: 0 0 25px rgba(192, 192, 192, 0.6); }
+    #vip-gold.current-vip   { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
+    #vip-platinum.current-vip { box-shadow: 0 0 25px rgba(229, 231, 235, 0.6); }
 
   </style>
 </head>
@@ -302,7 +324,7 @@
       </div>
     </nav>
 
-    <div class="flex-1 flex flex-col justify-center p-4">
+    <div class="flex-1 flex flex-col justify-center p-4 sm:p-6 md:p-8">
       <div class="w-full max-w-6xl mx-auto">
         <div class="text-center mb-12">
             <h1 class="text-5xl font-extrabold mb-2">
@@ -310,46 +332,126 @@
             </h1>
             <p class="text-lg text-slate-400">Here's your performance at a glance.</p>
         </div>
-
-        <div class="flex flex-col sm:flex-row gap-4 md:gap-8 mb-12">
-          <div class="pro-card p-6 text-center border-t-4 border-green-500 flex-1">
-            <i class="fas fa-wallet text-3xl text-green-400 mb-3"></i>
-            <h3 class="text-lg font-semibold text-slate-400">Current Balance</h3>
-            <p class="text-4xl font-bold text-white mt-1">$<span id="main-menu-balance">0.00</span></p>
-          </div>
-          <div class="pro-card p-6 text-center border-t-4 border-blue-500 flex-1">
-             <i class="fas fa-check-circle text-3xl text-blue-400 mb-3"></i>
-            <h3 class="text-lg font-semibold text-slate-400">Tasks Completed</h3>
-            <p class="text-4xl font-bold text-white mt-1" id="main-menu-tasks-completed">0</p>
-          </div>
-          <div class="pro-card p-6 text-center border-t-4 border-amber-500 flex-1">
-            <i class="fas fa-chart-line text-3xl text-amber-400 mb-3"></i>
-            <h3 class="text-lg font-semibold text-slate-400">Total Earnings</h3>
-            <p class="text-4xl font-bold text-white mt-1">$<span id="main-menu-total-earned">0.00</span></p>
-          </div>
+        
+        <!-- Stats Section -->
+        <div class="overflow-x-auto pb-4 -mx-4 px-4 mb-12">
+            <div class="grid grid-flow-col auto-cols-[250px] sm:auto-cols-auto sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+                <div class="pro-card p-4 sm:p-6 text-center border-t-4 border-green-500">
+                    <i class="fas fa-wallet text-2xl sm:text-3xl text-green-400 mb-3"></i>
+                    <h3 class="text-base sm:text-lg font-semibold text-slate-400">Current Balance</h3>
+                    <p class="text-3xl sm:text-4xl font-bold text-white mt-1">$<span id="main-menu-balance">0.00</span></p>
+                </div>
+                <div class="pro-card p-4 sm:p-6 text-center border-t-4 border-blue-500">
+                    <i class="fas fa-check-circle text-2xl sm:text-3xl text-blue-400 mb-3"></i>
+                    <h3 class="text-base sm:text-lg font-semibold text-slate-400">Missions Completed</h3>
+                    <p class="text-3xl sm:text-4xl font-bold text-white mt-1" id="main-menu-tasks-completed">0</p>
+                </div>
+                <div class="pro-card p-4 sm:p-6 text-center border-t-4 border-amber-500">
+                    <i class="fas fa-chart-line text-2xl sm:text-3xl text-amber-400 mb-3"></i>
+                    <h3 class="text-base sm:text-lg font-semibold text-slate-400">Total Earnings</h3>
+                    <p class="text-3xl sm:text-4xl font-bold text-white mt-1">$<span id="main-menu-total-earned">0.00</span></p>
+                </div>
+                <div class="pro-card p-4 sm:p-6 text-center border-t-4 border-purple-500">
+                    <i class="fas fa-star text-2xl sm:text-3xl text-purple-400 mb-3"></i>
+                    <h3 class="text-base sm:text-lg font-semibold text-slate-400">Current Tier</h3>
+                    <p class="text-3xl sm:text-4xl font-bold text-white mt-1" id="main-menu-vip-level">Bronze</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <!-- Mobile Version -->
+        <div class="flex flex-row sm:hidden gap-3 mb-12">
+            <button data-page="tasks" class="pro-card p-4 text-center flex-1">
+                <i class="fas fa-play text-2xl mb-2 text-primary-color"></i>
+                <h3 class="font-bold text-sm">Start Missions</h3>
+            </button>
+            <button data-page="account" class="pro-card p-4 text-center flex-1">
+                <i class="fas fa-user text-2xl mb-2 text-primary-color"></i>
+                <h3 class="font-bold text-sm">Account</h3>
+            </button>
+            <button data-page="award" class="pro-card p-4 text-center flex-1">
+                <i class="fas fa-award text-2xl mb-2 text-primary-color"></i>
+                <h3 class="font-bold text-sm">Award</h3>
+            </button>
+            <button data-page="about" class="pro-card p-4 text-center flex-1">
+                <i class="fas fa-info-circle text-2xl mb-2 text-primary-color"></i>
+                <h3 class="font-bold text-sm">About</h3>
+            </button>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-4 md:gap-6">
-          <button id="start-btn" class="pro-card p-6 text-center main-menu-card flex-1">
+        <!-- Desktop Version -->
+        <div class="hidden sm:flex flex-row gap-4 md:gap-6">
+          <button data-page="tasks" class="pro-card p-6 text-center main-menu-card flex-1">
             <i class="fas fa-play text-4xl mb-3 text-primary-color"></i>
-            <h3 class="font-bold text-xl">Start Tasks</h3>
+            <h3 class="font-bold text-xl">Start Missions</h3>
             <p class="text-sm text-slate-400 mt-1">Begin your next set</p>
           </button>
-          <button id="account-btn" class="pro-card p-6 text-center main-menu-card flex-1">
+          <button data-page="account" class="pro-card p-6 text-center main-menu-card flex-1">
             <i class="fas fa-user text-4xl mb-3 text-primary-color"></i>
             <h3 class="font-bold text-xl">My Account</h3>
              <p class="text-sm text-slate-400 mt-1">Manage your profile</p>
           </button>
-          <button id="award-btn" class="pro-card p-6 text-center main-menu-card flex-1">
+          <button data-page="award" class="pro-card p-6 text-center main-menu-card flex-1">
             <i class="fas fa-award text-4xl mb-3 text-primary-color"></i>
             <h3 class="font-bold text-xl">Our Award</h3>
              <p class="text-sm text-slate-400 mt-1">Company Recognition</p>
           </button>
-          <button id="about-btn" class="pro-card p-6 text-center main-menu-card flex-1">
+          <button data-page="about" class="pro-card p-6 text-center main-menu-card flex-1">
             <i class="fas fa-info-circle text-4xl mb-3 text-primary-color"></i>
             <h3 class="font-bold text-xl">About Us</h3>
              <p class="text-sm text-slate-400 mt-1">Learn more about WebFX</p>
           </button>
+        </div>
+
+        <!-- VIP Levels Section -->
+        <div class="mt-12">
+            <h2 class="text-3xl font-bold text-center mb-2">Your VIP Status</h2>
+            <p class="text-center text-slate-400 mb-8">Unlock higher earnings by increasing your balance.</p>
+            <div class="overflow-x-auto pb-4 -mx-4 px-4">
+                <div id="vip-levels-container" class="grid grid-flow-col auto-cols-[280px] sm:auto-cols-auto sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Bronze Card -->
+                    <div id="vip-bronze" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#6A3805] to-[#D79A61] border-transparent">
+                        <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
+                        <h3 class="text-2xl font-bold text-white">Bronze</h3>
+                        <p class="font-semibold text-lg mt-2 mb-4">Min. Balance: $58</p>
+                        <ul class="text-left space-y-2 text-slate-200">
+                            <li><i class="fas fa-check-circle text-green-400 mr-2"></i>2 Sets / Day</li>
+                            <li><i class="fas fa-check-circle text-green-400 mr-2"></i>0.5% Profit / Submission</li>
+                        </ul>
+                    </div>
+                    <!-- Silver Card -->
+                    <div id="vip-silver" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#778899] to-[#d4d4d8] border-transparent">
+                        <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
+                        <h3 class="text-2xl font-bold text-slate-800">Silver</h3>
+                        <p class="font-semibold text-lg mt-2 mb-4 text-slate-700">Min. Balance: $1000</p>
+                        <ul class="text-left space-y-2 text-slate-600">
+                            <li><i class="fas fa-check-circle text-green-600 mr-2"></i>2 Sets / Day</li>
+                            <li><i class="fas fa-check-circle text-green-600 mr-2"></i>1.0% Profit / Submission</li>
+                        </ul>
+                    </div>
+                    <!-- Gold Card -->
+                    <div id="vip-gold" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#DAA520] to-[#F0E68C] border-transparent">
+                        <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
+                        <h3 class="text-2xl font-bold text-yellow-900">Gold</h3>
+                        <p class="font-semibold text-lg mt-2 mb-4 text-yellow-800">Min. Balance: $2500</p>
+                        <ul class="text-left space-y-2 text-yellow-700">
+                            <li><i class="fas fa-check-circle text-green-800 mr-2"></i>3 Sets / Day</li>
+                            <li><i class="fas fa-check-circle text-green-800 mr-2"></i>1.5% Profit / Submission</li>
+                        </ul>
+                    </div>
+                    <!-- Platinum Card -->
+                    <div id="vip-platinum" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#708090] to-[#E5E4E2] border-transparent">
+                        <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
+                        <h3 class="text-2xl font-bold text-slate-800">Platinum</h3>
+                        <p class="font-semibold text-lg mt-2 mb-4 text-slate-700">Min. Balance: $5000</p>
+                        <ul class="text-left space-y-2 text-slate-600">
+                            <li><i class="fas fa-check-circle text-green-600 mr-2"></i>3 Sets / Day</li>
+                            <li><i class="fas fa-check-circle text-green-600 mr-2"></i>2.0% Profit / Submission</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
       
@@ -372,11 +474,11 @@
     </div>
   </div>
 
-  <!-- Tasks Page -->
+  <!-- Missions Page -->
   <div id="tasks-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden page-container">
     <nav class="flex justify-between items-center py-4 mb-6">
       <h1 class="text-3xl font-bold flex items-center">
-        <i class="fas fa-tasks mr-3" style="color: var(--primary-color)"></i>Your Tasks
+        <i class="fas fa-tasks mr-3" style="color: var(--primary-color)"></i>Your Missions
       </h1>
       <div class="flex space-x-3">
         <button id="refresh-tasks-btn" class="btn btn-secondary">
@@ -480,34 +582,34 @@
       </div>
 
       <div class="pro-card p-6 col-span-1 lg:col-span-2">
-        <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-layer-group mr-2"></i>Task Set Management</h2>
+        <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-layer-group mr-2"></i>Mission Set Management</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <h3 class="font-semibold mb-2">Create New Task Set</h3>
+            <h3 class="font-semibold mb-2">Create New Mission Set</h3>
             <div class="space-y-3 p-4 bg-black/20 rounded-lg">
-              <input type="text" id="new-set-name" placeholder="Task Set Name" class="w-full p-2 pro-input"/>
+              <input type="text" id="new-set-name" placeholder="Mission Set Name" class="w-full p-2 pro-input"/>
               <button id="create-set-btn" class="w-full btn btn-primary">Create Set</button>
             </div>
           </div>
           <div>
-            <h3 class="font-semibold mb-2">Existing Task Sets</h3>
+            <h3 class="font-semibold mb-2">Existing Mission Sets</h3>
             <div id="task-sets-list" class="space-y-2 max-h-60 overflow-y-auto pr-2"></div>
           </div>
         </div>
       </div>
       <div class="pro-card p-6 col-span-1 lg:col-span-3 xl:col-span-4">
-        <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-tasks mr-2"></i>Product Management</h2>
+        <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-rocket mr-2"></i>Mission Management</h2>
         <form id="create-task-form" class="space-y-3 p-4 bg-black/20 rounded-lg">
-          <h3 class="font-semibold">Create New Product</h3>
-          <input type="text" id="task-title" placeholder="Product Title" required class="w-full p-2 pro-input"/>
+          <h3 class="font-semibold">Create New Mission</h3>
+          <input type="text" id="task-title" placeholder="Mission Title" required class="w-full p-2 pro-input"/>
           <input type="url" id="task-image-url" placeholder="Image URL" required class="w-full p-2 pro-input"/>
           <div class="grid grid-cols-2 gap-2">
             <input type="number" id="task-price" placeholder="Price" required class="w-full p-2 pro-input" step="0.01"/>
             <input type="number" id="task-earning" placeholder="Earning" required class="w-full p-2 pro-input" step="0.01"/>
           </div>
           <select id="task-set-select" required class="w-full p-2 pro-input"></select>
-          <div class="flex items-center gap-2"><input type="checkbox" id="task-is-premium" class="h-4 w-4 rounded" /><label for="task-is-premium">Premium Product</label></div>
-          <button type="submit" class="w-full btn btn-primary">Create Product</button>
+          <div class="flex items-center gap-2"><input type="checkbox" id="task-is-premium" class="h-4 w-4 rounded" /><label for="task-is-premium">Premium Mission</label></div>
+          <button type="submit" class="w-full btn btn-primary">Create Mission</button>
         </form>
       </div>
     </div>
@@ -749,14 +851,50 @@
       if (updateDashboard) await updateDashboardStats();
     }
 
+    function getUserVipLevel(balance) {
+        if (balance >= 5000) return 'Platinum';
+        if (balance >= 2500) return 'Gold';
+        if (balance >= 1000) return 'Silver';
+        return 'Bronze';
+    }
+
     function updateUI() {
-      if (!userProfile) return;
-      document.getElementById('user-name').textContent = userProfile.username || 'Not Set';
-      document.getElementById('user-email').textContent = currentUser.email;
-      document.getElementById('nav-username').textContent = userProfile.username || currentUser.email.split('@')[0];
-      document.getElementById('account-balance').textContent = parseFloat(userProfile.balance || 0).toFixed(2);
-      document.getElementById('balance-amount').textContent = parseFloat(userProfile.balance || 0).toFixed(2);
-      document.getElementById('nav-admin').classList.toggle('hidden', userProfile.role !== 'admin');
+        if (!userProfile) return;
+        document.getElementById('user-name').textContent = userProfile.username || 'Not Set';
+        document.getElementById('user-email').textContent = currentUser.email;
+        document.getElementById('nav-username').textContent = userProfile.username || currentUser.email.split('@')[0];
+        document.getElementById('account-balance').textContent = parseFloat(userProfile.balance || 0).toFixed(2);
+        document.getElementById('balance-amount').textContent = parseFloat(userProfile.balance || 0).toFixed(2);
+        document.getElementById('nav-admin').classList.toggle('hidden', userProfile.role !== 'admin');
+        
+        const vipLevelName = getUserVipLevel(userProfile.balance);
+        document.getElementById('main-menu-vip-level').textContent = vipLevelName;
+        
+        const vipTiers = {
+            'Bronze':   { id: 'vip-bronze',   colorClass: 'border-amber-600' },
+            'Silver':   { id: 'vip-silver',   colorClass: 'border-slate-400' },
+            'Gold':     { id: 'vip-gold',     colorClass: 'border-yellow-400' },
+            'Platinum': { id: 'vip-platinum', colorClass: 'border-indigo-400' }
+        };
+
+        // Reset all cards
+        Object.values(vipTiers).forEach(tier => {
+            const card = document.getElementById(tier.id);
+            if (card) {
+                card.classList.remove('current-vip', tier.colorClass);
+                card.querySelector('.absolute').classList.add('hidden');
+            }
+        });
+        
+        // Highlight the current card
+        const currentTier = vipTiers[vipLevelName];
+        if (currentTier) {
+            const currentVipCard = document.getElementById(currentTier.id);
+            if (currentVipCard) {
+                currentVipCard.classList.add('current-vip', currentTier.colorClass);
+                currentVipCard.querySelector('.absolute').classList.remove('hidden');
+            }
+        }
     }
 
     async function updateDashboardStats() {
@@ -802,17 +940,32 @@
       }
     }
 
-    // Task Functions
+    // Mission Functions
     async function loadAllTasks() {
-      if (!userProfile || !userProfile.assigned_task_set_id) {
-        document.getElementById('task-container').innerHTML = `<div class="pro-card p-8 text-center"><p class="text-xl">You have not been assigned a task set. Please contact support.</p></div>`;
-        document.getElementById('task-counter').textContent = 'No Tasks Assigned';
+      if (!userProfile) return;
+
+      if (userProfile.balance < 58) {
+          document.getElementById('task-container').innerHTML = `
+              <div class="pro-card p-8 text-center">
+                  <i class="fas fa-exclamation-triangle text-4xl text-amber-400 mb-4"></i>
+                  <h3 class="text-xl font-bold">Balance Too Low</h3>
+                  <p class="text-slate-300 mt-2">Your account balance must be at least $58 to start missions. Please top up your account.</p>
+              </div>
+          `;
+          document.getElementById('task-counter').textContent = 'Missions Locked';
+          return;
+      }
+
+      if (!userProfile.assigned_task_set_id) {
+        document.getElementById('task-container').innerHTML = `<div class="pro-card p-8 text-center"><p class="text-xl">You have not been assigned a mission set. Please contact support.</p></div>`;
+        document.getElementById('task-counter').textContent = 'No Missions Assigned';
         return;
       }
+      
       const taskSetId = userProfile.assigned_task_set_id;
-      showLoading('Loading tasks...');
+      showLoading('Loading Missions...');
       const { data: allTasksInSet, error: allTasksError, count: totalCount } = await supabase.from('tasks').select('*', { count: 'exact' }).eq('task_set_id', taskSetId);
-      if (allTasksError) { hideLoading(); return showModal('Error', 'Could not load tasks.'); }
+      if (allTasksError) { hideLoading(); return showModal('Error', 'Could not load missions.'); }
       const { data: completed, error: completedError } = await supabase.from('completed_tasks').select('task_id').eq('user_id', currentUser.id);
       if (completedError) { hideLoading(); return showModal('Error', 'Could not load your progress.'); }
       const completedTaskIds = completed.map(c => c.task_id);
@@ -827,13 +980,13 @@
       const taskContainer = document.getElementById('task-container');
       const completedCount = totalTasksInSetCount - allTasks.length;
       if (allTasks.length === 0) {
-        taskContainer.innerHTML = `<div class="pro-card p-8 text-center"><i class="fas fa-trophy text-4xl text-amber-400 mb-4"></i><h3 class="text-xl font-bold">Congratulations!</h3><p>You've completed all tasks in your set.</p></div>`;
+        taskContainer.innerHTML = `<div class="pro-card p-8 text-center"><i class="fas fa-trophy text-4xl text-amber-400 mb-4"></i><h3 class="text-xl font-bold">Congratulations!</h3><p>You've completed all missions in your set.</p></div>`;
         document.getElementById('task-counter').textContent = `Progress: ${totalTasksInSetCount} / ${totalTasksInSetCount}`;
         return;
       }
       document.getElementById('task-counter').textContent = `Progress: ${completedCount} / ${totalTasksInSetCount}`;
       const task = allTasks[currentTaskIndex];
-      taskContainer.innerHTML = `<div class="pro-card p-6 max-w-sm w-full text-center"><img src="${task.image_url}" alt="${task.title}" class="w-32 h-32 object-cover rounded-full mb-4 shadow-lg mx-auto bg-slate-700"/><h3 class="text-xl font-bold">${task.title}</h3><div class="flex justify-around my-4"><div class="text-center"><p class="text-sm text-slate-400">Price</p><p class="font-bold text-red-400">$${task.price.toFixed(2)}</p></div><div class="text-center"><p class="text-sm text-slate-400">Earn</p><p class="font-bold text-green-400">$${task.earned.toFixed(2)}</p></div></div><button class="btn btn-primary w-full" id="submit-task-btn" data-task-id="${task.id}" data-price="${task.price}" data-earned="${task.earned}" data-is-premium="${task.is_premium}">Submit Product</button></div>`;
+      taskContainer.innerHTML = `<div class="pro-card p-6 max-w-sm w-full text-center"><img src="${task.image_url}" alt="${task.title}" class="w-32 h-32 object-cover rounded-full mb-4 shadow-lg mx-auto bg-slate-700"/><h3 class="text-xl font-bold">${task.title}</h3><div class="flex justify-around my-4"><div class="text-center"><p class="text-sm text-slate-400">Price</p><p class="font-bold text-red-400">$${task.price.toFixed(2)}</p></div><div class="text-center"><p class="text-sm text-slate-400">Earn</p><p class="font-bold text-green-400">$${task.earned.toFixed(2)}</p></div></div><button class="btn btn-primary w-full" id="submit-task-btn" data-task-id="${task.id}" data-price="${task.price}" data-earned="${task.earned}" data-is-premium="${task.is_premium}">Submit Mission</button></div>`;
       document.getElementById('submit-task-btn').addEventListener('click', handleSubmitTask);
     }
 
@@ -844,18 +997,18 @@
       const taskPrice = parseFloat(price);
       const taskEarned = parseFloat(earned);
       if (userProfile.balance < 0) return showModal('Account Locked', 'Your balance is negative. Please contact customer service to proceed.');
-      showLoading('Submitting task...');
+      showLoading('Submitting Mission...');
       try {
         let newBalance = isPremiumTask ? userProfile.balance - taskPrice + taskEarned : userProfile.balance + taskEarned;
         await supabase.from('users').update({ balance: newBalance }).eq('id', currentUser.id);
         await supabase.from('completed_tasks').insert({ user_id: currentUser.id, task_id: taskId });
         userProfile.balance = newBalance;
         updateUI();
-        showNotification(`Task submitted! You earned $${taskEarned.toFixed(2)}`, 'success');
+        showNotification(`Mission submitted! You earned $${taskEarned.toFixed(2)}`, 'success');
         allTasks.splice(currentTaskIndex, 1);
         if (currentTaskIndex >= allTasks.length) currentTaskIndex = 0;
         displayNextTask();
-      } catch (error) { showModal('Error', 'Failed to submit task: ' + error.message); }
+      } catch (error) { showModal('Error', 'Failed to submit mission: ' + error.message); }
       finally { hideLoading(); }
     }
 
@@ -870,7 +1023,27 @@
       const listEl = document.getElementById('users-list');
       const { data, error } = await supabase.from('users').select(`*, task_sets!users_assigned_task_set_id_fkey(name)`).order('email');
       if (error) { listEl.innerHTML = `<p class="text-red-400">Could not load users.</p>`; return; }
-      listEl.innerHTML = data.map(user => `<div class="bg-black/20 p-2 rounded-lg flex justify-between items-center text-sm flex-wrap"><div><p class="font-semibold">${user.username || user.email}</p><p class="text-xs text-slate-400">Balance: $${parseFloat(user.balance).toFixed(2)} | Role: ${user.role}</p><p class="text-xs text-slate-400">Set: ${user.task_sets?.name || 'None'}</p></div><div class="flex items-center space-x-1 mt-1 sm:mt-0"><button class="btn btn-secondary !text-xs !p-2" data-action="assign-task" data-id="${user.id}" data-email="${user.email}">Assign</button><button class="btn btn-secondary !text-xs !p-2" data-action="edit-balance" data-id="${user.id}" data-balance="${user.balance}">Balance</button><button class="btn btn-danger !text-xs !p-2" data-action="delete-user" data-id="${user.id}">Delete</button></div></div>`).join('');
+      listEl.innerHTML = data.map(user => {
+        const hasMissionSet = user.assigned_task_set_id && user.task_sets;
+        return `<div class="bg-black/20 p-2 rounded-lg flex justify-between items-center text-sm flex-wrap"><div><p class="font-semibold">${user.username || user.email}</p><p class="text-xs text-slate-400">Balance: $${parseFloat(user.balance).toFixed(2)} | Role: ${user.role}</p><p class="text-xs text-slate-400">Set: ${hasMissionSet ? user.task_sets.name : 'None'}</p></div><div class="flex items-center space-x-1 mt-1 sm:mt-0"><button class="btn btn-secondary !text-xs !p-2" data-action="assign-task" data-id="${user.id}" data-email="${user.email}">${hasMissionSet ? 'Reassign' : 'Assign'}</button>${hasMissionSet ? `<button class="btn btn-warning !text-xs !p-2" data-action="unassign-mission" data-id="${user.id}">Unassign</button>` : ''}<button class="btn btn-secondary !text-xs !p-2" data-action="edit-balance" data-id="${user.id}" data-balance="${user.balance}">Balance</button><button class="btn btn-danger !text-xs !p-2" data-action="delete-user" data-id="${user.id}">Delete</button></div></div>`
+      }).join('');
+    }
+    async function handleUnassignMission(userId) {
+        showPromptModal('Confirm Unassignment', '<p>Are you sure you want to unassign the mission set from this user?</p>', async () => {
+            showLoading('Unassigning...');
+            const { error } = await supabase
+                .from('users')
+                .update({ assigned_task_set_id: null })
+                .eq('id', userId);
+            hideLoading();
+            if (error) {
+                showModal('Error', 'Failed to unassign mission set: ' + error.message);
+                return false;
+            }
+            showNotification('Mission set unassigned successfully.', 'success');
+            await fetchAllUsers(); // Refresh the list to show changes
+            return true;
+        });
     }
     async function fetchWithdrawalRequests() {
       const listEl = document.getElementById('withdrawal-requests-list');
@@ -887,7 +1060,7 @@
     async function fetchTaskSets() {
       const listEl = document.getElementById('task-sets-list');
       const { data, error } = await supabase.from('task_sets').select('id, name');
-      if (error) { listEl.innerHTML = `<p class="text-red-400">Could not load task sets.</p>`; return; }
+      if (error) { listEl.innerHTML = `<p class="text-red-400">Could not load mission sets.</p>`; return; }
       listEl.innerHTML = data.length === 0 ? `<p class="text-slate-400">No sets created.</p>` : data.map(set => `<div class="bg-black/20 p-2 rounded-lg flex justify-between items-center text-sm"><div><p class="font-semibold">${set.name}</p></div><div class="flex space-x-1"><button class="btn btn-secondary !text-xs !p-2" data-action="view-products" data-id="${set.id}" data-name="${set.name}">View</button><button class="btn btn-danger !text-xs !p-2" data-action="delete-set" data-id="${set.id}">Delete</button></div></div>`).join('');
     }
     async function generateNewCode() {
@@ -901,12 +1074,12 @@
     }
     async function handleCreateSet() {
       const setName = document.getElementById('new-set-name').value.trim();
-      if (!setName) return showModal('Error', 'Task set name cannot be empty.');
+      if (!setName) return showModal('Error', 'Mission set name cannot be empty.');
       showLoading('Creating set...');
       const { error } = await supabase.from('task_sets').insert({ name: setName });
       hideLoading();
-      if (error) return showModal('Error', 'Failed to create task set: ' + error.message);
-      showNotification('Task set created!', 'success');
+      if (error) return showModal('Error', 'Failed to create mission set: ' + error.message);
+      showNotification('Mission set created!', 'success');
       document.getElementById('new-set-name').value = '';
       await fetchTaskSets();
     }
@@ -928,26 +1101,26 @@
       showLoading('Fetching sets...');
       const { data: sets, error } = await supabase.from('task_sets').select('id, name');
       hideLoading();
-      if (error) return showModal('Error', 'Could not fetch task sets.');
-      if (sets.length === 0) return showModal('No Sets Available', 'You must create a task set first.');
+      if (error) return showModal('Error', 'Could not fetch mission sets.');
+      if (sets.length === 0) return showModal('No Sets Available', 'You must create a mission set first.');
       const optionsHtml = sets.map(set => `<option value="${set.id}">${set.name}</option>`).join('');
-      const bodyHtml = `<p class="text-sm text-slate-400 mb-2">Assign a task set to ${userEmail}.</p><select id="task-set-select-modal" class="w-full p-2 pro-input">${optionsHtml}</select>`;
-      showPromptModal('Assign Task Set', bodyHtml, async () => {
+      const bodyHtml = `<p class="text-sm text-slate-400 mb-2">Assign a mission set to ${userEmail}.</p><select id="task-set-select-modal" class="w-full p-2 pro-input">${optionsHtml}</select>`;
+      showPromptModal('Assign Mission Set', bodyHtml, async () => {
         const selectedSetId = parseInt(document.getElementById('task-set-select-modal').value, 10);
         showLoading('Assigning...');
         const { error: assignError } = await supabase.from('users').update({ assigned_task_set_id: selectedSetId }).eq('id', userId);
         hideLoading();
-        if (assignError) { showModal('Error', 'Failed to assign task set.'); return false; }
-        showNotification('Task set assigned.', 'success');
+        if (assignError) { showModal('Error', 'Failed to assign mission set.'); return false; }
+        showNotification('Mission set assigned.', 'success');
         await refreshAdminDashboard();
         return true;
       });
     }
     async function loadTaskSetsForDropdown() {
       const selectEl = document.getElementById('task-set-select');
-      selectEl.innerHTML = '<option value="">Select Task Set...</option>';
+      selectEl.innerHTML = '<option value="">Select Mission Set...</option>';
       const { data, error } = await supabase.from('task_sets').select('id, name');
-      if (error) return console.error('Failed to load task sets for dropdown');
+      if (error) return console.error('Failed to load mission sets for dropdown');
       data.forEach(set => { selectEl.innerHTML += `<option value="${set.id}">${set.name}</option>`; });
     }
     async function handleCreateTask(e) {
@@ -955,31 +1128,31 @@
       const form = e.target;
       const task = { title: form.querySelector('#task-title').value, image_url: form.querySelector('#task-image-url').value, price: parseFloat(form.querySelector('#task-price').value), earned: parseFloat(form.querySelector('#task-earning').value), task_set_id: form.querySelector('#task-set-select').value, is_premium: form.querySelector('#task-is-premium').checked };
       if (!task.title || !task.task_set_id || isNaN(task.price) || isNaN(task.earned)) return showNotification('Please fill in all required fields.', 'error');
-      showLoading('Creating product...');
+      showLoading('Creating mission...');
       const { error } = await supabase.from('tasks').insert(task);
       hideLoading();
-      if (error) return showModal('Error', 'Failed to create product: ' + error.message);
-      showNotification('Product created successfully!', 'success');
+      if (error) return showModal('Error', 'Failed to create mission: ' + error.message);
+      showNotification('Mission created successfully!', 'success');
       form.reset();
     }
     async function showProductsForSet(setId, setName) {
-      showLoading('Fetching products...');
+      showLoading('Fetching missions...');
       const { data: products, error } = await supabase.from('tasks').select('*').eq('task_set_id', setId).order('created_at', { ascending: false });
       hideLoading();
-      if (error) return showModal('Error', 'Could not fetch products for this set.');
-      const productsHtml = products.length === 0 ? '<p class="text-slate-400 text-center">No products in this set.</p>' : products.map(product => `<div class="bg-slate-800 p-2 rounded-lg flex justify-between items-center text-sm mb-2"><div><p class="font-semibold">${product.title}</p><p class="text-xs text-slate-400">Price: $${product.price} | Earn: $${product.earned} | ${product.is_premium ? 'Premium' : 'Standard'}</p></div><div class="flex space-x-1"><button class="btn btn-secondary !text-xs !p-2" data-action="edit-product" data-product-id="${product.id}" data-set-id="${setId}" data-set-name="${setName}">Edit</button><button class="btn btn-danger !text-xs !p-2" data-action="delete-product" data-product-id="${product.id}">Delete</button></div></div>`).join('');
-      showCustomModal(`Products in "${setName}"`, productsHtml, (modalContent) => {
+      if (error) return showModal('Error', 'Could not fetch missions for this set.');
+      const productsHtml = products.length === 0 ? '<p class="text-slate-400 text-center">No missions in this set.</p>' : products.map(product => `<div class="bg-slate-800 p-2 rounded-lg flex justify-between items-center text-sm mb-2"><div><p class="font-semibold">${product.title}</p><p class="text-xs text-slate-400">Price: $${product.price} | Earn: $${product.earned} | ${product.is_premium ? 'Premium' : 'Standard'}</p></div><div class="flex space-x-1"><button class="btn btn-secondary !text-xs !p-2" data-action="edit-product" data-product-id="${product.id}" data-set-id="${setId}" data-set-name="${setName}">Edit</button><button class="btn btn-danger !text-xs !p-2" data-action="delete-product" data-product-id="${product.id}">Delete</button></div></div>`).join('');
+      showCustomModal(`Missions in "${setName}"`, productsHtml, (modalContent) => {
         modalContent.addEventListener('click', async (e) => {
           const button = e.target.closest('button[data-action]');
           if (!button) return;
           const action = button.dataset.action;
           const productId = button.dataset.productId;
           if (action === 'delete-product') {
-            showPromptModal('Confirm Deletion', '<p>Are you sure you want to delete this product?</p>', async () => {
-              showLoading('Deleting product...');
+            showPromptModal('Confirm Deletion', '<p>Are you sure you want to delete this mission?</p>', async () => {
+              showLoading('Deleting mission...');
               const { error } = await supabase.from('tasks').delete().eq('id', productId);
               hideLoading();
-              if (error) { showModal('Error', 'Failed to delete product.'); return false; }
+              if (error) { showModal('Error', 'Failed to delete mission.'); return false; }
               await showProductsForSet(setId, setName);
               return true;
             });
@@ -990,19 +1163,19 @@
       });
     }
     async function showEditProductModal(productId, setId, setName) {
-        showLoading('Loading product details...');
+        showLoading('Loading mission details...');
         const { data: product, error } = await supabase.from('tasks').select('*').eq('id', productId).single();
         hideLoading();
-        if (error || !product) return showModal('Error', 'Could not load product details.');
-        const bodyHtml = `<div class="space-y-3"><div><label class="text-xs text-slate-400">Title</label><input type="text" id="edit-product-title" class="w-full p-2 pro-input" value="${product.title}"></div><div><label class="text-xs text-slate-400">Image URL</label><input type="url" id="edit-product-image-url" class="w-full p-2 pro-input" value="${product.image_url}"></div><div class="grid grid-cols-2 gap-2"><div><label class="text-xs text-slate-400">Price</label><input type="number" id="edit-product-price" class="w-full p-2 pro-input" value="${product.price}" step="0.01"></div><div><label class="text-xs text-slate-400">Earning</label><input type="number" id="edit-product-earning" class="w-full p-2 pro-input" value="${product.earned}" step="0.01"></div></div><div class="flex items-center gap-2"><input type="checkbox" id="edit-product-is-premium" class="h-4 w-4 rounded" ${product.is_premium ? 'checked' : ''}><label for="edit-product-is-premium">Premium Product</label></div></div>`;
-        showPromptModal(`Edit Product: ${product.title}`, bodyHtml, async () => {
+        if (error || !product) return showModal('Error', 'Could not load mission details.');
+        const bodyHtml = `<div class="space-y-3"><div><label class="text-xs text-slate-400">Title</label><input type="text" id="edit-product-title" class="w-full p-2 pro-input" value="${product.title}"></div><div><label class="text-xs text-slate-400">Image URL</label><input type="url" id="edit-product-image-url" class="w-full p-2 pro-input" value="${product.image_url}"></div><div class="grid grid-cols-2 gap-2"><div><label class="text-xs text-slate-400">Price</label><input type="number" id="edit-product-price" class="w-full p-2 pro-input" value="${product.price}" step="0.01"></div><div><label class="text-xs text-slate-400">Earning</label><input type="number" id="edit-product-earning" class="w-full p-2 pro-input" value="${product.earned}" step="0.01"></div></div><div class="flex items-center gap-2"><input type="checkbox" id="edit-product-is-premium" class="h-4 w-4 rounded" ${product.is_premium ? 'checked' : ''}><label for="edit-product-is-premium">Premium Mission</label></div></div>`;
+        showPromptModal(`Edit Mission: ${product.title}`, bodyHtml, async () => {
             const updatedProduct = { title: document.getElementById('edit-product-title').value, image_url: document.getElementById('edit-product-image-url').value, price: parseFloat(document.getElementById('edit-product-price').value), earned: parseFloat(document.getElementById('edit-product-earning').value), is_premium: document.getElementById('edit-product-is-premium').checked };
             if (!updatedProduct.title || isNaN(updatedProduct.price) || isNaN(updatedProduct.earned)) { showNotification('Please fill in all fields correctly.', 'error'); return false; }
             showLoading('Saving changes...');
             const { error: updateError } = await supabase.from('tasks').update(updatedProduct).eq('id', productId);
             hideLoading();
-            if (updateError) { showModal('Error', 'Failed to update product: ' + updateError.message); return false; }
-            showNotification('Product updated successfully!', 'success');
+            if (updateError) { showModal('Error', 'Failed to update mission: ' + updateError.message); return false; }
+            showNotification('Mission updated successfully!', 'success');
             await showProductsForSet(setId, setName);
             return true;
         });
@@ -1227,16 +1400,28 @@
     // Initialize App
     document.addEventListener('DOMContentLoaded', async () => {
       allPages = { login: document.getElementById('login-page'), mainMenu: document.getElementById('main-menu-page'), about: document.getElementById('about-page'), tasks: document.getElementById('tasks-page'), account: document.getElementById('account-page'), admin: document.getElementById('admin-page'), support: document.getElementById('support-page'), award: document.getElementById('award-page'), terms: document.getElementById('terms-page') };
+      
+      document.getElementById('main-menu-page').addEventListener('click', (e) => {
+        const button = e.target.closest('button[data-page]');
+        if(!button) return;
+        const pageId = button.dataset.page;
+        if (pageId === 'tasks') {
+            showPage('tasks');
+            loadAllTasks();
+        } else if (pageId === 'support') {
+            showPage('support');
+            displaySupportLinks();
+        } else {
+            showPage(pageId);
+        }
+      });
+
       document.getElementById('login-btn').addEventListener('click', handleLogin);
       document.getElementById('signup-btn').addEventListener('click', handleSignup);
       document.getElementById('sign-out-btn').addEventListener('click', handleSignOut);
       document.getElementById('nav-admin').addEventListener('click', () => { showPage('admin'); refreshAdminDashboard(); });
-      document.getElementById('about-btn').addEventListener('click', () => showPage('about'));
-      document.getElementById('start-btn').addEventListener('click', () => { showPage('tasks'); loadAllTasks(); });
       document.getElementById('refresh-tasks-btn').addEventListener('click', loadAllTasks);
-      document.getElementById('account-btn').addEventListener('click', () => showPage('account'));
       document.getElementById('nav-support').addEventListener('click', () => { showPage('support'); displaySupportLinks(); });
-      document.getElementById('award-btn').addEventListener('click', () => showPage('award'));
       document.getElementById('terms-link').addEventListener('click', () => showPage('terms'));
       document.getElementById('nav-back-admin').addEventListener('click', () => showPage('mainMenu'));
       document.getElementById('nav-back-about').addEventListener('click', () => showPage('mainMenu'));
@@ -1259,9 +1444,10 @@
         if (action === 'delete-user') { showPromptModal('Confirm Deletion', '<p>Are you sure you want to delete this user? This is permanent.</p>', async () => { const { error } = await supabase.rpc('delete_user_and_data', { user_id_to_delete: id }); if (error) { showModal('Error', error.message); return false; } showNotification('User deleted.', 'success'); await fetchAllUsers(); return true; }); }
         else if (action === 'edit-balance') { handleEditBalance(id, button.dataset.balance); }
         else if (action === 'assign-task') { handleAssignTask(id, button.dataset.email); }
+        else if (action === 'unassign-mission') { handleUnassignMission(id); }
         else if (action === 'approve-withdrawal') { showPromptModal('Confirm Approval', '<p>Approve this withdrawal?</p>', async () => { await supabase.from('withdrawals').update({ status: 'approved' }).eq('id', id); showNotification('Withdrawal approved.', 'success'); await fetchWithdrawalRequests(); return true; }); }
         else if (action === 'reject-withdrawal') { showPromptModal('Confirm Rejection', '<p>Reject this withdrawal and return funds?</p>', async () => { await supabase.from('withdrawals').update({ status: 'rejected' }).eq('id', id); const amount = parseFloat(button.dataset.amount); const userId = button.dataset.userId; const { data: user } = await supabase.from('users').select('balance').eq('id', userId).single(); if (user) { await supabase.from('users').update({ balance: user.balance + amount }).eq('id', userId); } showNotification('Withdrawal rejected and funds returned.', 'success'); await fetchWithdrawalRequests(); return true; }); }
-        else if (action === 'delete-set') { showPromptModal('Confirm Deletion', '<p>Delete this task set and all its products?</p>', async () => { await supabase.from('tasks').delete().eq('task_set_id', id); await supabase.from('task_sets').delete().eq('id', id); showNotification('Task set deleted.', 'success'); await fetchTaskSets(); return true; }); }
+        else if (action === 'delete-set') { showPromptModal('Confirm Deletion', '<p>Delete this mission set and all its missions?</p>', async () => { await supabase.from('tasks').delete().eq('task_set_id', id); await supabase.from('task_sets').delete().eq('id', id); showNotification('Mission set deleted.', 'success'); await fetchTaskSets(); return true; }); }
         else if (action === 'view-products') { showProductsForSet(id, button.dataset.name); }
         else if (action === 'open-chat') { openAdminChat(button.dataset.sessionId, button.dataset.userEmail); }
       });

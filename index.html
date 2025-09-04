@@ -14,7 +14,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display-swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     
     :root {
       --primary-color: #0073e6;
@@ -158,6 +158,7 @@
     .chat-message { max-width: 80%; padding: 0.5rem 1rem; border-radius: 1rem; line-height: 1.4; }
     .chat-message.user { background-color: var(--primary-color); color: white; align-self: flex-end; border-bottom-right-radius: 0.25rem; }
     .chat-message.admin { background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); align-self: flex-start; border-bottom-left-radius: 0.25rem; }
+    .chat-message.system { align-self: center; background-color: rgba(0,0,0,0.2); color: var(--text-secondary); font-style: italic; font-size: 0.8rem; padding: 0.25rem 0.75rem;}
     .chat-timestamp { font-size: 0.7rem; color: #9ca3af; margin-top: 4px; }
     .chat-message.user .chat-timestamp { text-align: right; }
     .chat-message.admin .chat-timestamp { text-align: left; }
@@ -330,126 +331,76 @@
             <h1 class="text-5xl font-extrabold mb-2">
             Dashboard
             </h1>
-            <p class="text-lg text-slate-400">Here's your performance at a glance.</p>
-        </div>
-        
-        <!-- Stats Section -->
-        <div class="overflow-x-auto pb-4 -mx-4 px-4 mb-12">
-            <div class="grid grid-flow-col auto-cols-[250px] sm:auto-cols-auto sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
-                <div class="pro-card p-4 sm:p-6 text-center border-t-4 border-green-500">
-                    <i class="fas fa-wallet text-2xl sm:text-3xl text-green-400 mb-3"></i>
-                    <h3 class="text-base sm:text-lg font-semibold text-slate-400">Current Balance</h3>
-                    <p class="text-3xl sm:text-4xl font-bold text-white mt-1">$<span id="main-menu-balance">0.00</span></p>
-                </div>
-                <div class="pro-card p-4 sm:p-6 text-center border-t-4 border-blue-500">
-                    <i class="fas fa-check-circle text-2xl sm:text-3xl text-blue-400 mb-3"></i>
-                    <h3 class="text-base sm:text-lg font-semibold text-slate-400">Missions Completed</h3>
-                    <p class="text-3xl sm:text-4xl font-bold text-white mt-1" id="main-menu-tasks-completed">0</p>
-                </div>
-                <div class="pro-card p-4 sm:p-6 text-center border-t-4 border-amber-500">
-                    <i class="fas fa-chart-line text-2xl sm:text-3xl text-amber-400 mb-3"></i>
-                    <h3 class="text-base sm:text-lg font-semibold text-slate-400">Total Earnings</h3>
-                    <p class="text-3xl sm:text-4xl font-bold text-white mt-1">$<span id="main-menu-total-earned">0.00</span></p>
-                </div>
-                <div class="pro-card p-4 sm:p-6 text-center border-t-4 border-purple-500">
-                    <i class="fas fa-star text-2xl sm:text-3xl text-purple-400 mb-3"></i>
-                    <h3 class="text-base sm:text-lg font-semibold text-slate-400">Current Tier</h3>
-                    <p class="text-3xl sm:text-4xl font-bold text-white mt-1" id="main-menu-vip-level">Bronze</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Action Buttons -->
-        <!-- Mobile Version -->
-        <div class="flex flex-row sm:hidden gap-3 mb-12">
-            <button data-page="tasks" class="pro-card p-4 text-center flex-1">
-                <i class="fas fa-play text-2xl mb-2 text-primary-color"></i>
-                <h3 class="font-bold text-sm">Start Missions</h3>
-            </button>
-            <button data-page="account" class="pro-card p-4 text-center flex-1">
-                <i class="fas fa-user text-2xl mb-2 text-primary-color"></i>
-                <h3 class="font-bold text-sm">Account</h3>
-            </button>
-            <button data-page="award" class="pro-card p-4 text-center flex-1">
-                <i class="fas fa-award text-2xl mb-2 text-primary-color"></i>
-                <h3 class="font-bold text-sm">Award</h3>
-            </button>
-            <button data-page="about" class="pro-card p-4 text-center flex-1">
-                <i class="fas fa-info-circle text-2xl mb-2 text-primary-color"></i>
-                <h3 class="font-bold text-sm">About</h3>
-            </button>
+            <p class="text-lg text-slate-400">Welcome to your command center.</p>
         </div>
 
-        <!-- Desktop Version -->
-        <div class="hidden sm:flex flex-row gap-4 md:gap-6">
-          <button data-page="tasks" class="pro-card p-6 text-center main-menu-card flex-1">
-            <i class="fas fa-play text-4xl mb-3 text-primary-color"></i>
-            <h3 class="font-bold text-xl">Start Missions</h3>
-            <p class="text-sm text-slate-400 mt-1">Begin your next set</p>
-          </button>
-          <button data-page="account" class="pro-card p-6 text-center main-menu-card flex-1">
-            <i class="fas fa-user text-4xl mb-3 text-primary-color"></i>
-            <h3 class="font-bold text-xl">My Account</h3>
-             <p class="text-sm text-slate-400 mt-1">Manage your profile</p>
-          </button>
-          <button data-page="award" class="pro-card p-6 text-center main-menu-card flex-1">
-            <i class="fas fa-award text-4xl mb-3 text-primary-color"></i>
-            <h3 class="font-bold text-xl">Our Award</h3>
-             <p class="text-sm text-slate-400 mt-1">Company Recognition</p>
-          </button>
-          <button data-page="about" class="pro-card p-6 text-center main-menu-card flex-1">
-            <i class="fas fa-info-circle text-4xl mb-3 text-primary-color"></i>
-            <h3 class="font-bold text-xl">About Us</h3>
-             <p class="text-sm text-slate-400 mt-1">Learn more about WebFX</p>
-          </button>
+        <div id="main-nav-buttons" class="grid grid-cols-2 sm:grid-cols-5 gap-4 md:gap-6 mb-12">
+            <button data-page="tasks" class="pro-card p-4 sm:p-6 text-center">
+                <i class="fas fa-play text-3xl sm:text-4xl mb-3 text-primary-color"></i>
+                <h3 class="font-bold text-base sm:text-xl">Start Missions</h3>
+            </button>
+            <button data-page="account" class="pro-card p-4 sm:p-6 text-center">
+                <i class="fas fa-user text-3xl sm:text-4xl mb-3 text-primary-color"></i>
+                <h3 class="font-bold text-base sm:text-xl">Account</h3>
+            </button>
+            <button data-page="wallet" class="pro-card p-4 sm:p-6 text-center">
+                <i class="fas fa-wallet text-3xl sm:text-4xl mb-3 text-primary-color"></i>
+                <h3 class="font-bold text-base sm:text-xl">Wallet</h3>
+            </button>
+            <button data-page="award" class="pro-card p-4 sm:p-6 text-center">
+                <i class="fas fa-award text-3xl sm:text-4xl mb-3 text-primary-color"></i>
+                <h3 class="font-bold text-base sm:text-xl">Our Award</h3>
+            </button>
+            <button data-page="about" class="pro-card p-4 sm:p-6 text-center">
+                <i class="fas fa-info-circle text-3xl sm:text-4xl mb-3 text-primary-color"></i>
+                <h3 class="font-bold text-base sm:text-xl">About Us</h3>
+            </button>
         </div>
-
+        
         <!-- VIP Levels Section -->
         <div class="mt-12">
-            <h2 class="text-3xl font-bold text-center mb-2">Your VIP Status</h2>
+            <h2 class="text-3xl font-bold text-center mb-2">VIP Tiers</h2>
             <p class="text-center text-slate-400 mb-8">Unlock higher earnings by increasing your balance.</p>
-            <div class="overflow-x-auto pb-4 -mx-4 px-4">
-                <div id="vip-levels-container" class="grid grid-flow-col auto-cols-[280px] sm:auto-cols-auto sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Bronze Card -->
-                    <div id="vip-bronze" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#6A3805] to-[#D79A61] border-transparent">
-                        <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
-                        <h3 class="text-2xl font-bold text-white">Bronze</h3>
-                        <p class="font-semibold text-lg mt-2 mb-4">Min. Balance: $58</p>
-                        <ul class="text-left space-y-2 text-slate-200">
-                            <li><i class="fas fa-check-circle text-green-400 mr-2"></i>2 Sets / Day</li>
-                            <li><i class="fas fa-check-circle text-green-400 mr-2"></i>0.5% Profit / Submission</li>
-                        </ul>
-                    </div>
-                    <!-- Silver Card -->
-                    <div id="vip-silver" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#778899] to-[#d4d4d8] border-transparent">
-                        <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
-                        <h3 class="text-2xl font-bold text-slate-800">Silver</h3>
-                        <p class="font-semibold text-lg mt-2 mb-4 text-slate-700">Min. Balance: $1000</p>
-                        <ul class="text-left space-y-2 text-slate-600">
-                            <li><i class="fas fa-check-circle text-green-600 mr-2"></i>2 Sets / Day</li>
-                            <li><i class="fas fa-check-circle text-green-600 mr-2"></i>1.0% Profit / Submission</li>
-                        </ul>
-                    </div>
-                    <!-- Gold Card -->
-                    <div id="vip-gold" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#DAA520] to-[#F0E68C] border-transparent">
-                        <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
-                        <h3 class="text-2xl font-bold text-yellow-900">Gold</h3>
-                        <p class="font-semibold text-lg mt-2 mb-4 text-yellow-800">Min. Balance: $2500</p>
-                        <ul class="text-left space-y-2 text-yellow-700">
-                            <li><i class="fas fa-check-circle text-green-800 mr-2"></i>3 Sets / Day</li>
-                            <li><i class="fas fa-check-circle text-green-800 mr-2"></i>1.5% Profit / Submission</li>
-                        </ul>
-                    </div>
-                    <!-- Platinum Card -->
-                    <div id="vip-platinum" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#708090] to-[#E5E4E2] border-transparent">
-                        <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
-                        <h3 class="text-2xl font-bold text-slate-800">Platinum</h3>
-                        <p class="font-semibold text-lg mt-2 mb-4 text-slate-700">Min. Balance: $5000</p>
-                        <ul class="text-left space-y-2 text-slate-600">
-                            <li><i class="fas fa-check-circle text-green-600 mr-2"></i>3 Sets / Day</li>
-                            <li><i class="fas fa-check-circle text-green-600 mr-2"></i>2.0% Profit / Submission</li>
-                        </ul>
-                    </div>
+            <div id="vip-levels-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Bronze Card -->
+                <div id="vip-bronze" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#6A3805] to-[#D79A61] border-transparent">
+                    <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
+                    <h3 class="text-2xl font-bold text-white">Bronze</h3>
+                    <p class="font-semibold text-lg mt-2 mb-4">Min. Balance: $58</p>
+                    <ul class="text-left space-y-2 text-slate-200">
+                        <li><i class="fas fa-check-circle text-green-400 mr-2"></i>2 Sets / Day</li>
+                        <li><i class="fas fa-check-circle text-green-400 mr-2"></i>0.5% Profit / Submission</li>
+                    </ul>
+                </div>
+                <!-- Silver Card -->
+                <div id="vip-silver" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#778899] to-[#d4d4d8] border-transparent">
+                    <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
+                    <h3 class="text-2xl font-bold text-slate-800">Silver</h3>
+                    <p class="font-semibold text-lg mt-2 mb-4 text-slate-700">Min. Balance: $1000</p>
+                    <ul class="text-left space-y-2 text-slate-600">
+                        <li><i class="fas fa-check-circle text-green-600 mr-2"></i>2 Sets / Day</li>
+                        <li><i class="fas fa-check-circle text-green-600 mr-2"></i>1.0% Profit / Submission</li>
+                    </ul>
+                </div>
+                <!-- Gold Card -->
+                <div id="vip-gold" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#DAA520] to-[#F0E68C] border-transparent">
+                    <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
+                    <h3 class="text-2xl font-bold text-yellow-900">Gold</h3>
+                    <p class="font-semibold text-lg mt-2 mb-4 text-yellow-800">Min. Balance: $2500</p>
+                    <ul class="text-left space-y-2 text-yellow-700">
+                        <li><i class="fas fa-check-circle text-green-800 mr-2"></i>3 Sets / Day</li>
+                        <li><i class="fas fa-check-circle text-green-800 mr-2"></i>1.5% Profit / Submission</li>
+                    </ul>
+                </div>
+                <!-- Platinum Card -->
+                <div id="vip-platinum" class="pro-card p-6 text-center vip-card relative overflow-hidden bg-gradient-to-br from-[#708090] to-[#E5E4E2] border-transparent">
+                    <div class="absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-black/30 text-white hidden">Current</div>
+                    <h3 class="text-2xl font-bold text-slate-800">Platinum</h3>
+                    <p class="font-semibold text-lg mt-2 mb-4 text-slate-700">Min. Balance: $5000</p>
+                    <ul class="text-left space-y-2 text-slate-600">
+                        <li><i class="fas fa-check-circle text-green-600 mr-2"></i>3 Sets / Day</li>
+                        <li><i class="fas fa-check-circle text-green-600 mr-2"></i>2.0% Profit / Submission</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -507,34 +458,83 @@
   <!-- Account Page -->
   <div id="account-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden page-container">
     <nav class="flex justify-between items-center py-4 mb-6">
-      <h1 class="text-3xl font-bold flex items-center">
-        <i class="fas fa-user mr-3" style="color: var(--primary-color)"></i>Account Details
-      </h1>
-      <button id="nav-back-account" class="btn btn-secondary">
-        <i class="fas fa-arrow-left mr-2"></i>Back to Menu
-      </button>
+      <h1 class="text-3xl font-bold flex items-center"><i class="fas fa-user-circle mr-3" style="color: var(--primary-color)"></i>My Account</h1>
+      <button data-page="mainMenu" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Back to Menu</button>
     </nav>
 
-    <div class="max-w-md mx-auto">
-      <div class="pro-card p-8 space-y-6">
-        <h2 id="user-name" class="text-2xl font-bold text-center">Loading...</h2>
-        <p id="user-email" class="text-slate-400 text-center">Loading...</p>
-        <h3 class="text-xl font-bold text-center">Balance: $<span id="account-balance">0.00</span></h3>
-        
-        <div>
-          <input type="text" id="username-input" placeholder="Enter your username" class="w-full pro-input"/>
+    <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="pro-card p-8">
+            <h2 class="text-2xl font-bold text-center mb-6">Account Information</h2>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center bg-slate-800/50 p-4 rounded-lg">
+                    <span class="font-semibold text-slate-400">Username</span>
+                    <span id="account-username" class="font-bold text-white"></span>
+                </div>
+                 <div class="flex justify-between items-center bg-slate-800/50 p-4 rounded-lg">
+                    <span class="font-semibold text-slate-400">Email</span>
+                    <span id="account-email" class="font-bold text-white"></span>
+                </div>
+                <form id="username-form" class="space-y-3 pt-4 border-t border-white/10">
+                    <h3 class="text-lg font-semibold text-center">Update Username</h3>
+                    <input type="text" id="username-input" placeholder="Enter new username" class="w-full pro-input"/>
+                    <button type="submit" class="w-full btn btn-primary py-3">Save Username</button>
+                </form>
+            </div>
         </div>
-        <button id="set-username-btn" class="w-full btn btn-primary py-3">Save Username</button>
-
-        <form id="withdraw-form" class="space-y-3 pt-4 border-t border-white/10">
-          <h3 class="text-lg font-semibold text-center">Withdraw Funds</h3>
-          <input type="number" id="amount" placeholder="Amount to withdraw" required class="w-full pro-input" step="0.01" min="0.01"/>
-          <input type="text" id="wallet-address" placeholder="TRC20 Wallet Address" required class="w-full pro-input"/>
-          <button type="submit" class="w-full btn btn-success py-3">Request Withdrawal</button>
-        </form>
-      </div>
+        <div class="pro-card p-8">
+            <h2 class="text-2xl font-bold text-center mb-6">Performance Stats</h2>
+             <div class="space-y-4">
+                <div class="flex justify-between items-center bg-slate-800/50 p-4 rounded-lg">
+                    <span class="font-semibold text-slate-400">Current Tier</span>
+                    <span id="account-vip-level" class="font-bold text-purple-400"></span>
+                </div>
+                <div class="flex justify-between items-center bg-slate-800/50 p-4 rounded-lg">
+                    <span class="font-semibold text-slate-400">Current Balance</span>
+                    <span id="account-balance-stats" class="font-bold text-green-400"></span>
+                </div>
+                 <div class="flex justify-between items-center bg-slate-800/50 p-4 rounded-lg">
+                    <span class="font-semibold text-slate-400">Missions Completed</span>
+                    <span id="account-missions-completed" class="font-bold text-white"></span>
+                </div>
+                 <div class="flex justify-between items-center bg-slate-800/50 p-4 rounded-lg">
+                    <span class="font-semibold text-slate-400">Total Earnings</span>
+                    <span id="account-total-earned" class="font-bold text-amber-400"></span>
+                </div>
+            </div>
+        </div>
     </div>
   </div>
+  
+  <!-- Wallet Page -->
+  <div id="wallet-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden page-container">
+    <nav class="flex justify-between items-center py-4 mb-6">
+      <h1 class="text-3xl font-bold flex items-center"><i class="fas fa-wallet mr-3" style="color: var(--primary-color)"></i>My Wallet</h1>
+      <button data-page="mainMenu" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Back to Menu</button>
+    </nav>
+    <div class="max-w-md mx-auto">
+        <div class="pro-card p-8 space-y-6">
+            <form id="wallet-info-form" class="space-y-4">
+                <h2 class="text-2xl font-bold text-center">Wallet Details</h2>
+                <div>
+                    <label for="wallet-address-input" class="block text-sm font-medium text-slate-300 mb-1">TRC20 Wallet Address</label>
+                    <input type="text" id="wallet-address-input" placeholder="Enter your TRC20 address" required class="w-full pro-input"/>
+                </div>
+                <div>
+                    <label for="withdrawal-password-input" class="block text-sm font-medium text-slate-300 mb-1">Withdrawal Password</label>
+                    <input type="password" id="withdrawal-password-input" placeholder="Set or update password" required class="w-full pro-input"/>
+                </div>
+                <button type="submit" class="w-full btn btn-primary py-3">Save Wallet Info</button>
+            </form>
+            <form id="withdraw-form" class="space-y-3 pt-6 border-t border-white/10">
+                <h2 class="text-2xl font-bold text-center">Withdraw Funds</h2>
+                <input type="number" id="withdraw-amount" placeholder="Amount to withdraw" required class="w-full pro-input" step="0.01" min="0.01"/>
+                <input type="password" id="withdraw-password-verify" placeholder="Enter withdrawal password" required class="w-full pro-input"/>
+                <button type="submit" class="w-full btn btn-success py-3">Request Withdrawal</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 
   <!-- Admin Page -->
   <div id="admin-page" class="min-h-screen p-4 md:p-8 relative z-10 hidden page-container">
@@ -675,6 +675,7 @@
     let currentChatSessionId = null;
     let chatSubscription = null;
     let chatSessionSubscription = null;
+    let adminRepName = null;
 
     // Utility Functions
     function showPage(pageId) {
@@ -860,52 +861,62 @@
 
     function updateUI() {
         if (!userProfile) return;
-        document.getElementById('user-name').textContent = userProfile.username || 'Not Set';
-        document.getElementById('user-email').textContent = currentUser.email;
         document.getElementById('nav-username').textContent = userProfile.username || currentUser.email.split('@')[0];
-        document.getElementById('account-balance').textContent = parseFloat(userProfile.balance || 0).toFixed(2);
-        document.getElementById('balance-amount').textContent = parseFloat(userProfile.balance || 0).toFixed(2);
         document.getElementById('nav-admin').classList.toggle('hidden', userProfile.role !== 'admin');
-        
-        const vipLevelName = getUserVipLevel(userProfile.balance);
-        document.getElementById('main-menu-vip-level').textContent = vipLevelName;
-        
-        const vipTiers = {
-            'Bronze':   { id: 'vip-bronze',   colorClass: 'border-amber-600' },
-            'Silver':   { id: 'vip-silver',   colorClass: 'border-slate-400' },
-            'Gold':     { id: 'vip-gold',     colorClass: 'border-yellow-400' },
-            'Platinum': { id: 'vip-platinum', colorClass: 'border-indigo-400' }
-        };
-
-        // Reset all cards
-        Object.values(vipTiers).forEach(tier => {
-            const card = document.getElementById(tier.id);
-            if (card) {
-                card.classList.remove('current-vip', tier.colorClass);
-                card.querySelector('.absolute').classList.add('hidden');
-            }
-        });
-        
-        // Highlight the current card
-        const currentTier = vipTiers[vipLevelName];
-        if (currentTier) {
-            const currentVipCard = document.getElementById(currentTier.id);
-            if (currentVipCard) {
-                currentVipCard.classList.add('current-vip', currentTier.colorClass);
-                currentVipCard.querySelector('.absolute').classList.remove('hidden');
-            }
-        }
     }
 
     async function updateDashboardStats() {
       if (!userProfile) return;
-      document.getElementById('main-menu-balance').textContent = parseFloat(userProfile.balance || 0).toFixed(2);
-      const { count } = await supabase.from('completed_tasks').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id);
-      document.getElementById('main-menu-tasks-completed').textContent = count || 0;
-      document.getElementById('main-menu-total-earned').textContent = parseFloat(userProfile.balance || 0).toFixed(2);
+      
+      const vipLevelName = getUserVipLevel(userProfile.balance);
+      
+      const vipTiers = {
+          'Bronze':   { id: 'vip-bronze',   colorClass: 'border-amber-600' },
+          'Silver':   { id: 'vip-silver',   colorClass: 'border-slate-400' },
+          'Gold':     { id: 'vip-gold',     colorClass: 'border-yellow-400' },
+          'Platinum': { id: 'vip-platinum', colorClass: 'border-indigo-400' }
+      };
+
+      // Reset all cards
+      Object.values(vipTiers).forEach(tier => {
+          const card = document.getElementById(tier.id);
+          if (card) {
+              card.classList.remove('current-vip', tier.colorClass);
+              card.querySelector('.absolute').classList.add('hidden');
+          }
+      });
+      
+      // Highlight the current card
+      const currentTier = vipTiers[vipLevelName];
+      if (currentTier) {
+          const currentVipCard = document.getElementById(currentTier.id);
+          if (currentVipCard) {
+              currentVipCard.classList.add('current-vip', currentTier.colorClass);
+              currentVipCard.querySelector('.absolute').classList.remove('hidden');
+          }
+      }
     }
 
-    async function handleSetUsername() {
+    function updateAccountPageUI() {
+        if (!userProfile) return;
+        const vipLevelName = getUserVipLevel(userProfile.balance);
+
+        document.getElementById('account-username').textContent = userProfile.username || 'Not Set';
+        document.getElementById('account-email').textContent = currentUser.email;
+
+        document.getElementById('account-vip-level').textContent = vipLevelName;
+        document.getElementById('account-balance-stats').textContent = `$${parseFloat(userProfile.balance || 0).toFixed(2)}`;
+        
+        supabase.from('completed_tasks').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id)
+            .then(({ count }) => {
+                document.getElementById('account-missions-completed').textContent = count || 0;
+            });
+        
+        document.getElementById('account-total-earned').textContent = `$${parseFloat(userProfile.balance || 0).toFixed(2)}`;
+    }
+
+    async function handleUpdateUsername(e) {
+      e.preventDefault();
       const newUsername = document.getElementById('username-input').value.trim();
       if (!newUsername) return showModal('Error', 'Username cannot be empty.');
       showLoading('Updating...');
@@ -914,32 +925,11 @@
       if (error) return showModal('Error', 'Failed to update username.');
       userProfile.username = newUsername;
       updateUI();
+      updateAccountPageUI();
       showNotification('Username updated!', 'success');
+      e.target.reset();
     }
-
-    async function handleWithdrawal(e) {
-      e.preventDefault();
-      const amount = parseFloat(document.getElementById('amount').value);
-      const walletAddress = document.getElementById('wallet-address').value.trim();
-      if (isNaN(amount) || amount <= 0 || !walletAddress || amount > userProfile.balance) {
-        return showModal('Invalid Request', 'Please check withdrawal amount and wallet address.');
-      }
-      showLoading('Submitting...');
-      try {
-        await supabase.from('withdrawals').insert({ user_id: currentUser.id, amount, wallet_address: walletAddress, status: 'pending' });
-        const newBalance = userProfile.balance - amount;
-        await supabase.from('users').update({ balance: newBalance }).eq('id', currentUser.id);
-        userProfile.balance = newBalance;
-        updateUI();
-        hideLoading();
-        showModal('Success', 'Your withdrawal request has been submitted.');
-        e.target.reset();
-      } catch (error) {
-        hideLoading();
-        showModal('Error', 'Failed to submit withdrawal request.');
-      }
-    }
-
+    
     // Mission Functions
     async function loadAllTasks() {
       if (!userProfile) return;
@@ -1242,17 +1232,31 @@
         const toggleBtn = document.getElementById('chat-toggle-btn');
         const closeBtn = document.getElementById('chat-close-btn');
         const chatForm = document.getElementById('chat-form');
-        chatForm.addEventListener('submit', handleSendMessage);
-        closeBtn.addEventListener('click', () => toggleChatWindow(false));
+        
+        const sendMessageHandler = (e) => handleSendMessage(e);
+
+        closeBtn.addEventListener('click', () => {
+            toggleChatWindow(false);
+            chatForm.removeEventListener('submit', sendMessageHandler);
+        });
+
         if (userProfile?.role === 'admin') {
             chatWidget.classList.add('hidden');
             return; 
         }
+
         chatWidget.classList.remove('hidden');
+        
         toggleBtn.addEventListener('click', () => {
             const isHidden = chatWindow.classList.contains('hidden');
-            toggleChatWindow(isHidden);
-            if (isHidden) loadChatSession();
+            if (isHidden) {
+                toggleChatWindow(true);
+                loadChatSession();
+                chatForm.addEventListener('submit', sendMessageHandler);
+            } else {
+                toggleChatWindow(false);
+                chatForm.removeEventListener('submit', sendMessageHandler);
+            }
         });
     }
 
@@ -1260,10 +1264,13 @@
         const chatWindow = document.getElementById('chat-window');
         chatWindow.classList.toggle('hidden', !show);
         chatWindow.classList.toggle('flex', show);
-        if (!show && chatSubscription) {
-            supabase.removeChannel(chatSubscription);
-            chatSubscription = null;
+        if (!show) {
+            if(chatSubscription) {
+                supabase.removeChannel(chatSubscription);
+                chatSubscription = null;
+            }
             currentChatSessionId = null;
+            adminRepName = null; // Reset admin name when any chat window closes
         }
     }
 
@@ -1299,37 +1306,51 @@
     function renderMessages(messages, isAdminView = false) {
         const messagesContainer = document.getElementById('chat-messages');
         messagesContainer.innerHTML = '';
-        messages.forEach(msg => {
-            const msgEl = document.createElement('div');
-            const senderType = (msg.sender_id === currentUser.id && !isAdminView) || (isAdminView && userProfile?.role === 'admin' && msg.sender_id === currentUser.id) ? 'user' : 'admin';
-            msgEl.className = `chat-message ${senderType}`;
-            msgEl.innerHTML = `<p>${msg.content}</p><p class="chat-timestamp">${new Date(msg.created_at).toLocaleTimeString()}</p>`;
-            messagesContainer.appendChild(msgEl);
-        });
+        messages.forEach(msg => appendMessage(msg, isAdminView));
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
+    
+    function appendMessage(msg, isAdminView = false) {
+        const messagesContainer = document.getElementById('chat-messages');
+        const msgEl = document.createElement('div');
+        const senderType = (msg.sender_id === currentUser.id) ? 'user' : 'admin';
+       
+        let content = msg.content;
+        let finalSenderType = senderType;
+
+        if (content.startsWith('[SYSTEM]')) {
+            finalSenderType = 'system';
+            content = content.replace('[SYSTEM]', '').trim();
+        } else if (isAdminView && senderType === 'admin') {
+             content = msg.content; // Admins see raw messages
+        }
+
+        msgEl.className = `chat-message ${finalSenderType}`;
+        msgEl.innerHTML = `<p>${content}</p><p class="chat-timestamp">${new Date(msg.created_at).toLocaleTimeString()}</p>`;
+        messagesContainer.appendChild(msgEl);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
 
     function subscribeToMessages(sessionId) {
         if (chatSubscription) supabase.removeChannel(chatSubscription);
         chatSubscription = supabase.channel(`chat:${sessionId}`).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages', filter: `session_id=eq.${sessionId}` }, payload => {
-            const messagesContainer = document.getElementById('chat-messages');
-            const msg = payload.new;
-            const msgEl = document.createElement('div');
-            const senderType = msg.sender_id === currentUser.id ? 'user' : 'admin';
-            msgEl.className = `chat-message ${senderType}`;
-            msgEl.innerHTML = `<p>${msg.content}</p><p class="chat-timestamp">${new Date(msg.created_at).toLocaleTimeString()}</p>`;
-            messagesContainer.appendChild(msgEl);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            appendMessage(payload.new, userProfile?.role === 'admin');
         }).subscribe();
     }
 
     async function handleSendMessage(e) {
         e.preventDefault();
         const input = document.getElementById('chat-input');
-        const content = input.value.trim();
+        let content = input.value.trim();
         if (!content || !currentChatSessionId) return;
         input.value = '';
         const isAdminMessage = userProfile.role === 'admin';
+        
+        if (isAdminMessage && adminRepName) {
+            content = `<strong>${adminRepName}:</strong> ${content}`;
+        }
+        
         const { error } = await supabase.from('chat_messages').insert({ session_id: currentChatSessionId, sender_id: currentUser.id, content: content });
         if (error) {
             input.value = content;
@@ -1370,16 +1391,39 @@
     }
 
     async function openAdminChat(sessionId, userEmail) {
-        currentChatSessionId = sessionId;
-        toggleChatWindow(true);
-        document.getElementById('chat-title').textContent = `Chat with ${userEmail}`;
-        showLoading('Loading chat...');
-        await supabase.from('chat_sessions').update({ has_unread_admin_messages: false }).eq('id', sessionId);
-        const { data: messages, error: messagesError } = await supabase.from('chat_messages').select('*').eq('session_id', sessionId).order('created_at', { ascending: true });
-        hideLoading();
-        if (messagesError) return showNotification('Error fetching messages.', 'error');
-        renderMessages(messages, true);
-        subscribeToMessages(sessionId);
+        const openChatFlow = async () => {
+            currentChatSessionId = sessionId;
+            document.getElementById('chat-form').addEventListener('submit', handleSendMessage);
+            toggleChatWindow(true);
+            document.getElementById('chat-title').textContent = `Chat with ${userEmail}`;
+            showLoading('Loading chat...');
+            await supabase.from('chat_sessions').update({ has_unread_admin_messages: false }).eq('id', sessionId);
+            if (adminRepName) {
+                await supabase.from('chat_messages').insert({ session_id: sessionId, sender_id: currentUser.id, content: `[SYSTEM] ${adminRepName} has joined the chat.` });
+            }
+            const { data: messages, error: messagesError } = await supabase.from('chat_messages').select('*').eq('session_id', sessionId).order('created_at', { ascending: true });
+            hideLoading();
+            if (messagesError) return showNotification('Error fetching messages.', 'error');
+            renderMessages(messages, true);
+            subscribeToMessages(sessionId);
+        };
+
+        if (!adminRepName) {
+             const bodyHtml = `<input type="text" id="rep-name-input" class="w-full pro-input" placeholder="e.g., Michael B.">`;
+             showPromptModal('Enter Your Name', bodyHtml, async () => {
+                 const nameInput = document.getElementById('rep-name-input');
+                 const name = nameInput.value.trim();
+                 if (!name) {
+                     showNotification('Name cannot be empty.', 'error');
+                     return false;
+                 }
+                 adminRepName = name;
+                 await openChatFlow();
+                 return true;
+             });
+        } else {
+            await openChatFlow();
+        }
     }
 
     function subscribeToUserNotifications() {
@@ -1396,12 +1440,12 @@
             }
         }).subscribe();
     }
-
+    
     // Initialize App
     document.addEventListener('DOMContentLoaded', async () => {
-      allPages = { login: document.getElementById('login-page'), mainMenu: document.getElementById('main-menu-page'), about: document.getElementById('about-page'), tasks: document.getElementById('tasks-page'), account: document.getElementById('account-page'), admin: document.getElementById('admin-page'), support: document.getElementById('support-page'), award: document.getElementById('award-page'), terms: document.getElementById('terms-page') };
+      allPages = { login: document.getElementById('login-page'), mainMenu: document.getElementById('main-menu-page'), about: document.getElementById('about-page'), tasks: document.getElementById('tasks-page'), account: document.getElementById('account-page'), wallet: document.getElementById('wallet-page'), admin: document.getElementById('admin-page'), support: document.getElementById('support-page'), award: document.getElementById('award-page'), terms: document.getElementById('terms-page') };
       
-      document.getElementById('main-menu-page').addEventListener('click', (e) => {
+      document.getElementById('main-nav-buttons').addEventListener('click', (e) => {
         const button = e.target.closest('button[data-page]');
         if(!button) return;
         const pageId = button.dataset.page;
@@ -1411,10 +1455,21 @@
         } else if (pageId === 'support') {
             showPage('support');
             displaySupportLinks();
+        } else if (pageId === 'account') {
+            showPage('account');
+            updateAccountPageUI();
+        } else if (pageId === 'wallet') {
+            showPage('wallet');
+            // TODO: Load wallet info
         } else {
             showPage(pageId);
         }
       });
+      
+      document.querySelectorAll('button[data-page="mainMenu"]').forEach(btn => {
+          btn.addEventListener('click', () => showPage('mainMenu'));
+      });
+
 
       document.getElementById('login-btn').addEventListener('click', handleLogin);
       document.getElementById('signup-btn').addEventListener('click', handleSignup);
@@ -1424,14 +1479,13 @@
       document.getElementById('nav-support').addEventListener('click', () => { showPage('support'); displaySupportLinks(); });
       document.getElementById('terms-link').addEventListener('click', () => showPage('terms'));
       document.getElementById('nav-back-admin').addEventListener('click', () => showPage('mainMenu'));
-      document.getElementById('nav-back-about').addEventListener('click', () => showPage('mainMenu'));
-      document.getElementById('nav-back-tasks').addEventListener('click', () => showPage('mainMenu'));
-      document.getElementById('nav-back-account').addEventListener('click', () => showPage('mainMenu'));
-      document.getElementById('nav-back-support').addEventListener('click', () => showPage('mainMenu'));
       document.getElementById('nav-back-award').addEventListener('click', () => showPage('mainMenu'));
       document.getElementById('nav-back-terms').addEventListener('click', () => showPage('login'));
-      document.getElementById('set-username-btn').addEventListener('click', handleSetUsername);
-      document.getElementById('withdraw-form').addEventListener('submit', handleWithdrawal);
+      
+      document.getElementById('username-form').addEventListener('submit', handleUpdateUsername);
+      // document.getElementById('wallet-info-form').addEventListener('submit', handleSaveWalletInfo);
+      // document.getElementById('withdraw-form').addEventListener('submit', handleWithdrawal);
+      
       document.getElementById('create-set-btn').addEventListener('click', handleCreateSet);
       document.getElementById('generate-code-btn').addEventListener('click', generateNewCode);
       document.getElementById('create-task-form').addEventListener('submit', handleCreateTask);

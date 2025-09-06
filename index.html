@@ -206,20 +206,6 @@
         bottom: -2px;
         align-self: flex-end;
     }
-    /* Attachment Styles */
-    .chat-image-attachment { max-width: 250px; border-radius: 12px; cursor: pointer; margin-bottom: 4px; }
-    .chat-file-attachment { display: flex; align-items: center; gap: 10px; background-color: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 8px; color: var(--text-primary); text-decoration: none; }
-    .chat-file-attachment:hover { background-color: rgba(0,0,0,0.4); }
-    .chat-file-attachment i { font-size: 24px; color: var(--primary-color); }
-    .chat-file-info { display: flex; flex-direction: column; }
-    .chat-file-name { font-weight: 600; }
-    .chat-file-size { font-size: 0.8em; color: var(--text-secondary); }
-
-    /* Reactions */
-    .reactions-container { display: flex; gap: 4px; margin-top: 8px; align-self: flex-start; }
-    .message-group.user .reactions-container { align-self: flex-end; }
-    .reaction-btn { background-color: rgba(255,255,255,0.1); border-radius: 999px; padding: 2px 8px; font-size: 0.8rem; cursor: default; }
-    .reaction-btn .count { font-weight: 600; margin-left: 4px; }
 
     .chat-message.admin .chat-timestamp { color: var(--text-secondary); }
     .date-separator { text-align: center; margin: 16px 0; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); background-color: rgba(30, 41, 59, 0.8); padding: 4px 12px; border-radius: 999px; display: inline-block; left: 50%; position: relative; transform: translateX(-50%); }
@@ -243,17 +229,6 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; z-index: 999; }
     
-    /* Chatbot styles */
-    #chatbot-bubble { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; cursor: pointer; z-index: 998; box-shadow: 0 5px 20px rgba(0, 115, 230, 0.4); transition: all 0.3s ease; }
-    #chatbot-bubble:hover { transform: scale(1.1); background-color: var(--primary-hover); }
-    #chatbot-container { position: fixed; bottom: 90px; right: 20px; width: 90%; max-width: 400px; height: 70vh; max-height: 550px; z-index: 999; transition: transform 0.3s ease-out, opacity 0.3s ease-out; transform: translateY(20px); opacity: 0; pointer-events: none; }
-    #chatbot-container.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
-    .chatbot-message { padding: 8px 14px; border-radius: 16px; max-width: 85%; word-wrap: break-word; }
-    .chatbot-message.user { background-color: var(--primary-color); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-    .chatbot-message.bot { background-color: var(--secondary-color); color: var(--text-primary); align-self: flex-start; border-bottom-left-radius: 4px; }
-    .chatbot-options button { background-color: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 10px 15px; width: 100%; text-align: left; border-radius: 8px; transition: background-color 0.2s; }
-    .chatbot-options button:hover { background-color: rgba(255,255,255,0.1); }
-
   </style>
 </head>
 <body class="bg-slate-900">
@@ -271,35 +246,14 @@
     <div class="modal-content p-6 rounded-2xl w-full max-w-sm pro-card non-interactive"></div>
   </div>
 
-  <!-- Professional Chatbot -->
-    <div id="chatbot-bubble">
-        <i class="fas fa-robot"></i>
-    </div>
-    <div id="chatbot-container" class="pro-card flex flex-col page-container">
-        <div class="p-4 bg-black/20 flex justify-between items-center">
-            <div class="flex items-center">
-                <i class="fas fa-robot text-xl mr-3 text-primary-color"></i>
-                <h3 class="font-bold text-lg">WebFX Assistant</h3>
-            </div>
-            <button id="chatbot-close-btn" class="text-2xl text-slate-400 hover:text-white transition">&times;</button>
-        </div>
-        <div id="chatbot-messages" class="flex-1 p-4 overflow-y-auto flex flex-col gap-3">
-            <!-- Messages will be injected here -->
-        </div>
-        <div id="chatbot-options" class="p-4 border-t border-white/10 chatbot-options space-y-2">
-            <!-- Options will be injected here -->
-        </div>
-    </div>
-
-
   <!-- Login Page -->
   <div id="login-page" class="min-h-screen flex items-center justify-center p-4 relative z-10">
     <div class="pro-card p-8 sm:p-12 max-w-md w-full page-container">
       <div class="text-center mb-10">
         <img 
-          src="https://mma.prnewswire.com/media/728321/WebFX_Logo.jpg?p=facebook" 
+          src="https://www.webfx.com/wp-content/uploads/2021/10/webfx-logo.png" 
           alt="WebFX Logo" 
-          class="w-48 h-48 object-contain rounded-full mx-auto mb-4 border-2 border-slate-700 p-2"
+          class="w-48 h-auto object-contain mx-auto mb-4"
         />
         <h1 class="text-4xl font-extrabold text-center text-white">Welcome to WebFX Pro</h1>
         <p class="text-slate-400 mt-2">Digital Marketing That Drives Results</p>
@@ -338,7 +292,7 @@
   <div id="main-menu-page" class="min-h-screen flex flex-col relative z-10 hidden page-container">
     <nav class="p-4 flex justify-between items-center border-b border-slate-800">
       <div class="flex items-center space-x-4">
-        <img src="https://mma.prnewswire.com/media/728321/WebFX_Logo.jpg?p=facebook" alt="WebFX Logo" class="h-10 w-10 object-contain rounded-full"/>
+        <img src="https://www.webfx.com/wp-content/uploads/2021/10/webfx-logo.png" alt="WebFX Logo" class="h-10 w-auto object-contain"/>
         <span class="text-2xl font-bold">WebFX Pro</span>
       </div>
       <div class="flex space-x-3 items-center">
@@ -708,17 +662,10 @@
         </form>
         <form id="group-chat-message-form" class="mt-4 pt-4 border-t border-white/10 space-y-2">
             <div class="flex gap-2 items-center">
-                <input type="file" id="group-chat-file-input" class="hidden"/>
-                <button type="button" id="group-chat-attach-btn" class="btn btn-secondary !rounded-full !p-3"><i class="fas fa-paperclip"></i></button>
                 <textarea id="group-chat-message-input" placeholder="Send a message to the group..." rows="1" class="w-full pro-input"></textarea>
                 <button type="submit" class="btn btn-success !rounded-full !p-3"><i class="fas fa-paper-plane"></i></button>
             </div>
         </form>
-        <div id="admin-reactions-section" class="mt-4 pt-4 border-t border-white/10 space-y-2">
-            <h3 class="text-lg font-bold">Add Reactions to Posts</h3>
-            <button id="load-group-messages-btn" class="w-full btn btn-secondary">Load Recent Posts</button>
-            <div id="group-messages-for-reactions" class="space-y-2 max-h-96 overflow-y-auto pr-2 mt-2"></div>
-        </div>
       </div>
     </div>
   </div>
@@ -800,8 +747,6 @@
                 </div>
                 <div id="room-chat-form-container" class="p-4 border-t border-white/10">
                     <form id="room-chat-form" class="flex gap-2 items-center">
-                        <input type="file" id="room-chat-file-input" class="hidden"/>
-                        <button type="button" id="room-chat-attach-btn" class="btn btn-secondary !rounded-full !p-3"><i class="fas fa-paperclip"></i></button>
                         <input type="text" id="room-chat-input" placeholder="Type a message..." class="flex-1 p-2 pro-input" autocomplete="off">
                         <button type="submit" class="btn btn-primary !rounded-full !p-3"><i class="fas fa-paper-plane"></i></button>
                     </form>
@@ -997,14 +942,6 @@
             return VIP_LEVELS.BRONZE;
         }
 
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-
         // --- Authentication Functions ---
 
         async function handleLogin() {
@@ -1030,7 +967,6 @@
             
             showLoading('Signing up...');
             try {
-                // The RPC function should handle creating the user and their profile.
                 const { error } = await supabase.rpc('signup_with_invite', {
                     user_email: email,
                     user_password: password,
@@ -1071,8 +1007,6 @@
             }
 
             userProfile = data;
-            
-            // Generate avatar URL locally, do not persist to DB
             userProfile.avatar_url = generateAvatar(userProfile.username || userProfile.email);
             
             updateUIAfterLogin();
@@ -1262,59 +1196,31 @@
             e.target.reset();
         }
 
-        // --- Chat & File Upload Functions ---
+        // --- Chat Functions ---
         function renderMessage(message, options = { showAvatar: true, showName: true }) {
             const { showAvatar, showName } = options;
             const isMyMessage = message.user_id === currentUser.id;
             const senderName = message.attachment_metadata?.custom_name || (isMyMessage ? "You" : (message.users?.username || 'Admin'));
-            const avatarUrl = message.users?.avatar_url || generateAvatar(message.users?.email || message.user_id);
+            const avatarUrl = generateAvatar(message.users?.email || message.user_id);
             const timestamp = new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-            let attachmentHTML = '';
-            if (message.attachment_url) {
-                if (message.type === 'image') {
-                    attachmentHTML = `<img src="${message.attachment_url}" alt="Image attachment" class="chat-image-attachment">`;
-                } else {
-                    const metadata = message.attachment_metadata || {};
-                    attachmentHTML = `
-                        <a href="${message.attachment_url}" target="_blank" class="chat-file-attachment">
-                            <i class="fas fa-file-alt"></i>
-                            <div class="chat-file-info">
-                                <span class="chat-file-name">${metadata.name || 'File'}</span>
-                                <span class="chat-file-size">${formatFileSize(metadata.size || 0)}</span>
-                            </div>
-                        </a>
-                    `;
-                }
-            }
-            
-            let reactionsHTML = '';
-            if (message.reactions && message.reactions.length > 0) {
-                reactionsHTML = `<div class="reactions-container">
-                    ${message.reactions.map(r => `<span class="reaction-btn">${r.emoji} <span class="count">${r.count}</span></span>`).join('')}
-                </div>`;
-            }
-
             return `
-                <div class="message-group ${isMyMessage ? 'user' : ''}" data-message-id="${message.id}">
+                <div class="message-group ${isMyMessage ? 'user' : ''}">
                     <div class="flex-shrink-0" style="width: 40px;">
                         ${!isMyMessage && showAvatar ? `<img src="${avatarUrl}" alt="Avatar" class="chat-avatar w-10 h-10 rounded-full">` : ''}
                     </div>
                     <div class="message-content-wrapper">
                         ${!isMyMessage && showName ? `<div class="chat-sender-name">${senderName}</div>` : ''}
                         <div class="chat-message ${isMyMessage ? 'user' : 'admin'}">
-                            ${attachmentHTML}
                             <div class="message-text-wrapper">
                                 ${message.content ? `<span class="message-text">${message.content}</span>` : ''}
                                 <span class="chat-timestamp">${timestamp}</span>
                             </div>
                         </div>
-                         ${reactionsHTML}
                     </div>
                 </div>
             `;
         }
-
 
         function renderMessageList(messages, container) {
             container.innerHTML = '';
@@ -1365,11 +1271,6 @@
             }
             
             if (messages && messages.length > 0) {
-                 messages.forEach(msg => {
-                    if (msg.users) {
-                        msg.users.avatar_url = generateAvatar(msg.users.email || msg.users.id);
-                    }
-                });
                 renderMessageList(messages, messagesContainer);
             } else {
                 messagesContainer.innerHTML = `<div class="date-separator">${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>`;
@@ -1381,56 +1282,23 @@
             }
         }
         
-        async function uploadFileAndGetData(file) {
-             if (!file) return null;
-            showLoading('Uploading file...');
-            
-            const fileName = `${currentUser.id}-${Date.now()}-${file.name}`;
-            const { data, error } = await supabase.storage
-                .from('chat_attachments')
-                .upload(`public/${fileName}`, file);
-
-            hideLoading();
-            if (error) {
-                showNotification(`Upload failed: ${error.message}`, 'error');
-                return null;
-            }
-            
-            const { data: { publicUrl } } = supabase.storage.from('chat_attachments').getPublicUrl(data.path);
-            
-            return {
-                url: publicUrl,
-                type: file.type.startsWith('image/') ? 'image' : 'file',
-                metadata: { name: file.name, size: file.size, type: file.type }
-            };
-        }
-
-        async function sendChatMessage(context, content, file) {
+        async function sendChatMessage(context, content) {
             const { type, id } = context;
             const isGroup = type === 'group';
 
-            if ((!content || !content.trim()) && !file) return;
+            if (!content || !content.trim()) return;
 
             showNotification('Sending...', 'info', 2000);
 
-            let attachmentData = null;
-            if (file) {
-                attachmentData = await uploadFileAndGetData(file);
-                if (!attachmentData) return;
-            }
-
             const message = {
-                content: content || null,
+                content: content,
                 user_id: currentUser.id,
                 is_group_message: isGroup,
                 room_id: isGroup ? null : id,
-                type: attachmentData ? attachmentData.type : 'text',
-                attachment_url: attachmentData ? attachmentData.url : null,
-                attachment_metadata: attachmentData ? attachmentData.metadata : null,
             };
             
             if (userProfile.role === 'admin' && !isGroup && adminCustomNames[id]) {
-                message.attachment_metadata = { ...message.attachment_metadata, custom_name: adminCustomNames[id] };
+                message.attachment_metadata = { custom_name: adminCustomNames[id] };
             }
 
             const { error } = await supabase.from('chat_messages').insert(message);
@@ -1765,7 +1633,7 @@
                 <div class="p-2 bg-slate-800/50 rounded flex justify-between items-center">
                     <span>${room.name} (${room.invite_code})</span>
                     <div class="flex gap-2">
-                        <button data-action="admin-join-room" data-id="${room.id}" data-invite-code="${room.invite_code}" class="btn btn-secondary !p-1 !text-xs">Join As...</button>
+                        <button data-action="admin-join-room" data-id="${room.id}" data-invite-code="${room.invite_code}" data-name="${room.name}" class="btn btn-secondary !p-1 !text-xs">Join As...</button>
                         <button data-action="delete-room" data-id="${room.id}" class="btn btn-danger !p-1 !text-xs">Del</button>
                     </div>
                 </div>
@@ -1783,7 +1651,7 @@
             const list = document.getElementById('all-room-messages-list');
             list.innerHTML = data.length > 0 ? data.map(msg => `
                 <div class="bg-slate-800/50 p-2 rounded-lg text-sm">
-                    <p><strong>${msg.users?.username || 'Unknown'}</strong> in <strong>${msg.chat_rooms?.name || 'Group'}</strong>: ${msg.content || `[${msg.type}]`}</p>
+                    <p><strong>${msg.users?.username || 'Unknown'}</strong> in <strong>${msg.chat_rooms?.name || 'Group'}</strong>: ${msg.content || `[Message with attachment]`}</p>
                     <p class="text-xs text-slate-400">${new Date(msg.created_at).toLocaleString()}</p>
                 </div>
             `).join('') : '<p class="text-slate-400">No messages yet.</p>';
@@ -1796,8 +1664,8 @@
             fetchChatRoomsForAdmin();
         }
         
-        // --- Admin Reactions & Custom Join ---
-        async function handleAdminJoinRoom(roomId, inviteCode) {
+        // --- Admin Functions ---
+        async function handleAdminJoinRoom(roomId, roomName, inviteCode) {
             const content = `<input id="custom-name-input" type="text" class="w-full pro-input" placeholder="Enter display name">`;
             showPromptModal('Join Room As...', content, async () => {
                 const name = document.getElementById('custom-name-input').value.trim();
@@ -1815,156 +1683,9 @@
                 }
 
                 showNotification(`You will now appear as '${name}' in this room.`, 'success');
-                loadRoomChat(roomId, name);
+                loadRoomChat(roomId, roomName);
                 return true;
             });
-        }
-
-        async function loadGroupMessagesForAdmin() {
-            const container = document.getElementById('group-messages-for-reactions');
-            container.innerHTML = `<div class="loader mx-auto"></div>`;
-            const { data, error } = await supabase
-                .from('chat_messages')
-                .select('*')
-                .eq('is_group_message', true)
-                .order('created_at', { descending: true })
-                .limit(20);
-
-            if (error) {
-                container.innerHTML = `<p class="text-red-500">Could not load messages.</p>`;
-                return;
-            }
-            container.innerHTML = data.map(msg => `
-                <div class="bg-slate-800/50 p-3 rounded-lg text-sm">
-                    <p>${msg.content || `<em>[${msg.type}]</em>`}</p>
-                    <p class="text-xs text-slate-400 mt-1">${new Date(msg.created_at).toLocaleString()}</p>
-                    <button data-action="add-reaction" data-id="${msg.id}" class="btn btn-primary !p-1.5 !text-xs mt-2">Add Reaction</button>
-                </div>
-            `).join('');
-        }
-
-        function showReactionModal(messageId) {
-            const emojis = ['👍', '❤️', '🎉', '🔥', '😂', '👏'];
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Select Reaction</label>
-                        <div id="emoji-picker" class="flex flex-wrap gap-2">${emojis.map(e => `<button class="text-2xl p-2 rounded-lg hover:bg-slate-700">${e}</button>`).join('')}</div>
-                        <input type="hidden" id="selected-emoji">
-                    </div>
-                     <div>
-                        <label for="reaction-count" class="block text-sm font-medium text-slate-300 mb-1">Number of Reactions</label>
-                        <input id="reaction-count" type="number" class="w-full pro-input" value="10">
-                    </div>
-                    <div>
-                        <label for="reaction-delay" class="block text-sm font-medium text-slate-300 mb-1">Delay</label>
-                        <div class="flex gap-2">
-                           <input id="reaction-delay" type="number" class="w-full pro-input" value="10">
-                           <select id="reaction-delay-unit" class="pro-input">
-                             <option value="seconds">Seconds</option>
-                             <option value="minutes">Minutes</option>
-                           </select>
-                        </div>
-                    </div>
-                </div>`;
-            
-            showPromptModal('Schedule Reaction', content, () => {
-                const emoji = document.getElementById('selected-emoji').value;
-                const count = parseInt(document.getElementById('reaction-count').value);
-                const delay = parseInt(document.getElementById('reaction-delay').value);
-                const unit = document.getElementById('reaction-delay-unit').value;
-
-                if (!emoji || !count || !delay) {
-                    showNotification('Please fill all fields.', 'error');
-                    return false;
-                }
-                
-                let delayMs = delay * 1000;
-                if (unit === 'minutes') {
-                    delayMs *= 60;
-                }
-
-                showNotification(`Reaction scheduled for ${delay} ${unit}.`, 'info');
-                setTimeout(() => scheduleReactionUpdate(messageId, emoji, count), delayMs);
-                return true;
-            });
-            
-            document.getElementById('emoji-picker').addEventListener('click', e => {
-                if (e.target.tagName === 'BUTTON') {
-                    document.getElementById('selected-emoji').value = e.target.textContent;
-                    document.querySelectorAll('#emoji-picker button').forEach(btn => btn.classList.remove('bg-primary-color'));
-                    e.target.classList.add('bg-primary-color');
-                }
-            });
-        }
-
-        async function scheduleReactionUpdate(messageId, emoji, count) {
-            const { error } = await supabase.rpc('add_reaction_to_message', {
-                p_message_id: messageId,
-                p_emoji: emoji,
-                p_count: count
-            });
-
-            if (error) {
-                showNotification('Failed to add reaction.', 'error');
-                console.error('Error updating reactions via RPC:', error);
-            } else {
-                showNotification('Reaction successfully scheduled!', 'success');
-            }
-        }
-
-        // --- Chatbot Logic ---
-        const chatbotContainer = document.getElementById('chatbot-container');
-        const chatbotMessages = document.getElementById('chatbot-messages');
-        const chatbotOptions = document.getElementById('chatbot-options');
-
-        const botResponses = {
-            'missions': "To start a mission, go to the main menu and click 'Missions'. If you have an assigned mission set, it will appear there. Click 'Submit Mission' when you are ready. You must have a minimum balance of $58 to start.",
-            'withdrawals': "You can withdraw funds from the 'Wallet' page. Make sure you have saved your TRC20 wallet address and withdrawal password first. The minimum withdrawal is $58. You must complete all 20 data submissions in a set before you can withdraw.",
-            'vip': "VIP levels increase your earning potential. You are automatically upgraded based on your account balance. Higher VIP tiers get more mission sets per day and a higher profit percentage per submission. You can see the tiers on the main menu.",
-            'support': "For direct support, please visit the 'Support' page from the top navigation bar to find links to our official Telegram and WhatsApp channels.",
-        };
-        
-        const initialQuestions = {
-            'missions': 'How do missions work?',
-            'withdrawals': 'How do I withdraw money?',
-            'vip': 'What are VIP levels?',
-            'support': 'How can I contact support?',
-        };
-
-        function addBotMessage(text, type) {
-            const messageEl = document.createElement('div');
-            messageEl.className = `chatbot-message ${type}`;
-            messageEl.textContent = text;
-            chatbotMessages.appendChild(messageEl);
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-        }
-        
-        function showBotOptions(options) {
-            chatbotOptions.innerHTML = '';
-            for (const key in options) {
-                const button = document.createElement('button');
-                button.dataset.key = key;
-                button.textContent = options[key];
-                chatbotOptions.appendChild(button);
-            }
-        }
-
-        function handleBotQuestion(key) {
-            const questionText = initialQuestions[key];
-            addBotMessage(questionText, 'user');
-            chatbotOptions.innerHTML = '<div class="loader mx-auto my-4"></div>';
-
-            setTimeout(() => {
-                const response = botResponses[key];
-                addBotMessage(response, 'bot');
-                setTimeout(() => showBotOptions(initialQuestions), 500);
-            }, 1000 + Math.random() * 500);
-        }
-        
-        function initChatbot() {
-            addBotMessage("Hello! I'm the WebFX Assistant. How can I help you today?", 'bot');
-            showBotOptions(initialQuestions);
         }
 
         // --- Realtime Subscriptions ---
@@ -2080,39 +1801,19 @@
             });
             
             // --- Event Listeners for Chat Forms ---
-            async function setupFormListener(formId, inputId, fileInputId, attachBtnId, contextFn) {
-                const form = document.getElementById(formId);
-                const input = document.getElementById(inputId);
-                const fileInput = document.getElementById(fileInputId);
-                const attachBtn = document.getElementById(attachBtnId);
+            document.getElementById('room-chat-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const input = document.getElementById('room-chat-input');
+                sendChatMessage(currentChatContext, input.value);
+                e.target.reset();
+            });
 
-                form.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const content = input.value;
-                    const file = fileInput.files[0];
-                    const submitBtn = form.querySelector('button[type="submit"]');
-
-                    submitBtn.disabled = true;
-                    await sendChatMessage(contextFn(), content, file);
-                    
-                    form.reset();
-                    input.placeholder = 'Type a message...';
-                    submitBtn.disabled = false;
-                });
-
-                attachBtn.addEventListener('click', () => fileInput.click());
-                fileInput.addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        input.placeholder = `File selected: ${file.name}`;
-                    } else {
-                        input.placeholder = 'Type a message...';
-                    }
-                });
-            }
-
-            setupFormListener('room-chat-form', 'room-chat-input', 'room-chat-file-input', 'room-chat-attach-btn', () => currentChatContext);
-            setupFormListener('group-chat-message-form', 'group-chat-message-input', 'group-chat-file-input', 'group-chat-attach-btn', () => ({ type: 'group' }));
+            document.getElementById('group-chat-message-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const input = document.getElementById('group-chat-message-input');
+                sendChatMessage({ type: 'group' }, input.value);
+                 e.target.reset();
+            });
             
             
             // --- Admin Page Listeners ---
@@ -2121,13 +1822,12 @@
             document.getElementById('generate-code-btn').addEventListener('click', generateNewCode);
             document.getElementById('save-support-links-btn').addEventListener('click', saveSupportLinks);
             document.getElementById('group-chat-settings-form').addEventListener('submit', handleSaveGroupChatSettings);
-            document.getElementById('load-group-messages-btn').addEventListener('click', loadGroupMessagesForAdmin);
             document.getElementById('create-room-form').addEventListener('submit', handleCreateChatRoom);
 
             document.getElementById('admin-page').addEventListener('click', async (e) => {
                 const button = e.target.closest('[data-action]');
                 if (!button) return;
-                const { action, id, inviteCode } = button.dataset;
+                const { action, id, name, inviteCode } = button.dataset;
                 if (action === 'delete-user') { showPromptModal('Confirm Deletion', '<p>Are you sure you want to delete this user? This is permanent.</p>', async () => { const { error } = await supabase.rpc('delete_user_and_data', { user_id_to_delete: id }); if (error) { showModal('Error', error.message); return false; } showNotification('User deleted.', 'success'); await fetchAllUsers(); return true; }); }
                 else if (action === 'edit-balance') { handleEditBalance(id, button.dataset.balance); }
                 else if (action === 'assign-task') { handleAssignTask(id, button.dataset.email); }
@@ -2146,50 +1846,36 @@
                 else if (action === 'delete-set') { showPromptModal('Confirm Deletion', '<p>Delete this mission set and all its missions?</p>', async () => { await supabase.from('task_sets').delete().eq('id', id); showNotification('Mission set deleted.', 'success'); await fetchTaskSets(); return true; }); }
                 else if (action === 'view-products') { showProductsForSet(id, button.dataset.name); }
                 else if (action === 'delete-room') { deleteChatRoom(id); }
-                else if (action === 'add-reaction') { showReactionModal(id); }
-                else if (action === 'admin-join-room') { handleAdminJoinRoom(id, inviteCode); }
-            });
-
-            // Chatbot listeners
-            document.getElementById('chatbot-bubble').addEventListener('click', () => chatbotContainer.classList.add('active'));
-            document.getElementById('chatbot-close-btn').addEventListener('click', () => chatbotContainer.classList.remove('active'));
-            chatbotOptions.addEventListener('click', (e) => {
-                const button = e.target.closest('button');
-                if (button && button.dataset.key) {
-                    handleBotQuestion(button.dataset.key);
-                }
+                else if (action === 'admin-join-room') { handleAdminJoinRoom(id, name, inviteCode); }
             });
             
             // --- App Initialization Flow ---
+            
             supabase.auth.onAuthStateChange(async (event, session) => {
-                if (event === 'SIGNED_OUT') {
+                const userJustSignedIn = event === 'SIGNED_IN' && (!currentUser || currentUser.id !== session.user.id);
+                
+                if (session?.user) {
+                    if (userJustSignedIn || !currentUser) { // Handle initial load and new sign-ins
+                        showLoading('Authenticating...');
+                        currentUser = session.user;
+                        await fetchUserData(true);
+                        showPage('mainMenu');
+                        hideLoading();
+                    }
+                } else {
                     currentUser = null;
                     userProfile = null;
                     activeSubscriptions.forEach(sub => supabase.removeChannel(sub));
                     activeSubscriptions.clear();
                     showPage('login');
-                } else if (session?.user) {
-                  if (currentUser?.id !== session.user.id) {
-                    currentUser = session.user;
-                    await fetchUserData(true);
-                    if(allPages['login'].offsetParent !== null || !document.querySelector('.page-container:not(.hidden)')) {
-                       showPage('mainMenu');
-                    }
-                  }
                 }
             });
-            
-            showLoading('Initializing...');
+
+            // Initial check for a session
             const { data: { session } } = await supabase.auth.getSession();
-            if (session?.user) {
-                currentUser = session.user;
-                await fetchUserData(true);
-                showPage('mainMenu');
-            } else {
+            if (!session) {
                 showPage('login');
             }
-            hideLoading();
-            initChatbot();
 
         }
         
